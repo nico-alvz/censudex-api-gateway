@@ -1,0 +1,46 @@
+# FastAPI and ASGI server
+fastapi==0.115.11
+uvicorn[standard]==0.32.0
+gunicorn==23.0.0
+
+# Database
+sqlalchemy==2.0.32
+alembic==1.13.2
+asyncpg==0.30.0
+psycopg2-binary==2.9.9
+
+# Message Queue
+aio-pika==9.5.7
+celery==5.4.0
+
+# Data validation and serialization
+pydantic==2.10.6
+pydantic-settings==2.6.1
+
+# Authentication and security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.17
+
+# HTTP client
+httpx==0.28.1
+aiohttp==3.11.7
+
+# Utilities
+python-dotenv==1.0.1
+loguru==0.7.2
+
+# Testing (for development)
+pytest==8.3.5
+pytest-asyncio==1.2.0
+pytest-cov==6.0.0
+coverage==7.6.9
+
+# Development tools
+black==24.10.0
+isort==5.13.2
+flake8==7.1.1
+mypy==1.13.0
+
+# Monitoring and health checks
+prometheus-client==0.21.0
