@@ -1,37 +1,160 @@
-# Censudx Microservices API Gateway
+# Censudx Microservices API Gateway - Taller 2
 
 [![CI/CD](https://github.com/och1ai/censudx-api-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/och1ai/censudx-api-gateway/actions/workflows/ci.yml)
 [![Docker](https://img.shields.io/badge/docker-ready-blue)](https://github.com/och1ai/censudx-api-gateway)
 [![Nginx](https://img.shields.io/badge/nginx-1.21-green)](https://github.com/och1ai/censudx-api-gateway)
 [![FastAPI](https://img.shields.io/badge/FastAPI-latest-green)](https://github.com/och1ai/censudx-api-gateway)
 [![Microservices](https://img.shields.io/badge/microservices-ready-purple)](https://github.com/och1ai/censudx-api-gateway)
+[![Academic](https://img.shields.io/badge/academic-taller2-orange)](https://github.com/och1ai/censudx-api-gateway)
 
-> 🚀 Production-ready API Gateway for Censudx microservices architecture with Nginx load balancing, authentication, and service orchestration.
+> 🎓 **API Gateway Académico** - Proyecto para Taller 2 de Arquitectura de Sistemas UCN. Gateway para arquitectura de microservicios distribuida donde cada estudiante implementa un servicio específico.
 
-## 🏗️ Architecture Overview
+## 🏗️ Arquitectura del Proyecto Académico
 
+### Distribución por Estudiante (Taller 2)
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Nginx API Gateway                   │
-│                (Load Balancer + Router)                │
-└─────────┬─────────────────────────────────┬─────────────┘
-          │                                 │
-┌─────────▼────────┐                ┌──────▼──────────────┐
-│  Gateway Service │                │  Message Queues     │
-│  (FastAPI)       │                │  (RabbitMQ)         │
-│  - Authentication│                │  - Event Bus        │
-│  - Rate Limiting │                │  - Inter-service    │
-│  - Request Router│                │    Communication    │
-└─────────┬────────┘                └─────────────────────┘
-          │
-    ┌─────┼─────┐
-    │     │     │
-┌───▼──┐ ┌▼───┐ ┌▼────────┐
-│Auth  │ │Inv.│ │Future   │
-│Svc   │ │Svc │ │Services │
-│(Stub)│ │(✅)│ │(Stubs)  │
-└──────┘ └────┘ └─────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                     Nginx API Gateway                          │
+│              (Load Balancer + HTTP/gRPC Router)                │
+└──────────────────────┬──────────────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────────────┐
+│                 FastAPI Gateway Service                        │
+│           (Shared - All team members collaborate)              │
+│  • Authentication & Authorization (JWT)                        │
+│  • Request Routing & Protocol Translation                      │
+│  • Rate Limiting & Security Headers                            │
+│  • Service Discovery & Health Checks                           │
+└───────────────────────┬─────────────────────────────────────────┘
+                        │
+        ┌───────────────┼───────────────┐
+        │               │               │
+┌───────▼──┐    ┌──────▼──────┐    ┌───▼─────────┐
+│ Student  │    │ RabbitMQ    │    │   Redis     │
+│Services  │    │(Async Msg)  │    │ (Caching)   │
+│(Indiv.)  │    │   Queue     │    │             │
+└──────────┘    └─────────────┘    └─────────────┘
 ```
+
+### Servicios por Estudiante
+
+| Servicio | Responsable | Base de Datos | Puerto | Status | Endpoints Key |
+|----------|------------|---------------|--------|--------|--------------|
+| **Clients Service** | Estudiante A | PostgreSQL (Render) | 8002 | 🔄 Desarrollo | POST/GET/PATCH/DELETE `/clients` |
+| **Products Service** | Estudiante B | MongoDB (Atlas) | 8005 | 🔄 Desarrollo | POST/GET/PATCH/DELETE `/products` |
+| **Inventory Service** | Estudiante C | PostgreSQL (Supabase) | 8001 | ✅ Implementado | GET/PATCH `/inventory` |
+| **Orders Service** | Estudiante D | MySQL (Railway) | 8004 | 🔄 Desarrollo | POST/GET/PUT/PATCH `/orders` |
+
+## 🎓 Especificaciones Académicas - Taller 2
+
+### Contexto del Proyecto
+**Censudx** es una empresa retail latinoamericana que migra de un sistema monolítico a microservicios. Este gateway sirve como punto único de entrada para coordinar la comunicación entre servicios distribuidos.
+
+### Objetivos de Aprendizaje
+- ✅ **Arquitectura de Microservicios**: Implementación práctica de patrones de diseño distribuido
+- ✅ **API Gateway Pattern**: Centralización de cross-cutting concerns (auth, routing, rate limiting)
+- ✅ **Protocolo HTTP vs gRPC**: Comunicación síncrona entre servicios
+- ✅ **Event-Driven Architecture**: Comunicación asíncrona con RabbitMQ
+- ✅ **Service Discovery**: Registro y descubrimiento automático de servicios
+
+### Tecnologías por Servicio (Según Enunciado)
+
+| Servicio | Tecnología Requerida | Base de Datos | Proveedor Cloud | Estudiante |
+|----------|---------------------|---------------|----------------|------------|
+| **Clients** | Libre elección | PostgreSQL | Render (Gratis) | Responsable A |
+| **Products** | Libre elección | MongoDB | MongoDB Atlas (Gratis) | Responsable B |
+| **Inventory** | Libre elección | PostgreSQL | Supabase (Gratis) | Responsable C |
+| **Orders** | Libre elección | MySQL | Railway (Gratis) | Responsable D |
+| **API Gateway** | FastAPI + Nginx | Sin DB propia | Colaborativo | Todo el equipo |
+
+### Comunicación Inter-Servicios
+
+#### Síncrona (HTTP/gRPC)
+- **API Gateway ↔ Auth Service**: HTTP (autenticación de usuarios)
+- **API Gateway ↔ Otros Servicios**: gRPC (mayor performance)
+- **Validaciones en tiempo real**: Para operaciones críticas
+
+#### Asíncrona (RabbitMQ)
+- **Order Created** → Inventory Service (descontar stock)
+- **Low Stock Alert** → Notification Service (alertas administrativas)
+- **Order Status Change** → Email Service (notificar cliente)
+
+### Endpoints Académicos por Servicio
+
+Según el enunciado del taller, cada servicio debe exponer:
+
+#### Clients Service (estudiante responsable)
+```http
+POST   /api/v1/clients          # Crear usuario
+GET    /api/v1/clients          # Listar usuarios
+GET    /api/v1/clients/{id}     # Obtener usuario
+PATCH  /api/v1/clients/{id}     # Editar usuario
+DELETE /api/v1/clients/{id}     # Soft delete
+```
+
+#### Products Service (estudiante responsable)
+```http
+POST   /api/v1/products         # Crear producto (admin)
+GET    /api/v1/products         # Catálogo público
+GET    /api/v1/products/{id}    # Detalle producto
+PATCH  /api/v1/products/{id}    # Editar producto (admin)
+DELETE /api/v1/products/{id}    # Soft delete (admin)
+```
+
+#### Inventory Service (implementado)
+```http
+GET    /api/v1/inventory        # Stock de productos (admin)
+GET    /api/v1/inventory/{id}   # Stock específico
+PATCH  /api/v1/inventory/{id}   # Actualizar stock
+```
+
+#### Orders Service (estudiante responsable)
+```http
+POST   /api/v1/orders           # Crear pedido
+GET    /api/v1/orders           # Historial pedidos
+GET    /api/v1/orders/{id}      # Detalle pedido
+PUT    /api/v1/orders/{id}/status # Actualizar estado
+PATCH  /api/v1/orders/{id}      # Cancelar pedido
+```
+
+### Validaciones Requeridas
+
+#### Autenticación & Autorización
+- **JWT Tokens**: Generados por Auth Service, validados por Gateway
+- **Role-based Access**: Admin vs User permissions
+- **Protected Routes**: Inventory, Orders, User management
+
+#### Validación de Datos
+- **Email format**: `@censudex.cl` para usuarios
+- **Password strength**: 8+ chars, mayúscula, minúscula, número, especial
+- **Chilean phone**: Formato de teléfono chileno válido
+- **Age validation**: Mayor de 18 años
+- **Stock validation**: Números positivos, disponibilidad
+
+### Criterios de Evaluación
+
+#### Funcionalidad (40%)
+- ✅ CRUD completo en servicio asignado
+- ✅ Validaciones de datos implementadas
+- ✅ Integración con base de datos cloud
+- ✅ Manejo de errores y excepciones
+
+#### Arquitectura (30%)
+- ✅ Patrón de microservicios implementado
+- ✅ Comunicación HTTP/gRPC funcional
+- ✅ Event-driven patterns con RabbitMQ
+- ✅ Service discovery y health checks
+
+#### Código y Documentación (20%)
+- ✅ Conventional Commits
+- ✅ Código comentado y limpio
+- ✅ README con instrucciones de deploy
+- ✅ Colección Postman con endpoints
+
+#### Deploy y Testing (10%)
+- ✅ Deploy en cloud provider asignado
+- ✅ Video demostrativo del sistema
+- ✅ Integración con el gateway común
 
 ## 📋 Services Status
 
@@ -220,28 +343,129 @@ Automated pipeline includes:
 5. **Docker Build**: Multi-service container building
 6. **Deployment**: Automated staging and production deployment
 
-## 🤝 Contributing
+## 🤝 Guía de Desarrollo Académico
 
-### For Service Development:
-1. Create feature branch: `git checkout -b feature/your-service`
-2. Implement your service in `services/your-service/`
-3. Add comprehensive tests
-4. Update documentation
-5. Create pull request
+### Para Estudiantes - Desarrollo de Servicio Asignado:
 
-### For Gateway Improvements:
-1. Create feature branch: `git checkout -b feature/gateway-improvement`
-2. Modify gateway components
-3. Ensure backward compatibility
-4. Add tests for new functionality
-5. Create pull request
+1. **Setup inicial del repositorio**:
+   ```bash
+   git clone <gateway-repo>
+   cd censudx-api-gateway
+   git checkout -b feature/mi-servicio-asignado
+   ```
 
-## 🔗 Related Repositories
+2. **Crear estructura del servicio**:
+   ```bash
+   mkdir -p services/mi-servicio
+   cd services/mi-servicio
+   # Implementar según tecnología elegida
+   ```
 
-- **Inventory Service**: [censudx-inventory-service](https://github.com/och1ai/censudx-inventory-service) - ✅ Production Ready
-- **Frontend Application**: [censudx-frontend](https://github.com/och1ai/censudx-frontend) - 🟡 Coming Soon
-- **DevOps Configuration**: [censudx-infrastructure](https://github.com/och1ai/censudx-infrastructure) - 🟡 Coming Soon
+3. **Configurar integración con Gateway**:
+   - Agregar servicio al `docker-compose.yml`
+   - Configurar upstream en `nginx/nginx.conf`
+   - Registrar en `SERVICE_REGISTRY` del gateway
+   - Implementar health check endpoint
+
+4. **Implementar endpoints requeridos**:
+   - Seguir especificación del enunciado del taller
+   - Implementar validaciones requeridas
+   - Configurar base de datos cloud asignada
+   - Documentar con Swagger/OpenAPI
+
+5. **Testing e Integración**:
+   - Crear colección Postman con todos los endpoints
+   - Probar integración con RabbitMQ (eventos asíncronos)
+   - Validar autenticación via Gateway
+   - Testing de carga con JMeter
+
+6. **Deploy y Documentación**:
+   - Deploy en proveedor cloud asignado
+   - README con instrucciones paso a paso
+   - Video demostrativo del servicio
+   - Commits usando Conventional Commits
+
+### Para Colaboración en Gateway (Todo el equipo):
+
+1. **Modificaciones compartidas**:
+   ```bash
+   git checkout -b feature/gateway-integration-[servicio]
+   ```
+
+2. **Áreas de colaboración**:
+   - Configuración de routing para nuevos servicios
+   - Implementación de eventos RabbitMQ
+   - Actualización de documentación
+   - Testing de integración E2E
+
+3. **Convenciones del equipo**:
+   - Usar `censudx-[nombre-servicio]` para repos individuales
+   - Mantener este gateway como punto central
+   - Coordinar cambios de esquemas de comunicación
+   - Sincronizar deploys para evitar breaking changes
+
+## 🛠️ Comandos Útiles para Desarrollo
+
+### Testing rápido del Gateway
+```bash
+# Health check del gateway
+curl http://localhost/health
+
+# Verificar servicios registrados
+curl http://localhost:8000/gateway/services
+
+# Test de autenticación
+curl -X POST http://localhost/gateway/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "test", "password": "test123"}'
+
+# Validar token
+curl -X POST http://localhost:8000/gateway/auth/validate \
+  -H "Authorization: Bearer <tu-token>"
+```
+
+### Monitoreo de servicios
+```bash
+# Ver logs del gateway
+docker-compose logs -f gateway
+
+# Ver logs de RabbitMQ
+docker-compose logs -f rabbitmq
+
+# Estado de contenedores
+docker-compose ps
+
+# Restart de un servicio específico
+docker-compose restart inventory
+```
+
+### Debug y desarrollo
+```bash
+# Acceder a RabbitMQ Management
+open http://localhost:15672
+# Usuario: censudx, Password: censudx_password
+
+# Ver métricas de Nginx
+curl http://localhost/nginx_status
+
+# Validar configuración de Nginx
+docker exec censudx_nginx_gateway nginx -t
+```
+
+## 🔗 Repositorios del Proyecto Académico
+
+### Servicios por Estudiante
+- **Gateway (Compartido)**: Este repositorio - ✅ Base implementada
+- **Inventory Service**: [censudx-inventory](https://github.com/estudiante-c/censudx-inventory) - ✅ Implementado
+- **Clients Service**: [censudx-clients](https://github.com/estudiante-a/censudx-clients) - 🔄 Desarrollo
+- **Products Service**: [censudx-products](https://github.com/estudiante-b/censudx-products) - 🔄 Desarrollo
+- **Orders Service**: [censudx-orders](https://github.com/estudiante-d/censudx-orders) - 🔄 Desarrollo
+
+### Recursos de Apoyo
+- **Documentación API**: Disponible en `/docs` una vez corriendo el gateway
+- **Colección Postman**: En `/tests/postman/` (cada estudiante debe completar su parte)
+- **Ejemplos gRPC**: En `/proto/` para comunicación entre servicios
 
 ---
 
-**Built for scalable microservices architecture** | **Ready for team development** 🚀
+**🎓 Proyecto Académico Taller 2 - Arquitectura de Microservicios UCN** | **Ready for distributed learning** 🚀
