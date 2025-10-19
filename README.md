@@ -469,3 +469,4 @@ docker exec censudx_nginx_gateway nginx -t
 ---
 
 **🎓 Proyecto Académico Taller 2 - Arquitectura de Microservicios UCN** | **Ready for distributed learning** 🚀
+# censudx-api-gateway
