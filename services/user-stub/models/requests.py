@@ -1,3 +1,4 @@
+import string
 from pydantic import BaseModel
 
 class CreateUserRequest(BaseModel):
@@ -24,3 +25,9 @@ class UpdateUserRequest(BaseModel):
     address: str = None
     phonenumber: str = None    
     password: str = None
+class SendEmailRequest(BaseModel):
+    fromemail: str
+    toemail: str
+    subject: str
+    plaintextcontent: str
+    htmlcontent: str

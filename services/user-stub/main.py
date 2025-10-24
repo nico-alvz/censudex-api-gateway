@@ -74,6 +74,19 @@ def delete(id: str):
         )
         response = stub.Delete(request)
         return response
+def send_email(request: 'requests.SendEmailRequest'):
+    with grpc.insecure_channel(user_service_url) as channel:
+        stub = pb2.user_pb2_grpc.UserServiceStub(channel)
+        grpc_request = pb2.user_pb2.SendEmailRequest(
+            fromemail=request.fromemail,
+            toemail=request.toemail,
+            subject=request.subject,
+            plaintextcontent=request.plaintextcontent,
+            htmlcontent=request.htmlcontent
+        )
+        response = stub.SendEmail(grpc_request)
+        return response
+
 @app.get("/service/client/getall")
 def get_all_clients_endpoint(
     emailfilter: Optional[str] = Query(None),
@@ -162,4 +175,18 @@ def delete_client_endpoint(id: str):
         raise HTTPException(status_code=500, detail="El cliente no pudo ser eliminado")
     return {
         "message": "Cliente eliminado exitosamente",
+    }
+@app.post("/service/client/sendemail")
+def send_email_endpoint(request: 'requests.SendEmailRequest'):
+    try:
+        response = send_email(request)
+    except grpc.RpcError as e:
+        if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+            raise HTTPException(status_code=400, detail={"message": "Error de formato", "details": e.details()})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={"message": "Error interno del servidor", "details": str(e)})
+    if not response:
+        raise HTTPException(status_code=500, detail="El correo no pudo ser enviado")
+    return {
+        "message": "Correo enviado exitosamente",
     }
