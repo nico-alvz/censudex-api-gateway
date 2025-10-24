@@ -1,6 +1,8 @@
 import string
 from pydantic import BaseModel
-
+"""
+Request models for user-related operations
+"""
 class CreateUserRequest(BaseModel):
     names: str
     lastnames: str
@@ -31,3 +33,11 @@ class SendEmailRequest(BaseModel):
     subject: str
     plaintextcontent: str
     htmlcontent: str
+"""
+Request models for auth-related operations
+"""
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+class TokenRequest(BaseModel):
+    token: str

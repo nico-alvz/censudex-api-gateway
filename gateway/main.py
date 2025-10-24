@@ -22,6 +22,7 @@ from .auth.jwt_handler import JWTHandler
 from .routes.health import health_router
 from .routes.proxy import proxy_router
 from .routes import clients
+from .routes import auth
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -92,7 +93,7 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "auth": {
-        "url": "http://auth-stub:8000", 
+        "url": "http://localhost:5001", 
         "health_endpoint": "/health",
         "prefix": "/api/v1/auth",
         "requires_auth": False,
@@ -318,6 +319,9 @@ app.include_router(proxy_router, prefix="/gateway", tags=["proxy"])
 # Clients router
 clients_router = clients.create_clients_router(SERVICE_REGISTRY["users"]["url"])
 app.include_router(clients_router, prefix="/api", tags=["Clients"])
+# Auth router
+auth_router = auth.create_auth_router(SERVICE_REGISTRY["auth"]["url"])
+app.include_router(auth_router, prefix="/api", tags=["Auth"])
 
 # Exception handlers
 @app.exception_handler(HTTPException)
