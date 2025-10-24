@@ -25,6 +25,6 @@ proto-compile:
 	@echo "$(GREEN)Compiling protobuf files...$(NC)"
 	@python -m grpc_tools.protoc -I=proto --python_out=pb2 --grpc_python_out=pb2 proto/user.proto
 	@echo "$(GREEN)Protobuf files compiled successfully$(NC)"
-test-client:
-	@echo "$(GREEN)Running User Stub Service...$(NC)"
-	@fastapi dev ./services/user-stub/main.py
+run:
+	@echo "$(GREEN)Running Api Gateway...$(NC)"
+	@fastapi dev gateway/main.py

@@ -16,11 +16,12 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 import logging
 
-from middleware.rate_limiting import RateLimitingMiddleware
-from middleware.request_id import RequestIDMiddleware
-from auth.jwt_handler import JWTHandler
-from routes.health import health_router
-from routes.proxy import proxy_router
+from .middleware.rate_limiting import RateLimitingMiddleware
+from .middleware.request_id import RequestIDMiddleware
+from .auth.jwt_handler import JWTHandler
+from .routes.health import health_router
+from .routes.proxy import proxy_router
+from .routes import clients
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -58,7 +59,6 @@ app = FastAPI(
         },
     ]
 )
-
 # Security
 security = HTTPBearer()
 jwt_handler = JWTHandler()
@@ -99,7 +99,7 @@ SERVICE_REGISTRY = {
         "timeout": 10
     },
     "users": {
-        "url": "http://user-stub:8000",
+        "url": "localhost:5000",
         "health_endpoint": "/health", 
         "prefix": "/api/v1/users",
         "requires_auth": True,
@@ -196,79 +196,6 @@ async def check_services_health() -> Dict[str, Any]:
                 }
     
     return services_health
-
-# Authentication endpoints
-@app.post("/gateway/auth/login", tags=["auth"], summary="User Login")
-async def login(credentials: Dict[str, str]):
-    """Authenticate user and return JWT token"""
-    username = credentials.get("username")
-    password = credentials.get("password")
-    
-    if not username or not password:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username and password required"
-        )
-    
-    # Forward to auth service for validation
-    async with httpx.AsyncClient() as client:
-        try:
-            auth_service = SERVICE_REGISTRY["auth"]
-            response = await client.post(
-                f"{auth_service['url']}/api/v1/auth/login",
-                json={"username": username, "password": password},
-                timeout=auth_service['timeout']
-            )
-            
-            if response.status_code == 200:
-                user_data = response.json()
-                
-                # Generate JWT token with user info
-                token_payload = {
-                    "user_id": user_data.get("user_id", 1),
-                    "username": username,
-                    "email": user_data.get("email", f"{username}@censudx.com"),
-                    "roles": user_data.get("roles", ["user"]),
-                    "permissions": user_data.get("permissions", ["read"]),
-                    "exp": datetime.utcnow() + timedelta(hours=24),
-                    "iat": datetime.utcnow(),
-                    "iss": "censudx-gateway"
-                }
-                
-                access_token = jwt_handler.create_token(token_payload)
-                
-                return {
-                    "access_token": access_token,
-                    "token_type": "bearer",
-                    "expires_in": 86400,  # 24 hours
-                    "user": {
-                        "user_id": token_payload["user_id"],
-                        "username": username,
-                        "email": token_payload["email"],
-                        "roles": token_payload["roles"]
-                    }
-                }
-            else:
-                raise HTTPException(
-                    status_code=response.status_code,
-                    detail=response.json().get("detail", "Authentication failed")
-                )
-                
-        except httpx.RequestError as e:
-            logger.error(f"Auth service connection error: {e}")
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Authentication service unavailable"
-            )
-
-@app.post("/gateway/auth/validate", tags=["auth"], summary="Validate Token")
-async def validate_token(user: Dict[str, Any] = Depends(get_current_user)):
-    """Validate JWT token and return user info"""
-    return {
-        "valid": True,
-        "user": user,
-        "timestamp": datetime.utcnow().isoformat()
-    }
 
 # Service proxy endpoint
 @app.api_route(
@@ -377,10 +304,20 @@ async def list_services():
         "total_services": len(SERVICE_REGISTRY),
         "timestamp": datetime.utcnow().isoformat()
     }
+"""
 
+
+ROUTES
+
+
+
+"""
 # Include routers
 app.include_router(health_router, prefix="/gateway", tags=["gateway"])
 app.include_router(proxy_router, prefix="/gateway", tags=["proxy"])
+# Clients router
+clients_router = clients.create_clients_router(SERVICE_REGISTRY["users"]["url"])
+app.include_router(clients_router, prefix="/api", tags=["Clients"])
 
 # Exception handlers
 @app.exception_handler(HTTPException)
