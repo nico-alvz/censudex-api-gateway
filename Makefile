@@ -4,6 +4,11 @@ venv:
 	@echo "$(GREEN)Creating Python virtual environment...$(NC)"
 	@python -m venv .censudex-api-gateway
 	@echo "$(GREEN)Virtual environment created$(NC)"
+	@echo "$(GREEN)Installing required packages...$(NC)"
+	@pip install -r requirements.txt
+	@echo "$(GREEN)Required packages installed$(NC)"
+	@echo "$(GREEN)To activate the virtual environment, run the following command:$(NC)"
+	@echo "$(YELLOW).\.censudex-api-gateway\Scripts\Activate.ps1$(NC)"
 # python env activate
 venv-activate:
 	@echo "$(GREEN)To activate the virtual environment, run the following command:$(NC)"

@@ -9,3 +9,18 @@ class CreateUserRequest(BaseModel):
     address: str
     phonenumber: str    
     password: str
+class GetAllUsersRequest(BaseModel):
+    emailfilter: str = None
+    namefilter: str = None
+    statusfilter: str = None
+    usernamefilter: str = None
+class UpdateUserRequest(BaseModel):
+    id: str
+    names: str = None
+    lastnames: str = None
+    email: str = None
+    username: str = None
+    birthdate: str = None
+    address: str = None
+    phonenumber: str = None    
+    password: str = None
