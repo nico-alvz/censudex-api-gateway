@@ -22,4 +22,4 @@ proto-compile:
 	@echo "$(GREEN)Protobuf files compiled successfully$(NC)"
 test-client:
 	@echo "$(GREEN)Running User Stub Service...$(NC)"
-	@fastapi dev services/user-stub/main.py
+	@fastapi dev ../services/user-stub/main.py
