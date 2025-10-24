@@ -2,18 +2,18 @@
 
 venv:
 	@echo "$(GREEN)Creating Python virtual environment...$(NC)"
-	@python -m venv .censudex-api-main
+	@python -m venv .censudex-api-gateway
 	@echo "$(GREEN)Virtual environment created$(NC)"
 # python env activate
 venv-activate:
 	@echo "$(GREEN)To activate the virtual environment, run the following command:$(NC)"
-	@echo "$(YELLOW).\.censudex-api-main\Scripts\Activate.ps1$(NC)"
+	@echo "$(YELLOW).\.censudex-api-gateway\Scripts\Activate.ps1$(NC)"
 venv-deactivate:
 	@echo "$(GREEN)To deactivate the virtual environment, run the following command:$(NC)"
 	@echo "$(YELLOW)deactivate$(NC)"
 venv-install:
 	@echo "$(GREEN)Installing required Python packages...$(NC)"
-	@cd pip install -r requirements.txt
+	@pip install -r requirements.txt
 	@echo "$(GREEN)Required packages installed$(NC)"
 # proto compile 
 proto-compile:
@@ -22,4 +22,4 @@ proto-compile:
 	@echo "$(GREEN)Protobuf files compiled successfully$(NC)"
 test-client:
 	@echo "$(GREEN)Running User Stub Service...$(NC)"
-	@fastapi dev ../services/user-stub/main.py
+	@fastapi dev ./services/user-stub/main.py
