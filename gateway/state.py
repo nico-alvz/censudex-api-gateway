@@ -1,4 +1,5 @@
 class AppState:
-    auth_token: str = None  
+    def __init__(self):
+        self.auth_tokens: list[str] = []  
 
 state = AppState()

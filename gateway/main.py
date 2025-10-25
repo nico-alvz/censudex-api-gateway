@@ -18,7 +18,7 @@ import logging
 
 from .middleware.rate_limiting import RateLimitingMiddleware
 from .middleware.request_id import RequestIDMiddleware
-from .auth.jwt_handler import JWTHandler
+from .jwt.jwt_handler import JWTHandler
 from .routes.health import health_router
 from .routes.proxy import proxy_router
 from .routes import clients

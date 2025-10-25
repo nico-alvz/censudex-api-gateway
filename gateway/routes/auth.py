@@ -3,11 +3,12 @@ from fastapi import APIRouter, HTTPException
 import httpx
 from models import requests
 from gateway.state import state
-
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 def create_auth_router(service_url: str) -> APIRouter:
     router = APIRouter()
-    auth_service_url = service_url 
+    auth_service_url = service_url
 
     async def login(request: requests.LoginRequest):
         async with httpx.AsyncClient() as client:       
@@ -19,7 +20,8 @@ def create_auth_router(service_url: str) -> APIRouter:
         async with httpx.AsyncClient() as client:       
             headers = {"Authorization": f"Bearer {token}"}
             response = await client.get(f"{auth_service_url}/api/auth", headers=headers)
-            return response
+            response.raise_for_status()
+            return response.json()
 
     async def logout(token):
         async with httpx.AsyncClient() as client:       
@@ -32,7 +34,8 @@ def create_auth_router(service_url: str) -> APIRouter:
     async def auth_login(request: requests.LoginRequest):
         try:
             AUTH_TOKEN_JSON = await login(request)
-            state.auth_token = AUTH_TOKEN_JSON.get("token")
+            token = AUTH_TOKEN_JSON.get("token")
+            state.auth_tokens.append(token)
             return AUTH_TOKEN_JSON
         except httpx.HTTPStatusError as e:
             raise HTTPException(status_code=e.response.status_code, detail=e.response.text)
@@ -40,23 +43,22 @@ def create_auth_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail=str(e))
         
     @router.get("/validate-token")
-    async def auth_validate_token():
-        if state.auth_token is None:
+    async def auth_validate_token(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+        token = credentials.credentials
+        if token not in state.auth_tokens:
             raise HTTPException(status_code=401, detail="Unauthorized")
-        response = await validate_token(state.auth_token)
-        response.raise_for_status()
-        return response.json()
+        result = await validate_token(token)
+        return result
     
     @router.post("/logout")
-    async def auth_logout():
-        if state.auth_token is None:
+    async def auth_logout(credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+        token = credentials.credentials
+        if token not in state.auth_tokens:
             raise HTTPException(status_code=401, detail="Unauthorized")
-        
-        token_response = await validate_token(state.auth_token)
-        if token_response.status_code != 200:
+        token_response = await validate_token(token)
+        if token_response is None:
             raise HTTPException(status_code=401, detail="Unauthorized")
-
-        result = await logout(state.auth_token)
-        state.auth_token = None
+        result = await logout(token)
+        state.auth_tokens.remove(token)
         return result
     return router
