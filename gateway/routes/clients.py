@@ -1,6 +1,9 @@
+from fastapi.params import Depends
 import grpc
 import pb2.user_pb2
 import pb2.user_pb2_grpc
+from fastapi.security import HTTPAuthorizationCredentials
+from gateway.auth.authorize import authorize
 from fastapi import APIRouter, HTTPException
 from typing import Optional
 from fastapi import Query
@@ -10,7 +13,6 @@ from models.user import User as user
 def create_clients_router(service_url: str) -> APIRouter:
     router = APIRouter()
     user_service_url = service_url 
-
 
     def create(user: 'requests.CreateUserRequest'):
         with grpc.insecure_channel(user_service_url) as channel:
@@ -162,11 +164,11 @@ def create_clients_router(service_url: str) -> APIRouter:
             "message": "Cliente actualizado exitosamente",
         }
     @router.delete("/clients/{id}")
-    def delete_client_endpoint(id: str):
+    async def delete_client_endpoint(id: str, token: HTTPAuthorizationCredentials = Depends(authorize("Admin"))):
         try:
             response = delete(id)
         except grpc.RpcError as e:
-            if e.code() == grpc.StatusCode.NOT_FOUND:
+            if e.code() == grpc.StatusCode.NOT_FOUND or e.code() == grpc.StatusCode.UNKNOWN:
                 raise HTTPException(status_code=404, detail={"message": "Cliente no encontrado", "details": e.details()})
         except Exception as e:
             raise HTTPException(status_code=500, detail={"message": "Error interno del servidor", "details": str(e)})
