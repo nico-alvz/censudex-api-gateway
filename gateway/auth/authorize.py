@@ -1,14 +1,11 @@
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi import Depends, HTTPException
 import httpx
-from gateway.state import state
 
 security = HTTPBearer()
 
 
 async def get_user_roles(token: str) -> list[str]:
-    if token not in state.auth_tokens:
-        raise HTTPException(status_code=401, detail="Unauthorized")
     async with httpx.AsyncClient() as client:       
         headers = {"Authorization": f"Bearer {token}"}
         token_response = await client.get(f"http://localhost:8000/api/validate-token", headers=headers)

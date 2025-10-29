@@ -74,6 +74,15 @@ def create_clients_router(service_url: str) -> APIRouter:
             )
             response = stub.Delete(request)
             return response
+    def validate_credentials(user: 'requests.LoginRequest'):
+        with grpc.insecure_channel(user_service_url) as channel:
+            stub = pb2.user_pb2_grpc.UserServiceStub(channel)
+            request = pb2.user_pb2.VerifyCredentialsRequest(
+                username=user.username,
+                password=user.password
+            )
+            response = stub.VerifyCredentials(request)
+            return response
     def send_email(request: 'requests.SendEmailRequest'):
         with grpc.insecure_channel(user_service_url) as channel:
             stub = pb2.user_pb2_grpc.UserServiceStub(channel)
@@ -176,6 +185,20 @@ def create_clients_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail="El cliente no pudo ser eliminado")
         return {
             "message": "Cliente eliminado exitosamente",
+        }
+    @router.post("/clients/validate-credentials")
+    def validate_credentials_endpoint(user: 'requests.LoginRequest'):
+        try:
+            response = validate_credentials(user)
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+                raise HTTPException(status_code=400, detail={"message": "Credenciales inválidas"})
+        return {
+            "message": "Credenciales válidas",
+            "user": {
+            "id": response.id,
+            "roles": list(response.roles)
+            }
         }
     @router.post("/clients/email")
     def send_email_endpoint(request: 'requests.SendEmailRequest'):

@@ -39,5 +39,8 @@ Request models for auth-related operations
 class LoginRequest(BaseModel):
     username: str
     password: str
+class LoginRequestAuth(BaseModel):
+    id: str
+    roles: list[str]
 class TokenRequest(BaseModel):
     token: str
