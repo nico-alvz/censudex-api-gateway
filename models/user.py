@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from datetime import datetime
-
+"""
+User model representing a client in the system
+"""
 class User(BaseModel):
     id: str
     fullname: str
