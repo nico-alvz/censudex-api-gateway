@@ -12,12 +12,16 @@ from typing import Optional
 from fastapi import Query
 from models import requests
 from models.user import User as user
+from services.user_stub.rabbitmq import RabbitMQ
+
 """
 Create the clients router with gRPC calls to the user service.
 """
 def create_clients_router(service_url: str) -> APIRouter:
     # Initialize the APIRouter
     router = APIRouter()
+    # Initialize RabbitMQ instance
+    RabbitMQInstance = RabbitMQ()
     # Set the user service URL
     user_service_url = service_url 
     """
@@ -304,18 +308,19 @@ def create_clients_router(service_url: str) -> APIRouter:
     """
     @router.post("/clients/email")
     def send_email_endpoint(request: 'requests.SendEmailRequest'):
-        # Try to send the email and handle gRPC errors
+        # Creates the message to be sent
+        message = {
+            "to": request.toemail,
+            "from": request.fromemail,
+            "subject": request.subject,
+            "plaintextcontent": request.plaintextcontent,
+            "htmlcontent": request.htmlcontent
+        }
+        # Try to send the email and handle errors
         try:
-            response = send_email(request)
-        # Handle gRPC exceptions
-        except grpc.RpcError as e:
-            if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
-                raise HTTPException(status_code=400, detail={"message": "Error de formato", "details": e.details()})
-        # Handle other exceptions
-        except Exception as e:
-            raise HTTPException(status_code=500, detail={"message": "Error interno del servidor", "details": str(e)})
-        # Check if response is valid
-        if not response:
+            # Publish the message to RabbitMQ
+            RabbitMQInstance.publish("email-message-queue", message)
+        except Exception:
             raise HTTPException(status_code=500, detail="El correo no pudo ser enviado")
         # Return success message
         return {

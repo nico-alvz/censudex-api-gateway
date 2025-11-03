@@ -42,11 +42,15 @@ def create_auth_router(service_url: str) -> APIRouter:
             # Set the authorization header with the provided token     
             headers = {"Authorization": f"Bearer {token}"}
             # Send a GET request to validate the token
-            response = await client.get(f"{auth_service_url}/api/auth", headers=headers)
-            # Ensure the response is successful
-            response.raise_for_status()
-            # Return the JSON response containing token validation result
-            return response.json()
+            try:
+                response = await client.get(f"{auth_service_url}/api/auth", headers=headers)
+                # Ensure the response is successful
+                response.raise_for_status()
+                # Return the JSON response containing token validation result
+                return response.json()
+            except httpx.HTTPError as e:
+                # Invalid token or expired
+                raise HTTPException(status_code=401, detail="Unauthorized") from e
     """
     Logout function that invalidates an auth token with the auth service.
     """
@@ -55,12 +59,16 @@ def create_auth_router(service_url: str) -> APIRouter:
         async with httpx.AsyncClient() as client:       
             # Set the authorization header with the provided token
             headers = {"Authorization": f"Bearer {token}"}
-            # Send a POST request to logout and invalidate the token
-            response = await client.post(f"{auth_service_url}/api/auth/logout", headers=headers)
-            # Ensure the response is successful
-            response.raise_for_status()
-            # Return the JSON response confirming logout
-            return response.json()
+            try:
+                # Send a POST request to logout and invalidate the token
+                response = await client.post(f"{auth_service_url}/api/auth/logout", headers=headers)
+                # Ensure the response is successful
+                response.raise_for_status()
+                # Return the JSON response confirming logout
+                return response.json()
+            except httpx.HTTPError as e:
+                # Invalid token or expired
+                raise HTTPException(status_code=401, detail="Unauthorized") from e
     """
     Login router endpoint that handles user login requests.
     """

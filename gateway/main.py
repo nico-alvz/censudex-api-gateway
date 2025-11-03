@@ -9,9 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 import httpx
-import jwt
 import time
-import uuid
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 import logging
