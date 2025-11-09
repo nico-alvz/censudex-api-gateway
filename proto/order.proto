@@ -1,0 +1,260 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrderService.Grpc";
+
+package Orders;
+
+/// <summary>
+/// Servicio gRPC encargado de gestionar las operaciones relacionadas con orders.
+/// Permite la creación, consulta, actualización de estado y cancelación de orders.
+/// </summary>
+service OrderService
+{
+    /// <summary>
+    /// Crea una nueva orden en el sistema a partir de los datos del usuario y los productos solicitados.
+    /// </summary>
+    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+
+    /// <summary>
+    /// Obtiene el estado actual de orden a partir de su identificador.
+    /// </summary>
+    rpc GetOrderStatus (GetOrderStatusRequest) returns (GetOrderStatusResponse);
+
+    /// <summary>
+    /// Cambia el estado de orden.
+    /// </summary>
+    rpc ChangeOrderState (ChangeOrderStateRequest) returns (ChangeOrderStateResponse);
+
+    /// <summary>
+    /// Cancela una orden existente segun su identificador.
+    /// </summary>
+    rpc CancelOrder (CancelOrderRequest) returns (CancelOrderResponse);
+
+    /// <summary>
+    /// Obtiene todas las ordenes asociadas a un usuario, permitiendo filtros por fecha o identificadores.
+    /// </summary>
+    rpc GetUserOrders (GetUserOrdersRequest) returns (GetUserOrdersResponse);
+
+    /// <summary>
+    /// Permite al administrador consultar todas las ordenes registradas con filtros opcionales.
+    /// </summary>
+    rpc GetAdminOrders (GetAdminOrdersRequest) returns (GetAdminOrdersResponse);
+}
+
+// ==================== PETICIONES ====================
+
+/// <summary>
+/// Solicitud para crear una nueva orden.
+/// </summary>
+message CreateOrderRequest
+{
+    string user_id = 1;        // Identificador unico de usuario.
+    string user_name = 2;      // Nombre del usuario.
+    string address = 3;        // Direccion de envio de la orden.
+    repeated OrderItemRequest items = 4; // Lista de productos.
+    string UserEmail = 5; //Email de usuario
+}
+
+/// <summary>
+/// Representa un item dentro de una orden en la solicitud de creacion.
+/// </summary>
+message OrderItemRequest
+{
+    string product_id = 1;     // Identificador unico del producto.
+    string product_name = 2;   // Nombre del producto.
+    int32 quantity = 3;        // Cantidad solicitada.
+    double unit_price = 4;     // Precio unitario del producto.
+}
+
+/// <summary>
+/// Solicitud para obtener el estado actual de una orden.
+/// </summary>
+message GetOrderStatusRequest
+{
+    string identifier = 1; // Puede ser el numero de orden o el identificador de usuario.
+}
+
+/// <summary>
+/// Solicitud para cambiar el estado de orden.
+/// </summary>
+message ChangeOrderStateRequest
+{
+    string identifier = 1;       // Identificador unico o numero de orden.
+    string order_status = 2;     // Nuevo estado.
+    string tracking_number = 3;  // Numero de seguimiento, si aplica.
+    string UserEmail = 4; //Email de usuario
+}
+
+/// <summary>
+/// Solicitud para cancelar una orden existente.
+/// </summary>
+message CancelOrderRequest
+{
+    string identifier = 1; // Identificador unico o numero de orden a cancelar.
+    string UserEmail = 2; //Email de usuario
+    string reason = 3;   // Razon de cancelamiento, si aplica
+}
+
+/// <summary>
+/// Solicitud para obtener ordenes asociadas a un usuario.
+/// Incluye filtros opcionales por identificador o rango de fechas.
+/// </summary>
+message GetUserOrdersRequest
+{
+    string user_id = 1;
+    string order_identifier = 2;
+    string initial_date = 3;
+    string finish_date = 4;
+}
+
+/// <summary>
+/// Solicitud para obtener historico de ordenes.
+/// Permite aplicar filtros por usuario, orden o fechas.
+/// </summary>
+message GetAdminOrdersRequest
+{
+    string user_identifier = 1; 
+    string order_identifier = 2; 
+    string initial_date = 3; 
+    string finish_date = 4; 
+}
+
+// ==================== RESPUESTAS ====================
+
+/// <summary>
+/// Respuesta al crear una nueva orden.
+/// Contiene los datos completos de la orden registrada.
+/// </summary>
+message CreateOrderResponse
+{
+    string id = 1;
+    string user_name = 2;
+    string order_number = 3;
+    string address = 4;
+    string order_status = 5;
+    string tracking_number = 6;
+    string create_at = 7;
+    double total_price = 8;
+    repeated OrderItemResponse items = 9;
+}
+
+/// <summary>
+/// Representa un item de una orden en las respuestas del servicio.
+/// </summary>
+message OrderItemResponse
+{
+    string id = 1;
+    string order_id = 2;
+    string product_id = 3;
+    string product_name = 4;
+    int32 quantity = 5;
+    double unit_price = 6;
+    double subtotal = 7;
+}
+
+/// <summary>
+/// Respuesta con la informacion del estado actual de una o mas ordenes.
+/// </summary>
+message GetOrderStatusResponse
+{
+   repeated OrderStateInfo orders = 1;
+}
+
+/// <summary>
+/// Informacion del estado de una orden especifica.
+/// </summary>
+message OrderStateInfo
+{
+    string order_number = 1;
+    string order_status = 2;
+    string update_at = 3;
+}
+
+/// <summary>
+/// Respuesta a la operacion de cambio de estado de orden.
+/// </summary>
+message ChangeOrderStateResponse
+{
+    string id = 1;
+    string order_number = 2;
+    string address = 3;
+    string order_status = 4;
+    string tracking_number = 5;
+    string create_at = 6;
+    string update_at = 7;
+}
+
+/// <summary>
+/// Respuesta a la operacion de cancelacion de orden.
+/// </summary>
+message CancelOrderResponse
+{
+    string id = 1;
+    string order_number = 2;
+    string address = 3;
+    string order_status = 4;
+    string tracking_number = 5;
+    string create_at = 6;
+    string update_at = 7;
+}
+
+/// <summary>
+/// Respuesta con la lista de ordenes asociadas a un usuario.
+/// </summary>
+message GetUserOrdersResponse
+{
+    repeated UserOrderInfo orders = 1;
+}
+
+/// <summary>
+/// Informacion detallada de una orden perteneciente a un usuario.
+/// </summary>
+message UserOrderInfo
+{
+    string order_id = 1;
+    string order_number = 2;
+    string address = 3;
+    string order_status = 4;
+    string tracking_number = 5;
+    string create_at = 6;
+    string update_at = 7;
+    double total_price = 8;
+    repeated UserOrderItemInfo items = 9;
+}
+
+/// <summary>
+/// Representa los items asociados a una orden de usuario.
+/// </summary>
+message UserOrderItemInfo 
+{
+  string product_name = 1;
+  double unit_price = 2;
+  int32 quantity = 3;
+  double subtotal = 4;
+}
+
+/// <summary>
+/// Respuesta con las ordenes visibles para el administrador.
+/// </summary>
+message GetAdminOrdersResponse
+{
+    repeated AdminOrderInfo orders = 1;
+}
+
+/// <summary>
+/// Informacion completa de una orden.
+/// </summary>
+message AdminOrderInfo 
+{
+  string id = 1;
+  string user_id = 2;
+  string user_name = 3;
+  string order_number = 4;
+  string address = 5;
+  string tracking_number = 6;
+  string order_status = 7;
+  string create_at = 8;
+  string update_at = 9;
+  double total_price = 10;
+  repeated OrderItemResponse items = 11;
+}

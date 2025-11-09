@@ -16,11 +16,12 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 import logging
 
-from middleware.rate_limiting import RateLimitingMiddleware
-from middleware.request_id import RequestIDMiddleware
-from auth.jwt_handler import JWTHandler
-from routes.health import health_router
-from routes.proxy import proxy_router
+from .middleware.rate_limiting import RateLimitingMiddleware
+from .middleware.request_id import RequestIDMiddleware
+from .auth.jwt_handler import JWTHandler
+from .routes.health import health_router
+from .routes.proxy import proxy_router
+from .routes import Orders
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -106,7 +107,7 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "orders": {
-        "url": "http://order-stub:8000",
+        "url": "http://localhost:5206",
         "health_endpoint": "/health",
         "prefix": "/api/v1/orders", 
         "requires_auth": True,
@@ -170,6 +171,7 @@ async def gateway_health():
         "uptime": int(time.time()),
         "services": await check_services_health()
     }
+
 
 async def check_services_health() -> Dict[str, Any]:
     """Check health of all registered services"""
@@ -381,6 +383,10 @@ async def list_services():
 # Include routers
 app.include_router(health_router, prefix="/gateway", tags=["gateway"])
 app.include_router(proxy_router, prefix="/gateway", tags=["proxy"])
+
+Orders_router = Orders.create_orders_router(SERVICE_REGISTRY["orders"]["url"])
+app.include_router(Orders_router, prefix="/api", tags=["Orders"])
+# Auth router
 
 # Exception handlers
 @app.exception_handler(HTTPException)
