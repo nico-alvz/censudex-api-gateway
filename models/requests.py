@@ -18,7 +18,7 @@ class GetAllUsersRequest(BaseModel):
     statusfilter: str = None
     usernamefilter: str = None
 class UpdateUserRequest(BaseModel):
-    id: str
+    id: str = None
     names: str = None
     lastnames: str = None
     email: str = None

@@ -85,14 +85,14 @@ def create_clients_router(service_url: str) -> APIRouter:
     """
     Update a client using gRPC with UpdateUserRequest.
     """
-    def update(user: 'requests.UpdateUserRequest'):
+    def update(id, user: 'requests.UpdateUserRequest'):
         # Establish a gRPC channel
         with grpc.insecure_channel(user_service_url) as channel:
             # Create a stub (client)
             stub = pb2.user_pb2_grpc.UserServiceStub(channel)
             # Create the request
             request = pb2.user_pb2.UpdateUserRequest(
-                id=user.id,
+                id=id,
                 names=user.names,
                 lastnames=user.lastnames,
                 email=user.email,
@@ -138,27 +138,6 @@ def create_clients_router(service_url: str) -> APIRouter:
             response = stub.VerifyCredentials(request)
             # Return the response
             return response
-    """
-    Send an email using gRPC with SendEmailRequest.
-    """
-    def send_email(request: 'requests.SendEmailRequest'):
-        # Establish a gRPC channel
-        with grpc.insecure_channel(user_service_url) as channel:
-            # Create a stub (client)
-            stub = pb2.user_pb2_grpc.UserServiceStub(channel)
-            # Create the request
-            grpc_request = pb2.user_pb2.SendEmailRequest(
-                fromemail=request.fromemail,
-                toemail=request.toemail,
-                subject=request.subject,
-                plaintextcontent=request.plaintextcontent,
-                htmlcontent=request.htmlcontent
-            )
-            # Make the call
-            response = stub.SendEmail(grpc_request)
-            # Return the response
-            return response
-
     """
     Create clients route.
     """
@@ -239,11 +218,11 @@ def create_clients_router(service_url: str) -> APIRouter:
     """
     Update client endpoint.
     """
-    @router.patch("/clients")
-    def update_client_endpoint(user: 'requests.UpdateUserRequest'):
+    @router.patch("/clients/{id}")
+    def update_client_endpoint(id: str, user: 'requests.UpdateUserRequest'):
         # Try to update the client and handle gRPC errors
         try:
-            response = update(user)
+            response = update(id, user)
         # Handle gRPC exceptions
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.NOT_FOUND:
@@ -302,29 +281,6 @@ def create_clients_router(service_url: str) -> APIRouter:
             "id": response.id,
             "roles": list(response.roles)
             }
-        }
-    """
-    Send email endpoint.
-    """
-    @router.post("/clients/email")
-    def send_email_endpoint(request: 'requests.SendEmailRequest'):
-        # Creates the message to be sent
-        message = {
-            "to": request.toemail,
-            "from": request.fromemail,
-            "subject": request.subject,
-            "plaintextcontent": request.plaintextcontent,
-            "htmlcontent": request.htmlcontent
-        }
-        # Try to send the email and handle errors
-        try:
-            # Publish the message to RabbitMQ
-            RabbitMQInstance.publish("email-message-queue", message)
-        except Exception:
-            raise HTTPException(status_code=500, detail="El correo no pudo ser enviado")
-        # Return success message
-        return {
-            "message": "Correo enviado exitosamente",
         }
     # Returns the router
     return router

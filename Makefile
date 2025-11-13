@@ -25,6 +25,12 @@ proto-compile:
 	@echo "$(GREEN)Compiling protobuf files...$(NC)"
 	@python -m grpc_tools.protoc -I=proto --python_out=pb2 --grpc_python_out=pb2 proto/user.proto
 	@echo "$(GREEN)Protobuf files compiled successfully$(NC)"
+
+nginx-up:
+	@echo "$(GREEN)Starting Nginx server...$(NC)"
+	@docker run -d --name nginx-api-gateway -p 80:80 --add-host=host.docker.internal:host-gateway -v ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro nginx:latest
+
+	@echo "$(GREEN)Nginx server started$(NC)"
 run:
 	@echo "$(GREEN)Running Api Gateway...$(NC)"
 	@fastapi dev gateway/main.py
