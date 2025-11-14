@@ -1,0 +1,1563 @@
+{
+	"info": {
+		"_postman_id": "b7398071-268b-47a4-a0bd-a2fe827efc96",
+		"name": "API GATEWAY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34959437",
+		"_collection_link": "https://www.postman.com/pm5555-1180/workspace/censudex/collection/34959437-b7398071-268b-47a4-a0bd-a2fe827efc96?action=share&source=collection_link&creator=34959437"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"rodrigo.barajas@censudex.cl\",\r\n    \"password\": \"Passw0rd2!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_G_URL}}login",
+							"host": [
+								"{{API_G_URL}}login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login 200 admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}login",
+									"host": [
+										"{{API_G_URL}}login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 13 Nov 2025 23:55:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "426"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "26080f1d-085f-4871-a162-2a00735fa6d8"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763078143"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"{{vault:json-web-token}}\"\n}"
+						},
+						{
+							"name": "Login 200 client",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"rodrigo.barajas@censudex.cl\",\r\n    \"password\": \"Passw0rd2!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}login",
+									"host": [
+										"{{API_G_URL}}login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:26:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "427"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "5e104e32-361b-42b0-a1dd-203ef96098d4"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079984"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxNDU0YWNlZC0yMmI5LTRkYzAtODdhMi0xNDliZmY2MDA5N2UiLCJuYW1laWQiOiJkNTMwZTliMi0wYzJiLTQ2MjItOTVhNC1kOTczM2FiZTMxYTEiLCJyb2xlIjoiQ2xpZW50IiwibmJmIjoxNzYzMDc5OTgzLCJleHAiOjE3NjMxNjYzODMsImlhdCI6MTc2MzA3OTk4MywiaXNzIjoiY2Vuc3VkZXgtYXV0aC1zZXJ2aWNlIiwiYXVkIjoiY2Vuc3VkZXgtYXBpLXVzZXJzIn0.MC3Zo9EI_GmPNFh-W0xjlxQGeKqf9zaxwklK87TCUJaL1AHJkGkq7LULhyfG5xe8IOMHXirRNNjhPv_VNeqGnA\"\n}"
+						},
+						{
+							"name": "Login 400 invalid credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"rodrigo.barajas@censudex.cl\",\r\n    \"password\": \"Password1!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}login",
+									"host": [
+										"{{API_G_URL}}login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:25:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "293"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "85934fb8-5361-4e99-9fae-cacb2fa4d496"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079943"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"{\\\"error\\\":{\\\"message\\\":\\\"Credenciales inválidas\\\"},\\\"status_code\\\":400,\\\"timestamp\\\":\\\"2025-11-14T00:25:43.178690\\\",\\\"path\\\":\\\"http://localhost:8000/api/clients/validate-credentials\\\"}\",\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:25:43.181664\",\n    \"path\": \"http://localhost/api/login\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Validate credentials",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_G_URL}}validate-token",
+							"host": [
+								"{{API_G_URL}}validate-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Validate credentials 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}validate-token",
+									"host": [
+										"{{API_G_URL}}validate-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:20:26 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "63"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "2f06986f-38c8-4314-b4c6-82b547a6eb87"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079627"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"3e31a1b6-a649-4bd7-92cd-7d693c67d46f\",\n    \"roles\": [\n        \"Admin\"\n    ]\n}"
+						},
+						{
+							"name": "Validate credentials 401",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}validate-token",
+									"host": [
+										"{{API_G_URL}}validate-token"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:20:58 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "76a98fa1-0bcc-4bf0-a208-79dd19a1b8d5"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079659"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Unauthorized\",\n    \"status_code\": 401,\n    \"timestamp\": \"2025-11-14T00:20:58.874856\",\n    \"path\": \"http://localhost/api/validate-token\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_G_URL}}logout",
+							"host": [
+								"{{API_G_URL}}logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Logout 200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+								},
+								"url": {
+									"raw": "{{API_G_URL}}logout",
+									"host": [
+										"{{API_G_URL}}logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:21:15 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "6b9deaf3-fb71-4215-8346-e329b1548d71"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079675"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Sesión cerrada correctamente.\"\n}"
+						},
+						{
+							"name": "Logout 401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+								},
+								"url": {
+									"raw": "{{API_G_URL}}logout",
+									"host": [
+										"{{API_G_URL}}logout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:21:26 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "120"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "e8796e13-98c0-41f9-bc1d-4419c9ce978c"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079686"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Unauthorized\",\n    \"status_code\": 401,\n    \"timestamp\": \"2025-11-14T00:21:26.149923\",\n    \"path\": \"http://localhost/api/logout\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Create client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"names\": \"Pepito Brandon\",\r\n  \"lastnames\": \"Los Palotes\",\r\n  \"email\": \"pepito@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"Avenida union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_G_URL}}clients",
+							"host": [
+								"{{API_G_URL}}clients"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create client 200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"Pepito Brandon\",\r\n  \"lastnames\": \"Los Palotes\",\r\n  \"email\": \"pepito@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"Avenida union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients",
+									"host": [
+										"{{API_G_URL}}clients"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:22:11 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "41"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "6d130a31-3bb8-4057-87b3-3dd2d05e4838"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079731"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Cliente creado exitosamente\"\n}"
+						},
+						{
+							"name": "Create client 400 duplicate email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"Pepito Brandon\",\r\n  \"lastnames\": \"Los Palotes\",\r\n  \"email\": \"pepito@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"Avenida union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients",
+									"host": [
+										"{{API_G_URL}}clients"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:23:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "188"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "fd57cb2a-4cca-4519-ab5c-eb687ecded6e"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079788"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"message\": \"Error de formato\",\n        \"details\": \"El correo electrónico ya está en uso\"\n    },\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:23:07.835044\",\n    \"path\": \"http://localhost/api/clients\"\n}"
+						},
+						{
+							"name": "Create client 400 username already taken",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"Pepito Brandon\",\r\n  \"lastnames\": \"Los Palotes\",\r\n  \"email\": \"pepito2@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"Avenida union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients",
+									"host": [
+										"{{API_G_URL}}clients"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:23:52 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "213"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "7129e471-46ba-42d2-aa46-15c755bfade5"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079833"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"message\": \"Error de formato\",\n        \"details\": \"Error al crear el usuario: Username 'pepito5' is already taken.\"\n    },\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:23:52.834228\",\n    \"path\": \"http://localhost/api/clients\"\n}"
+						},
+						{
+							"name": "Create client 400 email should end with @censudex.cl",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"Pepito Brandon\",\r\n  \"lastnames\": \"Los Palotes\",\r\n  \"email\": \"pepito23@gmail.cl\",\r\n  \"username\": \"pepito52d\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"Avenida union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients",
+									"host": [
+										"{{API_G_URL}}clients"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:24:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "201"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "ce279a4f-0279-4c11-a1db-e71036cb1328"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079861"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"message\": \"Error de formato\",\n        \"details\": \"El correo electrónico debe terminar en censudex.cl\"\n    },\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:24:21.038527\",\n    \"path\": \"http://localhost/api/clients\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get clients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_G_URL}}clients?emailfilter=rodrigo&namefilter=rodrigo&statusfilter=true&usernamefilter=2",
+							"host": [
+								"{{API_G_URL}}clients"
+							],
+							"query": [
+								{
+									"key": "emailfilter",
+									"value": "rodrigo"
+								},
+								{
+									"key": "namefilter",
+									"value": "rodrigo"
+								},
+								{
+									"key": "statusfilter",
+									"value": "true"
+								},
+								{
+									"key": "usernamefilter",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get clients 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients",
+									"host": [
+										"{{API_G_URL}}clients"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:25:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33018"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "e17261b9-6237-4782-acca-6b19c344f988"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079901"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"clients\": [\n        {\n            \"id\": \"97514129-c6cb-4de7-9714-54a1daef861b\",\n            \"fullname\": \"alexander brandon sepulveda bastias\",\n            \"email\": \"alexandder@censudex.cl\",\n            \"username\": \"alex5drojito\",\n            \"status\": false,\n            \"birthdate\": \"2004-10-10\",\n            \"address\": \"pampa union 14500\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-12T18:21:41.729382Z\"\n        },\n        {\n            \"id\": \"d530e9b2-0c2b-4622-95a4-d9733abe31a1\",\n            \"fullname\": \"Rodrigo Barajas\",\n            \"email\": \"rodrigo.barajas@censudex.cl\",\n            \"username\": \"Rodrigo21\",\n            \"status\": true,\n            \"birthdate\": \"1973-04-14\",\n            \"address\": \"Arrabal Gilberto s/n. Puerta 367, Torrelavega, Barein\",\n            \"phonenumber\": \"+56957252415\",\n            \"created_at\": \"2025-11-12T18:21:42.264904Z\"\n        },\n        {\n            \"id\": \"2309f673-8b67-4289-8810-1af72d53eab2\",\n            \"fullname\": \"María Elena Robledo\",\n            \"email\": \"maría elena.robledo@censudex.cl\",\n            \"username\": \"MariaElena78\",\n            \"status\": true,\n            \"birthdate\": \"2005-01-06\",\n            \"address\": \"Partida Sergio 8, Chiclana de la Frontera, Andorra\",\n            \"phonenumber\": \"+56918277624\",\n            \"created_at\": \"2025-11-12T18:21:42.422144Z\"\n        },\n        {\n            \"id\": \"9c4ab031-4c22-474e-8498-a480987c78b7\",\n            \"fullname\": \"María Soledad Rocha\",\n            \"email\": \"maría soledad.rocha@censudex.cl\",\n            \"username\": \"MariaSoledad62\",\n            \"status\": true,\n            \"birthdate\": \"1979-12-13\",\n            \"address\": \"Colonia Sancho Menéndez 9 Puerta 625, Fuenlabrada, Letonia\",\n            \"phonenumber\": \"+56944660730\",\n            \"created_at\": \"2025-11-12T18:21:42.581806Z\"\n        },\n        {\n            \"id\": \"1a1436d6-2435-4b39-8228-96039ffc0163\",\n            \"fullname\": \"Andrea Lucio\",\n            \"email\": \"andrea.lucio@censudex.cl\",\n            \"username\": \"Andrea.Lucio49\",\n            \"status\": true,\n            \"birthdate\": \"1999-04-24\",\n            \"address\": \"Cuesta Reina Delvalle 70, El Puerto de Santa María, Islandia\",\n            \"phonenumber\": \"+56944770232\",\n            \"created_at\": \"2025-11-12T18:21:42.736271Z\"\n        },\n        {\n            \"id\": \"9fd48677-66b9-42a2-a957-b18c7f244568\",\n            \"fullname\": \"César Gutiérrez\",\n            \"email\": \"césar.gutiérrez@censudex.cl\",\n            \"username\": \"Cesar_Gutierrez62\",\n            \"status\": true,\n            \"birthdate\": \"2004-04-13\",\n            \"address\": \"Huerta Víctor Arenas, 47 Esc. 320, Albacete, Groenlandia\",\n            \"phonenumber\": \"+56955335955\",\n            \"created_at\": \"2025-11-12T18:21:42.887406Z\"\n        },\n        {\n            \"id\": \"6636eac1-5454-43c0-86a5-899414f44cf0\",\n            \"fullname\": \"Manuel Collado\",\n            \"email\": \"manuel.collado@censudex.cl\",\n            \"username\": \"Manuel_Collado\",\n            \"status\": true,\n            \"birthdate\": \"2004-04-23\",\n            \"address\": \"Urbanización Vicente 0 Puerta 188, Madrid, Paraguay\",\n            \"phonenumber\": \"+56901962479\",\n            \"created_at\": \"2025-11-12T18:21:43.041501Z\"\n        },\n        {\n            \"id\": \"dbebb5ce-567f-4ff1-9eef-d251321fdbe9\",\n            \"fullname\": \"Guillermo Adame\",\n            \"email\": \"guillermo.adame@censudex.cl\",\n            \"username\": \"Guillermo_Adame15\",\n            \"status\": true,\n            \"birthdate\": \"2000-03-25\",\n            \"address\": \"Salida Rebeca Luna, 78, Torrejón de Ardoz, Sri Lanka\",\n            \"phonenumber\": \"+56907428642\",\n            \"created_at\": \"2025-11-12T18:21:43.194577Z\"\n        },\n        {\n            \"id\": \"3cf51468-17b1-4555-aad6-285c9c715a39\",\n            \"fullname\": \"Pedro Nevárez\",\n            \"email\": \"pedro.nevárez@censudex.cl\",\n            \"username\": \"Pedro60\",\n            \"status\": true,\n            \"birthdate\": \"1963-01-24\",\n            \"address\": \"Poblado Samuel Rojas 42 Esc. 774, Rivas-Vaciamadrid, Aruba\",\n            \"phonenumber\": \"+56916115934\",\n            \"created_at\": \"2025-11-12T18:21:43.363304Z\"\n        },\n        {\n            \"id\": \"98518d50-aed2-4ade-99d5-f84b9e415051\",\n            \"fullname\": \"Luis Gallardo\",\n            \"email\": \"luis.gallardo@censudex.cl\",\n            \"username\": \"Luis_Gallardo78\",\n            \"status\": true,\n            \"birthdate\": \"1964-01-27\",\n            \"address\": \"Bajada Blanca Reyes 20, Murcia, Somalia\",\n            \"phonenumber\": \"+56929624199\",\n            \"created_at\": \"2025-11-12T18:21:43.521232Z\"\n        },\n        {\n            \"id\": \"672af951-ba25-4944-975d-59d6f4f959f1\",\n            \"fullname\": \"Yolanda Apodaca\",\n            \"email\": \"yolanda.apodaca@censudex.cl\",\n            \"username\": \"Yolanda15\",\n            \"status\": true,\n            \"birthdate\": \"2004-03-19\",\n            \"address\": \"Pasaje Lucía Cavazos s/n. Puerta 362, El Puerto de Santa María, Guinea-Bisau\",\n            \"phonenumber\": \"+56983256085\",\n            \"created_at\": \"2025-11-12T18:21:43.668397Z\"\n        },\n        {\n            \"id\": \"3490f363-5a75-4c6c-a676-56a4abf06618\",\n            \"fullname\": \"Norma Estrada\",\n            \"email\": \"norma.estrada@censudex.cl\",\n            \"username\": \"Norma_Estrada\",\n            \"status\": true,\n            \"birthdate\": \"1997-02-03\",\n            \"address\": \"Parque Cristián 97 Puerta 358, San Fernando, Congo\",\n            \"phonenumber\": \"+56981982039\",\n            \"created_at\": \"2025-11-12T18:21:43.820942Z\"\n        },\n        {\n            \"id\": \"0e44896d-bf98-4149-9099-1c6076cfa522\",\n            \"fullname\": \"Gilberto Farías\",\n            \"email\": \"gilberto.farías@censudex.cl\",\n            \"username\": \"Gilberto_Farias35\",\n            \"status\": true,\n            \"birthdate\": \"1968-05-31\",\n            \"address\": \"Masía Inés s/n. Esc. 275, Cuenta, Seychelles\",\n            \"phonenumber\": \"+56950603903\",\n            \"created_at\": \"2025-11-12T18:21:43.974675Z\"\n        },\n        {\n            \"id\": \"096623f1-3d8e-42b4-95af-baa8a8804835\",\n            \"fullname\": \"Lola García\",\n            \"email\": \"lola.garcía@censudex.cl\",\n            \"username\": \"Lola56\",\n            \"status\": true,\n            \"birthdate\": \"1969-01-10\",\n            \"address\": \"Masía Dorotea, 9 Esc. 173, Oviedo, Sudán\",\n            \"phonenumber\": \"+56918933478\",\n            \"created_at\": \"2025-11-12T18:21:44.124393Z\"\n        },\n        {\n            \"id\": \"0c6bb4c2-33be-4cfe-9645-46f86d7e383f\",\n            \"fullname\": \"Ana Luisa Centeno\",\n            \"email\": \"ana luisa.centeno@censudex.cl\",\n            \"username\": \"AnaLuisa.Centeno71\",\n            \"status\": true,\n            \"birthdate\": \"1990-03-26\",\n            \"address\": \"Camino Ramón s/n. Puerta 178, Sevilla, Jamaica\",\n            \"phonenumber\": \"+56940157242\",\n            \"created_at\": \"2025-11-12T18:21:44.271103Z\"\n        },\n        {\n            \"id\": \"a2332096-e4ef-46e1-848f-22d114c232ca\",\n            \"fullname\": \"Natalia Garrido\",\n            \"email\": \"natalia.garrido@censudex.cl\",\n            \"username\": \"Natalia56\",\n            \"status\": true,\n            \"birthdate\": \"2005-02-07\",\n            \"address\": \"Puerta María Elena 32 Puerta 019, Estepona, Mongolia\",\n            \"phonenumber\": \"+56971629541\",\n            \"created_at\": \"2025-11-12T18:21:44.426127Z\"\n        },\n        {\n            \"id\": \"25e38f1a-7f07-49c6-b7ff-fde2a73e6d23\",\n            \"fullname\": \"Francisca Olivárez\",\n            \"email\": \"francisca.olivárez@censudex.cl\",\n            \"username\": \"Francisca56\",\n            \"status\": true,\n            \"birthdate\": \"1982-03-18\",\n            \"address\": \"Puente Irene Banda, 83, Torrelavega, Ruanda\",\n            \"phonenumber\": \"+56919242531\",\n            \"created_at\": \"2025-11-12T18:21:44.582561Z\"\n        },\n        {\n            \"id\": \"a11c25ed-915f-4277-9c2a-fda79facf2b0\",\n            \"fullname\": \"Ana Luisa Berríos\",\n            \"email\": \"ana luisa.berríos@censudex.cl\",\n            \"username\": \"AnaLuisa_Berrios\",\n            \"status\": true,\n            \"birthdate\": \"1998-01-25\",\n            \"address\": \"Lugar Germán 8 Puerta 727, Alcobendas, Liberia\",\n            \"phonenumber\": \"+56915761788\",\n            \"created_at\": \"2025-11-12T18:21:44.740225Z\"\n        },\n        {\n            \"id\": \"c66ccc96-e965-488d-a2fd-4a888ada2278\",\n            \"fullname\": \"Sancho Toro\",\n            \"email\": \"sancho.toro@censudex.cl\",\n            \"username\": \"Sancho_Toro69\",\n            \"status\": true,\n            \"birthdate\": \"1977-01-11\",\n            \"address\": \"Rambla Víctor Godínez s/n. Esc. 068, Santa Lucía de Tirajana, Líbano\",\n            \"phonenumber\": \"+56950812250\",\n            \"created_at\": \"2025-11-12T18:21:44.892937Z\"\n        },\n        {\n            \"id\": \"16470a2e-adb6-4310-b1b4-743e06a2f8c8\",\n            \"fullname\": \"Silvia Cadena\",\n            \"email\": \"silvia.cadena@censudex.cl\",\n            \"username\": \"Silvia_Cadena\",\n            \"status\": true,\n            \"birthdate\": \"1986-02-26\",\n            \"address\": \"Puerta Verónica, 66 Puerta 965, Gerona, Liberia\",\n            \"phonenumber\": \"+56964435401\",\n            \"created_at\": \"2025-11-12T18:21:45.072593Z\"\n        },\n        {\n            \"id\": \"de565912-a00e-462c-b939-d815d033a243\",\n            \"fullname\": \"Julio César Romo\",\n            \"email\": \"julio césar.romo@censudex.cl\",\n            \"username\": \"JulioCesar_Romo\",\n            \"status\": true,\n            \"birthdate\": \"1963-01-31\",\n            \"address\": \"Partida Teodoro, 90, Huelva, Yemen\",\n            \"phonenumber\": \"+56911438998\",\n            \"created_at\": \"2025-11-12T18:21:45.254227Z\"\n        },\n        {\n            \"id\": \"cec4278f-3453-474f-bc65-a303812ccc99\",\n            \"fullname\": \"Blanca Vallejo\",\n            \"email\": \"blanca.vallejo@censudex.cl\",\n            \"username\": \"Blanca99\",\n            \"status\": true,\n            \"birthdate\": \"1976-03-12\",\n            \"address\": \"Sección María del Carmen Romero, 07, Zamora, Argelia\",\n            \"phonenumber\": \"+56927399625\",\n            \"created_at\": \"2025-11-12T18:21:45.400666Z\"\n        },\n        {\n            \"id\": \"b387c7c1-8a47-476a-a1d4-cb712162b8e5\",\n            \"fullname\": \"Andrea Crespo\",\n            \"email\": \"andrea.crespo@censudex.cl\",\n            \"username\": \"Andrea_Crespo\",\n            \"status\": true,\n            \"birthdate\": \"1997-10-22\",\n            \"address\": \"Travesía Bernardo Rocha, 5 Puerta 118, Zamora, Guinea-Bisau\",\n            \"phonenumber\": \"+56971013136\",\n            \"created_at\": \"2025-11-12T18:21:45.544915Z\"\n        },\n        {\n            \"id\": \"9ac0b7de-afbb-4a56-9672-ce4aaa41de40\",\n            \"fullname\": \"Florencia Garica\",\n            \"email\": \"florencia.garica@censudex.cl\",\n            \"username\": \"Florencia.Garica97\",\n            \"status\": true,\n            \"birthdate\": \"1986-02-07\",\n            \"address\": \"Masía Enrique Caldera, 64 Esc. 069, Elche, Seychelles\",\n            \"phonenumber\": \"+56903542993\",\n            \"created_at\": \"2025-11-12T18:21:45.692274Z\"\n        },\n        {\n            \"id\": \"057d87b7-d906-487e-8fd4-b7714e23f613\",\n            \"fullname\": \"Adán Aguayo\",\n            \"email\": \"adán.aguayo@censudex.cl\",\n            \"username\": \"Adan_Aguayo73\",\n            \"status\": true,\n            \"birthdate\": \"1995-05-24\",\n            \"address\": \"Extrarradio Patricio Noriega 55 Puerta 497, Viladecans, Papúa Nueva Guinea\",\n            \"phonenumber\": \"+56979479077\",\n            \"created_at\": \"2025-11-12T18:21:45.836711Z\"\n        },\n        {\n            \"id\": \"7f70d967-fcd3-4be0-8c0c-d188d794616b\",\n            \"fullname\": \"Tomás Carbajal\",\n            \"email\": \"tomás.carbajal@censudex.cl\",\n            \"username\": \"Tomas_Carbajal60\",\n            \"status\": true,\n            \"birthdate\": \"1997-09-09\",\n            \"address\": \"Vía María 23 Puerta 658, Algeciras, Brasil\",\n            \"phonenumber\": \"+56903805231\",\n            \"created_at\": \"2025-11-12T18:21:45.990032Z\"\n        },\n        {\n            \"id\": \"a30c4b79-bcad-4344-b8be-f9e1b7e6f676\",\n            \"fullname\": \"Diego Chacón\",\n            \"email\": \"diego.chacón@censudex.cl\",\n            \"username\": \"Diego.Chacon86\",\n            \"status\": true,\n            \"birthdate\": \"1972-04-03\",\n            \"address\": \"Sección Cecilia, 0 Puerta 050, Elda, Tonga\",\n            \"phonenumber\": \"+56949944881\",\n            \"created_at\": \"2025-11-12T18:21:46.137519Z\"\n        },\n        {\n            \"id\": \"fd03ae85-b62a-4b97-8b9c-d09cfef45281\",\n            \"fullname\": \"Pedro Berríos\",\n            \"email\": \"pedro.berríos@censudex.cl\",\n            \"username\": \"Pedro.Berrios99\",\n            \"status\": true,\n            \"birthdate\": \"1965-10-15\",\n            \"address\": \"Caserio Jacobo Santana 14 Esc. 148, Ponferrada, Argelia\",\n            \"phonenumber\": \"+56947116726\",\n            \"created_at\": \"2025-11-12T18:21:46.285531Z\"\n        },\n        {\n            \"id\": \"6e2bbe30-9579-4320-b7ed-cc84e3d86cdd\",\n            \"fullname\": \"José Mesa\",\n            \"email\": \"josé.mesa@censudex.cl\",\n            \"username\": \"Jose52\",\n            \"status\": true,\n            \"birthdate\": \"1979-01-06\",\n            \"address\": \"Rincón Emilio Luevano s/n. Puerta 399, Estepona, Kenia\",\n            \"phonenumber\": \"+56951069903\",\n            \"created_at\": \"2025-11-12T18:21:46.432840Z\"\n        },\n        {\n            \"id\": \"d531c6ad-8d9e-4a01-93f3-f92fc381eb3e\",\n            \"fullname\": \"Hernán Montenegro\",\n            \"email\": \"hernán.montenegro@censudex.cl\",\n            \"username\": \"Hernan68\",\n            \"status\": true,\n            \"birthdate\": \"1959-05-29\",\n            \"address\": \"Extramuros Julia Archuleta, 19, Torrevieja, Emiratos Árabes Unidos\",\n            \"phonenumber\": \"+56959458748\",\n            \"created_at\": \"2025-11-12T18:21:46.601350Z\"\n        },\n        {\n            \"id\": \"b9febeab-7dd5-4c04-800e-1cb7b0c990ba\",\n            \"fullname\": \"Gloria Tafoya\",\n            \"email\": \"gloria.tafoya@censudex.cl\",\n            \"username\": \"Gloria_Tafoya\",\n            \"status\": true,\n            \"birthdate\": \"2006-06-02\",\n            \"address\": \"Polígono Cecilia, 8 Esc. 788, Benidorm, Poland\",\n            \"phonenumber\": \"+56943670144\",\n            \"created_at\": \"2025-11-12T18:21:46.743274Z\"\n        },\n        {\n            \"id\": \"c3b774fa-2c85-4e8a-a05d-bdf7166e9199\",\n            \"fullname\": \"José Eduardo Tamez\",\n            \"email\": \"josé eduardo.tamez@censudex.cl\",\n            \"username\": \"JoseEduardo27\",\n            \"status\": true,\n            \"birthdate\": \"1966-10-04\",\n            \"address\": \"Lado Ariadna 65, Barcelona, Corea\",\n            \"phonenumber\": \"+56977373217\",\n            \"created_at\": \"2025-11-12T18:21:46.885381Z\"\n        },\n        {\n            \"id\": \"fe2cf539-3808-4c89-8b73-201bf40c2d7a\",\n            \"fullname\": \"Joaquín Cavazos\",\n            \"email\": \"joaquín.cavazos@censudex.cl\",\n            \"username\": \"Joaquin_Cavazos\",\n            \"status\": true,\n            \"birthdate\": \"1990-03-11\",\n            \"address\": \"Colegio Gustavo s/n., La Coruña, Ecuador\",\n            \"phonenumber\": \"+56996740580\",\n            \"created_at\": \"2025-11-12T18:21:47.027164Z\"\n        },\n        {\n            \"id\": \"f080ef1a-f982-4f11-80f6-8af869f4396f\",\n            \"fullname\": \"Mayte Segovia\",\n            \"email\": \"mayte.segovia@censudex.cl\",\n            \"username\": \"Mayte.Segovia\",\n            \"status\": true,\n            \"birthdate\": \"1990-07-04\",\n            \"address\": \"Extramuros Gerardo 4, San Cristróbal de la Laguna, Islandia\",\n            \"phonenumber\": \"+56978475581\",\n            \"created_at\": \"2025-11-12T18:21:47.168724Z\"\n        },\n        {\n            \"id\": \"315e9b8b-c646-467f-bc02-1e068e369724\",\n            \"fullname\": \"José Luis Zepeda\",\n            \"email\": \"josé luis.zepeda@censudex.cl\",\n            \"username\": \"JoseLuis.Zepeda66\",\n            \"status\": true,\n            \"birthdate\": \"1969-02-17\",\n            \"address\": \"Sección Gerardo Serrano 8 Puerta 720, San Fernando, Suriname\",\n            \"phonenumber\": \"+56996001290\",\n            \"created_at\": \"2025-11-12T18:21:47.315101Z\"\n        },\n        {\n            \"id\": \"8d80af97-150c-453f-a069-71c541a30c6f\",\n            \"fullname\": \"Lucía Vélez\",\n            \"email\": \"lucía.vélez@censudex.cl\",\n            \"username\": \"Lucia_Velez\",\n            \"status\": true,\n            \"birthdate\": \"1995-06-18\",\n            \"address\": \"Gran Subida Estela, 71, Pamplona, Poland\",\n            \"phonenumber\": \"+56935706693\",\n            \"created_at\": \"2025-11-12T18:21:47.463796Z\"\n        },\n        {\n            \"id\": \"3c79ef59-238d-478f-ab49-c62941819e35\",\n            \"fullname\": \"Rodrigo Caballero\",\n            \"email\": \"rodrigo.caballero@censudex.cl\",\n            \"username\": \"Rodrigo10\",\n            \"status\": true,\n            \"birthdate\": \"1977-05-05\",\n            \"address\": \"Barrio Ángela, 55 Puerta 342, Gijón, Australia\",\n            \"phonenumber\": \"+56919686674\",\n            \"created_at\": \"2025-11-12T18:21:47.609420Z\"\n        },\n        {\n            \"id\": \"762dd3e9-7913-4bf3-b5f2-59dbdec131fd\",\n            \"fullname\": \"Ester Alcalá\",\n            \"email\": \"ester.alcalá@censudex.cl\",\n            \"username\": \"Ester_Alcala88\",\n            \"status\": true,\n            \"birthdate\": \"2006-07-01\",\n            \"address\": \"Edificio David Sánchez 6 Esc. 146, Elda, Bermuda\",\n            \"phonenumber\": \"+56932928479\",\n            \"created_at\": \"2025-11-12T18:21:47.755900Z\"\n        },\n        {\n            \"id\": \"b3ccf743-0c7d-4a3d-bb55-0a3cacae8b5d\",\n            \"fullname\": \"Mariano Vergara\",\n            \"email\": \"mariano.vergara@censudex.cl\",\n            \"username\": \"Mariano68\",\n            \"status\": true,\n            \"birthdate\": \"1985-11-23\",\n            \"address\": \"Manzana Juana Villarreal, 72, Santander, Mauritania\",\n            \"phonenumber\": \"+56908930062\",\n            \"created_at\": \"2025-11-12T18:21:47.896318Z\"\n        },\n        {\n            \"id\": \"b0a65e84-af56-468a-a429-a37a9230b974\",\n            \"fullname\": \"Carmen Guajardo\",\n            \"email\": \"carmen.guajardo@censudex.cl\",\n            \"username\": \"Carmen40\",\n            \"status\": true,\n            \"birthdate\": \"2004-08-01\",\n            \"address\": \"Subida Susana s/n., Córdoba, Honduras\",\n            \"phonenumber\": \"+56932951792\",\n            \"created_at\": \"2025-11-12T18:21:48.037545Z\"\n        },\n        {\n            \"id\": \"dff2a527-6a6c-4e40-ae49-cd4414bb44d3\",\n            \"fullname\": \"Esteban Maya\",\n            \"email\": \"esteban.maya@censudex.cl\",\n            \"username\": \"Esteban_Maya81\",\n            \"status\": true,\n            \"birthdate\": \"1969-02-13\",\n            \"address\": \"Salida Mario 3 Puerta 493, Valladolid, Kuwait\",\n            \"phonenumber\": \"+56976004067\",\n            \"created_at\": \"2025-11-12T18:21:48.179667Z\"\n        },\n        {\n            \"id\": \"908a98c6-35de-4476-a921-503aa5cae777\",\n            \"fullname\": \"José María Rubio\",\n            \"email\": \"josé maría.rubio@censudex.cl\",\n            \"username\": \"JoseMaria_Rubio33\",\n            \"status\": true,\n            \"birthdate\": \"2005-11-28\",\n            \"address\": \"Solar Jorge 50, Dos Hermanas, Mónaco\",\n            \"phonenumber\": \"+56961888464\",\n            \"created_at\": \"2025-11-12T18:21:48.321577Z\"\n        },\n        {\n            \"id\": \"6ff5b8aa-e19b-489f-90b8-f64bbe483e67\",\n            \"fullname\": \"Josefina Cerda\",\n            \"email\": \"josefina.cerda@censudex.cl\",\n            \"username\": \"Josefina86\",\n            \"status\": true,\n            \"birthdate\": \"1960-08-13\",\n            \"address\": \"Sector Jorge Luis Montalvo 09, Torremolinos, Uganda\",\n            \"phonenumber\": \"+56971369853\",\n            \"created_at\": \"2025-11-12T18:21:48.465927Z\"\n        },\n        {\n            \"id\": \"fa5d9c04-373d-4f74-8299-f8447207913d\",\n            \"fullname\": \"Ángela Baca\",\n            \"email\": \"ángela.baca@censudex.cl\",\n            \"username\": \"Angela47\",\n            \"status\": true,\n            \"birthdate\": \"1999-02-10\",\n            \"address\": \"Muelle Horacio, 55 Puerta 743, La Línea de la Concepción, Chad\",\n            \"phonenumber\": \"+56935442757\",\n            \"created_at\": \"2025-11-12T18:21:48.608112Z\"\n        },\n        {\n            \"id\": \"f08115ac-8dd1-4c1f-9e27-f8f335d76d90\",\n            \"fullname\": \"Benjamín Jurado\",\n            \"email\": \"benjamín.jurado@censudex.cl\",\n            \"username\": \"Benjamin_Jurado76\",\n            \"status\": true,\n            \"birthdate\": \"1976-11-25\",\n            \"address\": \"Calle Santiago Tapia 7 Puerta 289, Lorca, Togo\",\n            \"phonenumber\": \"+56926608512\",\n            \"created_at\": \"2025-11-12T18:21:48.758593Z\"\n        },\n        {\n            \"id\": \"0d24c682-31c8-4184-a645-bd4e579e1cd1\",\n            \"fullname\": \"Jacobo Álvarez\",\n            \"email\": \"jacobo.álvarez@censudex.cl\",\n            \"username\": \"Jacobo_Alvarez59\",\n            \"status\": true,\n            \"birthdate\": \"1963-08-25\",\n            \"address\": \"Carretera Lorenzo 44, Santiago de Compostela, Irlanda\",\n            \"phonenumber\": \"+56932027697\",\n            \"created_at\": \"2025-11-12T18:21:48.898443Z\"\n        },\n        {\n            \"id\": \"aadb740c-d7be-4ec3-9f35-666312e9b796\",\n            \"fullname\": \"Conchita Velasco\",\n            \"email\": \"conchita.velasco@censudex.cl\",\n            \"username\": \"Conchita_Velasco66\",\n            \"status\": true,\n            \"birthdate\": \"1986-04-05\",\n            \"address\": \"Manzana Teresa Villegas, 8 Esc. 861, Alicante, Turquia\",\n            \"phonenumber\": \"+56996770079\",\n            \"created_at\": \"2025-11-12T18:21:49.038505Z\"\n        },\n        {\n            \"id\": \"41d7fcb4-2132-4db5-b780-4c3c5a484bbd\",\n            \"fullname\": \"Cristina Reséndez\",\n            \"email\": \"cristina.reséndez@censudex.cl\",\n            \"username\": \"Cristina_Resendez\",\n            \"status\": true,\n            \"birthdate\": \"2004-05-01\",\n            \"address\": \"Rincón Felipe s/n. Puerta 188, Salamanca, Francia\",\n            \"phonenumber\": \"+56982875044\",\n            \"created_at\": \"2025-11-12T18:21:49.181278Z\"\n        },\n        {\n            \"id\": \"ad933543-a136-4f18-ada6-ca6d97a92268\",\n            \"fullname\": \"Amalia Angulo\",\n            \"email\": \"amalia.angulo@censudex.cl\",\n            \"username\": \"Amalia_Angulo7\",\n            \"status\": true,\n            \"birthdate\": \"2004-07-29\",\n            \"address\": \"Arroyo Micaela 45 Puerta 463, Ávila, Barein\",\n            \"phonenumber\": \"+56931548216\",\n            \"created_at\": \"2025-11-12T18:21:49.324645Z\"\n        },\n        {\n            \"id\": \"48fef41e-8f6a-4f91-9e42-5f5ebf9360d4\",\n            \"fullname\": \"Ernesto Suárez\",\n            \"email\": \"ernesto.suárez@censudex.cl\",\n            \"username\": \"Ernesto_Suarez48\",\n            \"status\": true,\n            \"birthdate\": \"2000-12-01\",\n            \"address\": \"Sector Lorena s/n. Puerta 510, Pozuelo de Alarcón, Bélgica\",\n            \"phonenumber\": \"+56915436671\",\n            \"created_at\": \"2025-11-12T18:21:49.466021Z\"\n        },\n        {\n            \"id\": \"36958482-6a64-4d2a-a3a9-a8d21f2ce2b1\",\n            \"fullname\": \"Eduardo Reyna\",\n            \"email\": \"eduardo.reyna@censudex.cl\",\n            \"username\": \"Eduardo_Reyna\",\n            \"status\": true,\n            \"birthdate\": \"1968-05-04\",\n            \"address\": \"Urbanización Reina Ávalos 1 Esc. 555, Manresa, Azerbayán\",\n            \"phonenumber\": \"+56974156071\",\n            \"created_at\": \"2025-11-12T18:21:49.607830Z\"\n        },\n        {\n            \"id\": \"c9fa506f-adf1-4e20-a74f-55773aaf78ff\",\n            \"fullname\": \"Emilia Palacios\",\n            \"email\": \"emilia.palacios@censudex.cl\",\n            \"username\": \"Emilia.Palacios11\",\n            \"status\": true,\n            \"birthdate\": \"1977-12-14\",\n            \"address\": \"Colonia Emilia 1, Alcobendas, Grecia\",\n            \"phonenumber\": \"+56959703338\",\n            \"created_at\": \"2025-11-12T18:21:49.748493Z\"\n        },\n        {\n            \"id\": \"32438509-3e7e-4970-bf8a-245dfc6dc1e6\",\n            \"fullname\": \"Elsa Cardona\",\n            \"email\": \"elsa.cardona@censudex.cl\",\n            \"username\": \"Elsa_Cardona94\",\n            \"status\": true,\n            \"birthdate\": \"1999-10-26\",\n            \"address\": \"Escalinata Marcela Espinosa, 65, Sabadell, Sudán\",\n            \"phonenumber\": \"+56932037345\",\n            \"created_at\": \"2025-11-12T18:21:49.889879Z\"\n        },\n        {\n            \"id\": \"deb9687d-329b-494a-92e1-3d957b52d9fc\",\n            \"fullname\": \"Ramiro Espino\",\n            \"email\": \"ramiro.espino@censudex.cl\",\n            \"username\": \"Ramiro99\",\n            \"status\": true,\n            \"birthdate\": \"1973-08-29\",\n            \"address\": \"Vía Miguel Ángel Quintero s/n. Puerta 558, Rivas-Vaciamadrid, Samoa\",\n            \"phonenumber\": \"+56913747693\",\n            \"created_at\": \"2025-11-12T18:21:50.030719Z\"\n        },\n        {\n            \"id\": \"f8e8d746-ef68-4c79-a014-9912bdd94547\",\n            \"fullname\": \"Alicia Gaytán\",\n            \"email\": \"alicia.gaytán@censudex.cl\",\n            \"username\": \"Alicia62\",\n            \"status\": true,\n            \"birthdate\": \"1969-05-01\",\n            \"address\": \"Ferrocarril Cristina, 87, Cáceres, Zambia\",\n            \"phonenumber\": \"+56937175807\",\n            \"created_at\": \"2025-11-12T18:21:50.171078Z\"\n        },\n        {\n            \"id\": \"af62c23c-3495-4c76-b656-d7a2cd75fbc7\",\n            \"fullname\": \"Teodoro Candelaria\",\n            \"email\": \"teodoro.candelaria@censudex.cl\",\n            \"username\": \"Teodoro47\",\n            \"status\": true,\n            \"birthdate\": \"1991-12-01\",\n            \"address\": \"Conjunto Patricio Argüello, 36, Valdemoro, Francia\",\n            \"phonenumber\": \"+56945916862\",\n            \"created_at\": \"2025-11-12T18:21:50.311888Z\"\n        },\n        {\n            \"id\": \"aed28687-66fe-4fa5-839c-f54280c61aa1\",\n            \"fullname\": \"Luisa Blanco\",\n            \"email\": \"luisa.blanco@censudex.cl\",\n            \"username\": \"Luisa_Blanco\",\n            \"status\": true,\n            \"birthdate\": \"1968-11-08\",\n            \"address\": \"Parque Verónica s/n., Fuenlabrada, Grecia\",\n            \"phonenumber\": \"+56938239742\",\n            \"created_at\": \"2025-11-12T18:21:50.452469Z\"\n        },\n        {\n            \"id\": \"5343b7ba-a5db-4de8-adc2-51e8652cfd01\",\n            \"fullname\": \"Rosalia Solorzano\",\n            \"email\": \"rosalia.solorzano@censudex.cl\",\n            \"username\": \"Rosalia74\",\n            \"status\": true,\n            \"birthdate\": \"1975-04-07\",\n            \"address\": \"Carretera Juana, 20, Elche, Serbia\",\n            \"phonenumber\": \"+56924064907\",\n            \"created_at\": \"2025-11-12T18:21:50.593448Z\"\n        },\n        {\n            \"id\": \"c0a4890f-5649-45ca-91ad-530a9c904490\",\n            \"fullname\": \"Guillermina Reyna\",\n            \"email\": \"guillermina.reyna@censudex.cl\",\n            \"username\": \"Guillermina_Reyna\",\n            \"status\": true,\n            \"birthdate\": \"1959-07-28\",\n            \"address\": \"Parque Esteban, 88, Málaga, Seychelles\",\n            \"phonenumber\": \"+56926567705\",\n            \"created_at\": \"2025-11-12T18:21:50.734593Z\"\n        },\n        {\n            \"id\": \"c8379f98-68d3-47dc-a6f7-5855908b54a1\",\n            \"fullname\": \"Gloria Rocha\",\n            \"email\": \"gloria.rocha@censudex.cl\",\n            \"username\": \"Gloria.Rocha\",\n            \"status\": true,\n            \"birthdate\": \"1984-07-03\",\n            \"address\": \"Quinta Lola s/n., Santiago de Compostela, Kiribati\",\n            \"phonenumber\": \"+56910472526\",\n            \"created_at\": \"2025-11-12T18:21:50.876275Z\"\n        },\n        {\n            \"id\": \"52f9be48-210a-42d2-8462-9bac56a3471a\",\n            \"fullname\": \"Benito Curiel\",\n            \"email\": \"benito.curiel@censudex.cl\",\n            \"username\": \"Benito.Curiel99\",\n            \"status\": true,\n            \"birthdate\": \"2005-04-03\",\n            \"address\": \"Ramal José 26, Viladecans, Guinea\",\n            \"phonenumber\": \"+56956576863\",\n            \"created_at\": \"2025-11-12T18:21:51.016676Z\"\n        },\n        {\n            \"id\": \"4d854b95-aa7c-4e2c-868e-b997d7b47d5e\",\n            \"fullname\": \"Pedro Salcedo\",\n            \"email\": \"pedro.salcedo@censudex.cl\",\n            \"username\": \"Pedro.Salcedo\",\n            \"status\": true,\n            \"birthdate\": \"1980-07-20\",\n            \"address\": \"Solar Antonia Ballesteros, 58 Esc. 406, Manresa, Puerto Rico\",\n            \"phonenumber\": \"+56974304168\",\n            \"created_at\": \"2025-11-12T18:21:51.157504Z\"\n        },\n        {\n            \"id\": \"d2722198-bed8-4492-913b-8d5364d95c32\",\n            \"fullname\": \"Susana Nieves\",\n            \"email\": \"susana.nieves@censudex.cl\",\n            \"username\": \"Susana14\",\n            \"status\": true,\n            \"birthdate\": \"1960-01-29\",\n            \"address\": \"Caserio Olivia Cuellar, 9, Hospitalet de LLobregat, Isla de Navidad\",\n            \"phonenumber\": \"+56917873020\",\n            \"created_at\": \"2025-11-12T18:21:51.298636Z\"\n        },\n        {\n            \"id\": \"2c79d34f-e073-41dd-bf9b-8e9b281353cf\",\n            \"fullname\": \"Adán Mora\",\n            \"email\": \"adán.mora@censudex.cl\",\n            \"username\": \"Adan_Mora48\",\n            \"status\": true,\n            \"birthdate\": \"2005-08-28\",\n            \"address\": \"Avenida Guadalupe 0 Esc. 181, Granollers, Togo\",\n            \"phonenumber\": \"+56922904164\",\n            \"created_at\": \"2025-11-12T18:21:51.439337Z\"\n        },\n        {\n            \"id\": \"8072848f-0fcc-456c-b40f-5f41c1ee7dc4\",\n            \"fullname\": \"Jerónimo Noriega\",\n            \"email\": \"jerónimo.noriega@censudex.cl\",\n            \"username\": \"Jeronimo.Noriega71\",\n            \"status\": true,\n            \"birthdate\": \"1968-10-21\",\n            \"address\": \"Ramal Carlota s/n., Linares, Burundi\",\n            \"phonenumber\": \"+56930637986\",\n            \"created_at\": \"2025-11-12T18:21:51.581197Z\"\n        },\n        {\n            \"id\": \"e2590c09-0cea-46ad-b29f-80270760a073\",\n            \"fullname\": \"María del Carmen Cruz\",\n            \"email\": \"maría del carmen.cruz@censudex.cl\",\n            \"username\": \"MariadelCarmen.Cruz\",\n            \"status\": true,\n            \"birthdate\": \"2002-10-13\",\n            \"address\": \"Urbanización Martín Parra 9, Tarragona, República Checa\",\n            \"phonenumber\": \"+56967794191\",\n            \"created_at\": \"2025-11-12T18:21:51.724735Z\"\n        },\n        {\n            \"id\": \"2a1eed8c-daa6-4778-86e5-a8fba3aa5c41\",\n            \"fullname\": \"Mariano Ruíz\",\n            \"email\": \"mariano.ruíz@censudex.cl\",\n            \"username\": \"Mariano.Ruiz\",\n            \"status\": true,\n            \"birthdate\": \"1977-05-22\",\n            \"address\": \"Torrente Julia 7, El Puerto de Santa María, Barein\",\n            \"phonenumber\": \"+56979225641\",\n            \"created_at\": \"2025-11-12T18:21:51.866615Z\"\n        },\n        {\n            \"id\": \"742b8835-a776-492f-b82d-177bb89bc892\",\n            \"fullname\": \"Javier Lebrón\",\n            \"email\": \"javier.lebrón@censudex.cl\",\n            \"username\": \"Javier_Lebron\",\n            \"status\": true,\n            \"birthdate\": \"1986-07-05\",\n            \"address\": \"Colonia María Sisneros, 9 Esc. 477, Rivas-Vaciamadrid, Emiratos Árabes Unidos\",\n            \"phonenumber\": \"+56969182880\",\n            \"created_at\": \"2025-11-12T18:21:52.007556Z\"\n        },\n        {\n            \"id\": \"9171fda1-459f-4739-9a45-d16758426ebc\",\n            \"fullname\": \"Cristina Abeyta\",\n            \"email\": \"cristina.abeyta@censudex.cl\",\n            \"username\": \"Cristina.Abeyta\",\n            \"status\": true,\n            \"birthdate\": \"1959-08-28\",\n            \"address\": \"Torrente Mateo Bañuelos, 34 Esc. 848, Málaga, Mozambique\",\n            \"phonenumber\": \"+56971911109\",\n            \"created_at\": \"2025-11-12T18:21:52.148930Z\"\n        },\n        {\n            \"id\": \"72cc7895-b40f-4ff0-89c2-ab40f9911406\",\n            \"fullname\": \"Sancho Benavídez\",\n            \"email\": \"sancho.benavídez@censudex.cl\",\n            \"username\": \"Sancho43\",\n            \"status\": true,\n            \"birthdate\": \"1994-05-10\",\n            \"address\": \"Grupo Gabriela Velasco 16 Puerta 111, Reus, República Dominicana\",\n            \"phonenumber\": \"+56976868012\",\n            \"created_at\": \"2025-11-12T18:21:52.291801Z\"\n        },\n        {\n            \"id\": \"592cacd7-59ce-49de-89c8-8e24f29277d4\",\n            \"fullname\": \"Ramón Rocha\",\n            \"email\": \"ramón.rocha@censudex.cl\",\n            \"username\": \"Ramon_Rocha94\",\n            \"status\": true,\n            \"birthdate\": \"1978-10-30\",\n            \"address\": \"Gran Subida Gloria Zelaya s/n., Gandía, Bangladesh\",\n            \"phonenumber\": \"+56964077024\",\n            \"created_at\": \"2025-11-12T18:21:52.433124Z\"\n        },\n        {\n            \"id\": \"b9c76aaa-0757-49c2-9faa-576456bf4b0f\",\n            \"fullname\": \"Rodrigo Murillo\",\n            \"email\": \"rodrigo.murillo@censudex.cl\",\n            \"username\": \"Rodrigo11\",\n            \"status\": true,\n            \"birthdate\": \"2002-02-27\",\n            \"address\": \"Solar Mario 1, Torrevieja, Siria\",\n            \"phonenumber\": \"+56946902548\",\n            \"created_at\": \"2025-11-12T18:21:52.575087Z\"\n        },\n        {\n            \"id\": \"05034e24-fbd9-4c84-b27e-4a120d3a6b2e\",\n            \"fullname\": \"Cecilia Benavídez\",\n            \"email\": \"cecilia.benavídez@censudex.cl\",\n            \"username\": \"Cecilia_Benavidez38\",\n            \"status\": true,\n            \"birthdate\": \"1983-06-06\",\n            \"address\": \"Calle Luz s/n., Cádiz, Granada\",\n            \"phonenumber\": \"+56948517492\",\n            \"created_at\": \"2025-11-12T18:21:52.714923Z\"\n        },\n        {\n            \"id\": \"d0a7e7ef-04c0-4252-b096-74fad56c2faa\",\n            \"fullname\": \"Ana Espinosa\",\n            \"email\": \"ana.espinosa@censudex.cl\",\n            \"username\": \"Ana17\",\n            \"status\": true,\n            \"birthdate\": \"1964-12-27\",\n            \"address\": \"Barrio Marilú Noriega, 24, Jerez de la Frontera, Nicaragua\",\n            \"phonenumber\": \"+56945787722\",\n            \"created_at\": \"2025-11-12T18:21:52.856488Z\"\n        },\n        {\n            \"id\": \"e270adfc-3875-47c5-867a-fabe2ec1c442\",\n            \"fullname\": \"Susana Henríquez\",\n            \"email\": \"susana.henríquez@censudex.cl\",\n            \"username\": \"Susana_Henriquez\",\n            \"status\": true,\n            \"birthdate\": \"2002-06-10\",\n            \"address\": \"Subida Ernesto 93, Valdemoro, Chipre\",\n            \"phonenumber\": \"+56920824392\",\n            \"created_at\": \"2025-11-12T18:21:52.997264Z\"\n        },\n        {\n            \"id\": \"ba8c5d44-5578-4b00-8c52-57d3295415da\",\n            \"fullname\": \"Elvira Ceballos\",\n            \"email\": \"elvira.ceballos@censudex.cl\",\n            \"username\": \"Elvira_Ceballos\",\n            \"status\": true,\n            \"birthdate\": \"1991-08-24\",\n            \"address\": \"Sección Rosalia Salgado 43 Puerta 210, Roquetas de Mar, Serbia\",\n            \"phonenumber\": \"+56906830627\",\n            \"created_at\": \"2025-11-12T18:21:53.138665Z\"\n        },\n        {\n            \"id\": \"52d58911-9d2d-4e96-942e-8dd9de8aeafa\",\n            \"fullname\": \"María del Carmen Mireles\",\n            \"email\": \"maría del carmen.mireles@censudex.cl\",\n            \"username\": \"MariadelCarmen86\",\n            \"status\": true,\n            \"birthdate\": \"1981-01-18\",\n            \"address\": \"Extrarradio Magdalena 22 Puerta 494, Gerona, Líbano\",\n            \"phonenumber\": \"+56954581289\",\n            \"created_at\": \"2025-11-12T18:21:53.285321Z\"\n        },\n        {\n            \"id\": \"2c163ae3-67a0-45c2-ad98-4ec0e8e46501\",\n            \"fullname\": \"Dorotea Alarcón\",\n            \"email\": \"dorotea.alarcón@censudex.cl\",\n            \"username\": \"Dorotea55\",\n            \"status\": true,\n            \"birthdate\": \"1980-06-05\",\n            \"address\": \"Arrabal Mariana Delarosa s/n., Cádiz, Dinamarca\",\n            \"phonenumber\": \"+56988809538\",\n            \"created_at\": \"2025-11-12T18:21:53.439506Z\"\n        },\n        {\n            \"id\": \"fe026c5d-15e4-4c90-af59-2940584de7d9\",\n            \"fullname\": \"Leticia Henríquez\",\n            \"email\": \"leticia.henríquez@censudex.cl\",\n            \"username\": \"Leticia56\",\n            \"status\": true,\n            \"birthdate\": \"1997-01-03\",\n            \"address\": \"Sección María Teresa, 21 Esc. 456, Logroño, Chile\",\n            \"phonenumber\": \"+56989548492\",\n            \"created_at\": \"2025-11-12T18:21:56.309601Z\"\n        },\n        {\n            \"id\": \"74fa33ef-26aa-4340-b35f-2501efe7655e\",\n            \"fullname\": \"Benjamín Gutiérrez\",\n            \"email\": \"benjamín.gutiérrez@censudex.cl\",\n            \"username\": \"Benjamin_Gutierrez\",\n            \"status\": true,\n            \"birthdate\": \"1958-02-24\",\n            \"address\": \"Vía Pública Ángela 7 Esc. 835, Pontevedra, República Checa\",\n            \"phonenumber\": \"+56945539461\",\n            \"created_at\": \"2025-11-12T18:21:53.590625Z\"\n        },\n        {\n            \"id\": \"f8a064ee-4f3c-43c1-aef9-b56d3afd8fcb\",\n            \"fullname\": \"Ricardo Perales\",\n            \"email\": \"ricardo.perales@censudex.cl\",\n            \"username\": \"Ricardo.Perales30\",\n            \"status\": true,\n            \"birthdate\": \"1964-01-29\",\n            \"address\": \"Parcela Adán Santillán s/n. Esc. 110, Palma de Mallorca, Congo\",\n            \"phonenumber\": \"+56949611362\",\n            \"created_at\": \"2025-11-12T18:21:53.731974Z\"\n        },\n        {\n            \"id\": \"4318c50d-3148-4630-b13e-247bd4724590\",\n            \"fullname\": \"Cristián Sisneros\",\n            \"email\": \"cristián.sisneros@censudex.cl\",\n            \"username\": \"Cristian.Sisneros32\",\n            \"status\": true,\n            \"birthdate\": \"1969-04-04\",\n            \"address\": \"Vía Pública Ana Cabán s/n. Esc. 110, Pontevedra, Méjico\",\n            \"phonenumber\": \"+56913071867\",\n            \"created_at\": \"2025-11-12T18:21:53.871175Z\"\n        },\n        {\n            \"id\": \"f1b9518c-9006-4884-9e1e-99e9edffb364\",\n            \"fullname\": \"Miguel Chapa\",\n            \"email\": \"miguel.chapa@censudex.cl\",\n            \"username\": \"Miguel_Chapa39\",\n            \"status\": true,\n            \"birthdate\": \"1998-06-11\",\n            \"address\": \"Rampa Cristián Olivera 07, Chiclana de la Frontera, Trinidad y Tobago\",\n            \"phonenumber\": \"+56994327433\",\n            \"created_at\": \"2025-11-12T18:21:54.019345Z\"\n        },\n        {\n            \"id\": \"ca5775e7-3b19-4e5e-935b-2b83a5aca9ff\",\n            \"fullname\": \"Beatriz Castañeda\",\n            \"email\": \"beatriz.castañeda@censudex.cl\",\n            \"username\": \"Beatriz69\",\n            \"status\": true,\n            \"birthdate\": \"1989-11-18\",\n            \"address\": \"Mercado Timoteo, 1 Puerta 201, El Ejido, Alemania\",\n            \"phonenumber\": \"+56984667467\",\n            \"created_at\": \"2025-11-12T18:21:54.160449Z\"\n        },\n        {\n            \"id\": \"4c1c018c-2a66-44a3-8f23-fa1da977dbd5\",\n            \"fullname\": \"Miguel Berríos\",\n            \"email\": \"miguel.berríos@censudex.cl\",\n            \"username\": \"Miguel_Berrios92\",\n            \"status\": true,\n            \"birthdate\": \"1989-05-01\",\n            \"address\": \"Avenida Marco Antonio s/n. Esc. 632, Santa Lucía de Tirajana, Angola\",\n            \"phonenumber\": \"+56996374538\",\n            \"created_at\": \"2025-11-12T18:21:54.300898Z\"\n        },\n        {\n            \"id\": \"ecb494f8-2cea-4001-b67e-a9677e66a618\",\n            \"fullname\": \"Marco Antonio Delafuente\",\n            \"email\": \"marco antonio.delafuente@censudex.cl\",\n            \"username\": \"MarcoAntonio78\",\n            \"status\": true,\n            \"birthdate\": \"1976-07-30\",\n            \"address\": \"Avenida Guadalupe Briseño, 5, Alcoy, Pakistan\",\n            \"phonenumber\": \"+56921531188\",\n            \"created_at\": \"2025-11-12T18:21:54.441708Z\"\n        },\n        {\n            \"id\": \"8ccef88d-7f1e-4ec0-954d-1b7cd10a2778\",\n            \"fullname\": \"Esteban Ocasio\",\n            \"email\": \"esteban.ocasio@censudex.cl\",\n            \"username\": \"Esteban_Ocasio10\",\n            \"status\": true,\n            \"birthdate\": \"1992-09-11\",\n            \"address\": \"Masía Manuel s/n., Cerdañola del Vallés, Bosnia Herzegovina\",\n            \"phonenumber\": \"+56917017807\",\n            \"created_at\": \"2025-11-12T18:21:54.588790Z\"\n        },\n        {\n            \"id\": \"337d72f3-fbb5-4b30-a4da-b953f8a525ff\",\n            \"fullname\": \"Concepción Rojas\",\n            \"email\": \"concepción.rojas@censudex.cl\",\n            \"username\": \"Concepcion47\",\n            \"status\": true,\n            \"birthdate\": \"1991-06-02\",\n            \"address\": \"Grupo Miguel, 23, Jerez de la Frontera, Finlandia\",\n            \"phonenumber\": \"+56963419486\",\n            \"created_at\": \"2025-11-12T18:21:54.749596Z\"\n        },\n        {\n            \"id\": \"3d5201e3-e277-43ab-8436-de5631e22edf\",\n            \"fullname\": \"Marilú Olivares\",\n            \"email\": \"marilú.olivares@censudex.cl\",\n            \"username\": \"Marilu23\",\n            \"status\": true,\n            \"birthdate\": \"1985-04-07\",\n            \"address\": \"Calleja Vicente Méndez, 1, La Línea de la Concepción, Malawi\",\n            \"phonenumber\": \"+56953210925\",\n            \"created_at\": \"2025-11-12T18:21:54.890280Z\"\n        },\n        {\n            \"id\": \"78bf2aca-c3e2-4dc8-964c-0ade267934cf\",\n            \"fullname\": \"Miguel Ángel Rosales\",\n            \"email\": \"miguel ángel.rosales@censudex.cl\",\n            \"username\": \"MiguelAngel85\",\n            \"status\": true,\n            \"birthdate\": \"1963-03-24\",\n            \"address\": \"Salida Ramona Serrano, 6 Puerta 868, Toledo, Canada\",\n            \"phonenumber\": \"+56929399452\",\n            \"created_at\": \"2025-11-12T18:21:55.031461Z\"\n        },\n        {\n            \"id\": \"661a79d6-5186-4bd9-b222-10e05db248ba\",\n            \"fullname\": \"Daniel Espino\",\n            \"email\": \"daniel.espino@censudex.cl\",\n            \"username\": \"Daniel_Espino2\",\n            \"status\": true,\n            \"birthdate\": \"1991-01-05\",\n            \"address\": \"Lugar Mateo Caldera 14, Lorca, Cabo Verde\",\n            \"phonenumber\": \"+56913140420\",\n            \"created_at\": \"2025-11-12T18:21:55.172922Z\"\n        },\n        {\n            \"id\": \"9d5c0c13-d09c-48e1-b7d8-24ce35abdcfe\",\n            \"fullname\": \"Esteban Moreno\",\n            \"email\": \"esteban.moreno@censudex.cl\",\n            \"username\": \"Esteban.Moreno40\",\n            \"status\": true,\n            \"birthdate\": \"1958-12-29\",\n            \"address\": \"Ronda Conchita Orellana 1 Esc. 318, Lugo, Dominica\",\n            \"phonenumber\": \"+56941521120\",\n            \"created_at\": \"2025-11-12T18:21:55.314021Z\"\n        },\n        {\n            \"id\": \"bd1d6ddd-ca8e-4f81-88ac-63c05fd0ff06\",\n            \"fullname\": \"Marta Gallegos\",\n            \"email\": \"marta.gallegos@censudex.cl\",\n            \"username\": \"Marta.Gallegos\",\n            \"status\": true,\n            \"birthdate\": \"1963-08-20\",\n            \"address\": \"Aldea Leticia Espinoza, 1 Esc. 240, Lérida, Groenlandia\",\n            \"phonenumber\": \"+56972044770\",\n            \"created_at\": \"2025-11-12T18:21:55.454823Z\"\n        },\n        {\n            \"id\": \"ce218aa7-b364-43cf-99f3-5b87a86fb602\",\n            \"fullname\": \"Óscar Miranda\",\n            \"email\": \"óscar.miranda@censudex.cl\",\n            \"username\": \"Oscar87\",\n            \"status\": true,\n            \"birthdate\": \"1973-11-30\",\n            \"address\": \"Apartamento Victoria s/n. Esc. 781, Sabadell, Jamaica\",\n            \"phonenumber\": \"+56975072821\",\n            \"created_at\": \"2025-11-12T18:21:55.595705Z\"\n        },\n        {\n            \"id\": \"e6297632-760a-4e4d-a07a-8aa145fece54\",\n            \"fullname\": \"Berta Alicea\",\n            \"email\": \"berta.alicea@censudex.cl\",\n            \"username\": \"Berta_Alicea\",\n            \"status\": true,\n            \"birthdate\": \"2002-01-13\",\n            \"address\": \"Senda Gloria Barela, 7, Alcalá de Guadaira, Barein\",\n            \"phonenumber\": \"+56937376370\",\n            \"created_at\": \"2025-11-12T18:21:55.736224Z\"\n        },\n        {\n            \"id\": \"6317c524-139a-4c3d-a988-812259152248\",\n            \"fullname\": \"Natalia Estrada\",\n            \"email\": \"natalia.estrada@censudex.cl\",\n            \"username\": \"Natalia.Estrada\",\n            \"status\": true,\n            \"birthdate\": \"1972-06-27\",\n            \"address\": \"Pasaje Lola Carrillo, 2 Esc. 008, Collado Villalba, Turquia\",\n            \"phonenumber\": \"+56981074126\",\n            \"created_at\": \"2025-11-12T18:21:55.882920Z\"\n        },\n        {\n            \"id\": \"b290c55a-dcfa-4630-bd90-66ba21598bc3\",\n            \"fullname\": \"Enrique Blanco\",\n            \"email\": \"enrique.blanco@censudex.cl\",\n            \"username\": \"Enrique.Blanco30\",\n            \"status\": true,\n            \"birthdate\": \"1957-11-27\",\n            \"address\": \"Travesía Marcos 3, Avilés, Ucrania\",\n            \"phonenumber\": \"+56943620024\",\n            \"created_at\": \"2025-11-12T18:21:56.027915Z\"\n        },\n        {\n            \"id\": \"227b2f5c-b019-4337-a700-07fa291b3bf8\",\n            \"fullname\": \"Francisco Véliz\",\n            \"email\": \"francisco.véliz@censudex.cl\",\n            \"username\": \"Francisco60\",\n            \"status\": true,\n            \"birthdate\": \"1997-08-07\",\n            \"address\": \"Caserio Carla Madrigal s/n., Burgos, Namibia\",\n            \"phonenumber\": \"+56945420291\",\n            \"created_at\": \"2025-11-12T18:21:56.168948Z\"\n        },\n        {\n            \"id\": \"f68fd185-215d-4e36-9ec8-b7b9521306f4\",\n            \"fullname\": \"Estela Ybarra\",\n            \"email\": \"estela.ybarra@censudex.cl\",\n            \"username\": \"Estela36\",\n            \"status\": true,\n            \"birthdate\": \"1990-03-11\",\n            \"address\": \"Explanada Daniel Verdugo, 29, Santa Coloma de Gramanet, Uruguay\",\n            \"phonenumber\": \"+56921131960\",\n            \"created_at\": \"2025-11-12T18:21:56.450033Z\"\n        },\n        {\n            \"id\": \"3343a32f-f071-463c-8373-f78996a0b7df\",\n            \"fullname\": \"Rafael Quiñónez\",\n            \"email\": \"rafael.quiñónez@censudex.cl\",\n            \"username\": \"Rafael67\",\n            \"status\": true,\n            \"birthdate\": \"2007-01-07\",\n            \"address\": \"Salida Gabriel Escobar, 1 Esc. 857, Segovia, Argelia\",\n            \"phonenumber\": \"+56988986814\",\n            \"created_at\": \"2025-11-12T18:21:56.590483Z\"\n        },\n        {\n            \"id\": \"3e31a1b6-a649-4bd7-92cd-7d693c67d46f\",\n            \"fullname\": \"Administrador Censudex\",\n            \"email\": \"admin@censudex.cl\",\n            \"username\": \"adminCensudex\",\n            \"status\": true,\n            \"birthdate\": \"2000-01-01\",\n            \"address\": \"Censudex Headquarters\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-12T18:21:56.730348Z\"\n        },\n        {\n            \"id\": \"4eaf5c44-4ff9-4545-a6f3-854af3d5f034\",\n            \"fullname\": \"alexander brandon sepulveda bastias\",\n            \"email\": \"alexander@censudex.cl\",\n            \"username\": \"alex5rojito\",\n            \"status\": true,\n            \"birthdate\": \"2004-10-10\",\n            \"address\": \"pampa union 14500\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-12T19:27:01.103138Z\"\n        },\n        {\n            \"id\": \"ee1368dd-225b-4d72-96d6-61807f7bc631\",\n            \"fullname\": \"alexander brandon sepulveda bastias\",\n            \"email\": \"alexandser@censudex.cl\",\n            \"username\": \"alex5rsojito\",\n            \"status\": true,\n            \"birthdate\": \"2004-10-10\",\n            \"address\": \"pampa union 14500\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-13T01:58:13.402801Z\"\n        },\n        {\n            \"id\": \"5e036888-8a64-4066-befa-bd6ae0e83241\",\n            \"fullname\": \"Pepito Brandon Los Palotes\",\n            \"email\": \"pepito@censudex.cl\",\n            \"username\": \"pepito5\",\n            \"status\": true,\n            \"birthdate\": \"2004-10-10\",\n            \"address\": \"Avenida union 14500\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-14T00:22:10.662218Z\"\n        },\n        {\n            \"id\": \"b2a3eab0-f471-46ad-a135-b437c7205926\",\n            \"fullname\": \"Pepito Brandon Los Palotes\",\n            \"email\": \"pepito2@censudex.cl\",\n            \"username\": \"pepito52\",\n            \"status\": true,\n            \"birthdate\": \"2004-10-10\",\n            \"address\": \"Avenida union 14500\",\n            \"phonenumber\": \"+56912345678\",\n            \"created_at\": \"2025-11-14T00:24:10.738440Z\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Get clients 200 with filters",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients?emailfilter=rodrigo&namefilter=rodrigo&statusfilter=true&usernamefilter=2",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"query": [
+										{
+											"key": "emailfilter",
+											"value": "rodrigo"
+										},
+										{
+											"key": "namefilter",
+											"value": "rodrigo"
+										},
+										{
+											"key": "statusfilter",
+											"value": "true"
+										},
+										{
+											"key": "usernamefilter",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:28:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "326"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "b865de86-6b5c-4ad4-9f84-95b8957b9fa2"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080081"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"clients\": [\n        {\n            \"id\": \"d530e9b2-0c2b-4622-95a4-d9733abe31a1\",\n            \"fullname\": \"Rodrigo Barajas\",\n            \"email\": \"rodrigo.barajas@censudex.cl\",\n            \"username\": \"Rodrigo21\",\n            \"status\": true,\n            \"birthdate\": \"1973-04-14\",\n            \"address\": \"Arrabal Gilberto s/n. Puerta 367, Torrelavega, Barein\",\n            \"phonenumber\": \"+56957252415\",\n            \"created_at\": \"2025-11-12T18:21:42.264904Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get client",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+							"host": [
+								"{{API_G_URL}}clients"
+							],
+							"path": [
+								"{{CLIENT_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get client 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:25:24 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "323"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "a4dfe197-608b-445a-a3f1-aba584f51397"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763079925"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"client\": {\n        \"id\": \"d530e9b2-0c2b-4622-95a4-d9733abe31a1\",\n        \"fullname\": \"Rodrigo Barajas\",\n        \"email\": \"rodrigo.barajas@censudex.cl\",\n        \"username\": \"Rodrigo21\",\n        \"status\": true,\n        \"birthdate\": \"1973-04-14\",\n        \"address\": \"Arrabal Gilberto s/n. Puerta 367, Torrelavega, Barein\",\n        \"phonenumber\": \"+56957252415\",\n        \"created_at\": \"2025-11-12T18:21:42.264904Z\"\n    }\n}"
+						},
+						{
+							"name": "Get client 404",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:33:45 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "179"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "0bfd004d-1802-4663-9124-37490d50a987"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080426"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"details\": \"Usuario no encontrado\"\n    },\n    \"status_code\": 404,\n    \"timestamp\": \"2025-11-14T00:33:45.748419\",\n    \"path\": \"http://localhost/api/clients/eb8d13e5-4f00-44ad-94c0-6fa93a6851c0\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update client",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"names\": \"alexander brandon\",\r\n  \"lastnames\": \"sepulveda bastias\",\r\n  \"email\": \"pepisto@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"pampa union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+							"host": [
+								"{{API_G_URL}}clients"
+							],
+							"path": [
+								"{{CLIENT_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update client 200",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"alexander brandon\",\r\n  \"lastnames\": \"sepulveda bastias\",\r\n  \"email\": \"alexandder@censudex.cl\",\r\n  \"username\": \"alex5drojito\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"pampa union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:34:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "1b14a439-6e16-4362-9d1c-e5222d5421f3"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080461"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Cliente actualizado exitosamente\"\n}"
+						},
+						{
+							"name": "Update client 400 email already taken",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"alexander brandon\",\r\n  \"lastnames\": \"sepulveda bastias\",\r\n  \"email\": \"pepito@censudex.cl\",\r\n  \"username\": \"alex5drojito\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"pampa union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:34:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "225"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "ed983798-1c99-4cf6-a358-e12f1da50d4c"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080483"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"message\": \"Error de formato\",\n        \"details\": \"El correo electrónico ya está en uso\"\n    },\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:34:42.919539\",\n    \"path\": \"http://localhost/api/clients/97514129-c6cb-4de7-9714-54a1daef861b\"\n}"
+						},
+						{
+							"name": "Update client 400 username already taken",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"names\": \"alexander brandon\",\r\n  \"lastnames\": \"sepulveda bastias\",\r\n  \"email\": \"pepisto@censudex.cl\",\r\n  \"username\": \"pepito5\",\r\n  \"birthdate\": \"10-10-2004\",\r\n  \"address\": \"pampa union 14500\",\r\n  \"phonenumber\": \"+56912345678\",\r\n  \"password\": \"Contraseña-1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:35:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "255"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "be76c51d-097d-4918-b0f4-0d3c48b24d32"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080510"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": {\n        \"message\": \"Error de formato\",\n        \"details\": \"Error al actualizar el usuario: Username 'pepito5' is already taken.\"\n    },\n    \"status_code\": 400,\n    \"timestamp\": \"2025-11-14T00:35:10.036008\",\n    \"path\": \"http://localhost/api/clients/97514129-c6cb-4de7-9714-54a1daef861b\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+						},
+						"url": {
+							"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+							"host": [
+								"{{API_G_URL}}clients"
+							],
+							"path": [
+								"{{CLIENT_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete client 200",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:35:58 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "550194ff-0184-47c6-9ca9-da34ca16afa3"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080558"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Cliente eliminado exitosamente\"\n}"
+						},
+						{
+							"name": "Delete client 401",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"adminCensudex\",\r\n    \"password\": \"Admin1234!\"\r\n}"
+								},
+								"url": {
+									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
+									"host": [
+										"{{API_G_URL}}clients"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.29.3"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 14 Nov 2025 00:35:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "158"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-request-id",
+									"value": "894235f0-42e9-46a7-b4ab-e55c3136a367"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763080536"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Unauthorized\",\n    \"status_code\": 401,\n    \"timestamp\": \"2025-11-14T00:35:35.882316\",\n    \"path\": \"http://localhost/api/clients/97514129-c6cb-4de7-9714-54a1daef861b\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

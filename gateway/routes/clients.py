@@ -196,25 +196,29 @@ def create_clients_router(service_url: str) -> APIRouter:
     """
     @router.get("/clients/{id}")
     def get_client_by_id_endpoint(id: str):
-        # Get client by ID
-        response = getById(id).User
-        # Handle client not found
-        if not response:
-            raise HTTPException(status_code=404, detail="Cliente no encontrado")
-        # Return the client data
-        return {
-            "client": user(
-                id=response.id,
-                fullname=response.fullname,
-                email=response.email,
-                username=response.username,
-                status=response.status,
-                birthdate=response.birthdate,
-                address=response.address,
-                phonenumber=response.phonenumber,
-                created_at=response.createdat
-            )
-        }
+        # Try to update the client and handle gRPC errors
+        try:
+            response = getById(id).User
+            # Handle client not found
+            if not response or response.id == "":
+                raise HTTPException(status_code=404, detail="Cliente no encontrado")
+            # Return the client data
+            return {
+                "client": user(
+                    id=response.id,
+                    fullname=response.fullname,
+                    email=response.email,
+                    username=response.username,
+                    status=response.status,
+                    birthdate=response.birthdate,
+                    address=response.address,
+                    phonenumber=response.phonenumber,
+                    created_at=response.createdat
+                )
+            }
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.NOT_FOUND:
+                raise HTTPException(status_code=404, detail={"details": e.details()})
     """
     Update client endpoint.
     """
