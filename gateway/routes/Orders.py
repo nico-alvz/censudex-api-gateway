@@ -18,14 +18,10 @@ class CreateOrderPayload(BaseModel):
     items: list[OrderItemPayload]
 
 class ChangeOrderStatePayload(BaseModel):
-    identifier: str
     orderStatus: str
     trackingNumber: str | None = ""
-    userEmail: str | None
 
 class CancelOrderPayload(BaseModel):
-    identifier: str
-    userEmail: str
     reason: str | None = ""
 
 
@@ -38,7 +34,7 @@ def create_orders_router(service_url: str) -> APIRouter:
     grpc_target_url = service_url.replace("http://", "").replace("https://", "")
 
 
-    @router.post("/")
+    @router.post("/orders")
     def create_order(order: CreateOrderPayload):
      
         try:
@@ -72,7 +68,7 @@ def create_orders_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail=str(e))
 
 
-    @router.get("/status/{identifier}")
+    @router.get("/orders/{identifier}")
     def get_order_status(identifier: str):
     
         try:
@@ -88,19 +84,18 @@ def create_orders_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=503, detail=f"Service error ({e.code()}): {e.details()}")
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
-
-    @router.put("/change-state")
-    def change_order_state(data: ChangeOrderStatePayload):
+    
+    @router.put("/orders/{identifier}/status")
+    def change_order_state(identifier: str, data: ChangeOrderStatePayload):
         
         try:
             with grpc.insecure_channel(grpc_target_url) as channel:
                 stub = order_pb2_grpc.OrderServiceStub(channel)
                 
                 request = order_pb2.ChangeOrderStateRequest(
-                    identifier=data.identifier,
+                    identifier=identifier,
                     order_status=data.orderStatus,
                     tracking_number=data.trackingNumber,
-                    UserEmail=data.userEmail
                 )
                 
                 response = stub.ChangeOrderState(request, timeout=5)
@@ -113,16 +108,15 @@ def create_orders_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail=str(e))
 
 
-    @router.post("/cancel")
-    def cancel_order(data: CancelOrderPayload):
+    @router.patch("/orders/{identifier}")
+    def cancel_order(identifier: str, data: CancelOrderPayload):
   
         try:
             with grpc.insecure_channel(grpc_target_url) as channel:
                 stub = order_pb2_grpc.OrderServiceStub(channel)
                 
                 request = order_pb2.CancelOrderRequest(
-                    identifier=data.identifier,
-                    UserEmail=data.userEmail,
+                    identifier=identifier,
                     reason=data.reason
                 )
                 
@@ -137,7 +131,7 @@ def create_orders_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail=str(e))
 
 
-    @router.get("/user/{userId}")
+    @router.get("/orders/user/{userId}")
     def get_user_orders(
         userId: str, 
         orderIdentifier: str | None = Query(None),
@@ -167,7 +161,7 @@ def create_orders_router(service_url: str) -> APIRouter:
             raise HTTPException(status_code=500, detail=str(e))
 
 
-    @router.get("/admin")
+    @router.get("/orders")
     def get_admin_orders(
         userIdentifier: str | None = Query(None),
         orderIdentifier: str | None = Query(None),
