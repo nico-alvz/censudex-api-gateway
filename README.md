@@ -56,7 +56,8 @@ El **API Gateway** actúa como punto único de entrada, gestionando autenticaci�
 
 | Servicio | Responsable | Base de Datos | Puerto | Estado | Endpoints |
 |----------|--------------|---------------|--------|---------|------------|
-| **Clients Service** | Developer A | PostgreSQL (Render) | 8002 | 🔄 En desarrollo | `/clients` |
+| **Clients Service** | Alberto Lyons | PostgreSQL | 5000 | ✅ Implementado | `/clients` |
+| **Auth Service** | Alberto Lyons | No utiliza | 5001 | ✅ Implementado | `/auth` |
 | **Products Service** | Developer B | MongoDB (Atlas) | 8005 | 🔄 En desarrollo | `/products` |
 | **Inventory Service** | Developer C | PostgreSQL (Supabase) | 8001 | ✅ Implementado | `/inventory` |
 | **Orders Service** | Developer D | MySQL (Railway) | 8004 | 🔄 En desarrollo | `/orders` |
@@ -81,11 +82,17 @@ El **API Gateway** actúa como punto único de entrada, gestionando autenticaci�
 
 #### Clients Service
 ```http
-POST   /api/v1/clients
-GET    /api/v1/clients
-GET    /api/v1/clients/{id}
-PATCH  /api/v1/clients/{id}
-DELETE /api/v1/clients/{id}
+POST   /api/clients
+GET    /api/clients
+GET    /api/clients/{id}
+PATCH  /api/clients/{id}
+DELETE /api/clients/{id}
+```
+#### Auth Service
+```http
+POST   /api/login
+GET    /api/validate-token
+POST   /api/logout
 ```
 
 #### Products Service
@@ -139,7 +146,7 @@ docker-compose up -d
 ```
 
 ### Acceso
-- **API Gateway (Nginx)** → http://localhost  
+- **API Gateway (Nginx)** → http://localhost:80  
 - **FastAPI Gateway Service** → http://localhost:8000  
 - **Swagger Docs** → http://localhost:8000/docs  
 - **RabbitMQ Management** → http://localhost:15672  
@@ -210,9 +217,11 @@ Pipeline automatizado que incluye:
 |-----------|-------------|
 | **Gateway** | [censudex-api-gateway](https://github.com/nico-alvz/censudex-api-gateway) |
 | **Inventory** | [censudex-inventory-service](https://github.com/nico-alvz/censudex-inventory-service) |
-| **Clients** | [censudex-clients](https://github.com/estudiante-a/censudex-clients) |
+| **Clients** | [censudex-clients](https://github.com/AlbertoLyons/censudex-clients-service) |
 | **Products** | [censudex-products](https://github.com/estudiante-b/censudex-products) |
 | **Orders** | [censudex-orders](https://github.com/estudiante-d/censudex-orders) |
+| **Auth** | [censudex-auth](https://github.com/AlbertoLyons/censudex-auth-service) |
+
 
 ---
 
