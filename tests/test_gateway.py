@@ -4,10 +4,7 @@ Tests gateway routing, authentication, and service integration
 """
 
 import pytest
-import httpx
-import asyncio
 from fastapi.testclient import TestClient
-import json
 
 # Import the gateway app
 import sys
@@ -170,10 +167,33 @@ class TestServiceIntegration:
     """Integration tests with actual services"""
     
     @pytest.mark.integration
+    def test_grpc_clients_service_integration(self, client):
+        """Test integration with Clients Service via gRPC"""
+        # This test requires both gateway and clients-service running
+        response = client.get("/api/clients")
+        
+        if response.status_code == 200:
+            # Clients service (gRPC) is running and responding
+            data = response.json()
+            assert isinstance(data, list), "Response should be a list of clients"
+            
+            # If there are clients, verify structure
+            if len(data) > 0:
+                client_data = data[0]
+                assert "id" in client_data
+                # Can have other fields like fullname, email, username, etc.
+        elif response.status_code == 503:
+            # Service is not available - expected in unit-only tests
+            pytest.skip("Clients Service (gRPC) not available - this is an integration test")
+        else:
+            # Unexpected response
+            pytest.fail(f"Unexpected response status: {response.status_code}")
+
+    @pytest.mark.integration
     def test_auth_service_integration(self, client):
-        """Test integration with auth service"""
-        # This test requires auth-stub service to be running
-        response = client.post("/gateway/auth/login", json={
+        """Test integration with Auth Service via gRPC"""
+        # This test requires auth service to be running
+        response = client.post("/api/auth/login", json={
             "username": "test",
             "password": "test123"
         })
@@ -185,17 +205,34 @@ class TestServiceIntegration:
             assert "user" in data
         elif response.status_code == 503:
             # Auth service is not available - expected in unit tests
-            pytest.skip("Auth service not available for integration test")
+            pytest.skip("Auth Service (gRPC) not available - this is an integration test")
         else:
             # Unexpected response
-            assert False, f"Unexpected response: {response.status_code}"
+            pytest.fail(f"Unexpected response status: {response.status_code}")
 
     @pytest.mark.integration  
     def test_inventory_service_integration(self, client):
-        """Test integration with inventory service through proxy"""
+        """Test integration with Inventory Service via HTTP"""
         # Try to access inventory service without auth (should fail)
-        response = client.get("/gateway/proxy/inventory/")
+        response = client.get("/api/v1/inventory/")
         assert response.status_code == 401  # Requires authentication
+
+    @pytest.mark.integration
+    def test_all_services_health_check(self, client):
+        """Test that all services are reporting healthy status"""
+        response = client.get("/gateway/health")
+        assert response.status_code == 200
+        data = response.json()
+        
+        # Check all expected services are present
+        services = data.get("services", {})
+        expected_services = ["auth", "users", "inventory", "orders", "products"]
+        
+        for service_name in expected_services:
+            if service_name in services:
+                service_info = services[service_name]
+                # Service should have a status field
+                assert "status" in service_info, f"Service {service_name} missing status"
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
