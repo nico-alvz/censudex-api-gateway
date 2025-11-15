@@ -3,6 +3,9 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from google.protobuf.json_format import MessageToDict
 from pb2 import order_pb2, order_pb2_grpc
+from fastapi.security import HTTPAuthorizationCredentials
+from fastapi import Depends
+from gateway.auth.authorize import authorize
 
 # --------------------------- #
 #        MODELOS Pydantic     #
@@ -114,7 +117,7 @@ def create_orders_router(service_url: str) -> APIRouter:
     # PUT /orders/{identifier}/status → Cambiar estado de una orden (Admin)
     # --------------------------------------------------------------------------
     @router.put("/orders/{identifier}/status")
-    def change_order_state(identifier: str, data: ChangeOrderStatePayload):
+    def change_order_state(identifier: str, data: ChangeOrderStatePayload, token: HTTPAuthorizationCredentials = Depends(authorize("Admin"))):
         """
         Cambia el estado de una orden (por ejemplo: 'Shipped', 'Delivered').
         También permite adjuntar el número de seguimiento si aplica.
@@ -211,7 +214,8 @@ def create_orders_router(service_url: str) -> APIRouter:
         userIdentifier: str | None = Query(None),
         orderIdentifier: str | None = Query(None),
         initialDate: str | None = Query(None),
-        finishDate: str | None = Query(None)
+        finishDate: str | None = Query(None),
+        token: HTTPAuthorizationCredentials = Depends(authorize("Admin"))
     ):
         """
         Obtiene órdenes para uso administrativo.  
