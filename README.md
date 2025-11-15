@@ -60,7 +60,7 @@ El **API Gateway** actúa como punto único de entrada, gestionando autenticaci�
 | **Auth Service** | Alberto Lyons | No utiliza | 5001 | ✅ Implementado | `/auth` |
 | **Products Service** | Developer B | MongoDB (Atlas) | 8005 | 🔄 En desarrollo | `/products` |
 | **Inventory Service** | Developer C | PostgreSQL (Supabase) | 8001 | ✅ Implementado | `/inventory` |
-| **Orders Service** | Developer D | MySQL (Railway) | 8004 | 🔄 En desarrollo | `/orders` |
+| **Orders Service** | Developer D | MySQL (Railway) | 5206 | 🔄 En desarrollo | `/orders` |
 
 ---
 
@@ -116,6 +116,7 @@ PATCH  /api/v1/inventory/{id}
 POST   /api/v1/orders
 GET    /api/v1/orders
 GET    /api/v1/orders/{id}
+GET    /api/v1/orders/user/{id}
 PUT    /api/v1/orders/{id}/status
 PATCH  /api/v1/orders/{id}
 ```
