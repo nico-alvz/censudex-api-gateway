@@ -91,15 +91,15 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "auth": {
-        "url": "http://localhost:5001", 
-        "health_endpoint": "/health",
+        "url": "auth-service:5001", 
+        "health_endpoint": "/",
         "prefix": "/api/v1/auth",
         "requires_auth": False,
         "timeout": 10
     },
     "users": {
-        "url": "localhost:5000",
-        "health_endpoint": "/health", 
+        "url": "clients-service:5002",
+        "health_endpoint": "/", 
         "prefix": "/api/v1/users",
         "requires_auth": True,
         "timeout": 30
@@ -142,14 +142,54 @@ async def check_services_health() -> Dict[str, Any]:
         for service_name, config in SERVICE_REGISTRY.items():
             try:
                 health_url = f"{config['url']}{config['health_endpoint']}"
-                response = await client.get(health_url, timeout=5.0)
                 
-                services_health[service_name] = {
-                    "status": "healthy" if response.status_code == 200 else "unhealthy",
-                    "url": config['url'],
-                    "response_time": response.elapsed.total_seconds(),
-                    "last_check": datetime.utcnow().isoformat()
-                }
+                # Skip gRPC services (auth and users) - just mark as healthy if we can connect
+                if service_name in ['auth', 'users']:
+                    # For gRPC services, try to connect to the port
+                    try:
+                        import socket
+                        url_parts = config['url'].replace('http://', '').split(':')
+                        hostname = url_parts[0]
+                        port = int(url_parts[1]) if len(url_parts) > 1 else 5000
+                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        sock.settimeout(2)
+                        result = sock.connect_ex((hostname, port))
+                        sock.close()
+                        
+                        if result == 0:
+                            services_health[service_name] = {
+                                "status": "healthy",
+                                "url": config['url'],
+                                "type": "gRPC",
+                                "last_check": datetime.utcnow().isoformat()
+                            }
+                        else:
+                            services_health[service_name] = {
+                                "status": "unhealthy",
+                                "url": config['url'],
+                                "error": "Port unreachable",
+                                "type": "gRPC",
+                                "last_check": datetime.utcnow().isoformat()
+                            }
+                    except Exception as e:
+                        services_health[service_name] = {
+                            "status": "unhealthy",
+                            "url": config['url'],
+                            "error": str(e),
+                            "type": "gRPC",
+                            "last_check": datetime.utcnow().isoformat()
+                        }
+                else:
+                    # HTTP services
+                    response = await client.get(health_url, timeout=5.0)
+                    
+                    services_health[service_name] = {
+                        "status": "healthy" if response.status_code == 200 else "unhealthy",
+                        "url": config['url'],
+                        "response_time": response.elapsed.total_seconds(),
+                        "type": "HTTP",
+                        "last_check": datetime.utcnow().isoformat()
+                    }
             except Exception as e:
                 services_health[service_name] = {
                     "status": "unhealthy",
