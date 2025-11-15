@@ -24,6 +24,7 @@ wheels/
 venv/
 env/
 ENV/
+.censudex-api-gateway/*
 
 # Environment variables
 .env

@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+option csharp_namespace = "UserProto";
+
+package User;
+
+message User {
+    string id = 1;
+    string fullname = 2;
+    string email = 3;
+    string username = 4;
+    bool status = 5;
+    string birthdate = 6;
+    string address = 7;
+    string phonenumber = 8;
+    string createdat = 9;
+}   
+
+message Empty {}
+
+message GetAllRequest {
+    optional string namefilter = 1;
+    optional string emailfilter = 2;
+    optional string statusfilter = 3;
+    optional string usernamefilter = 4;
+}
+
+message GetAllResponse {
+    repeated User Users = 1;
+}
+
+message CreateUserRequest {
+    string names = 1;
+    string lastnames = 2;
+    string email = 3;
+    string username = 4;
+    string birthdate = 5;
+    string address = 6;
+    string phonenumber = 7;
+    string password = 8;
+}
+message CreateUserResponse {
+    string message = 1;
+}
+
+message GetUserByIdRequest {
+    string id = 1;
+}
+message GetUserByIdResponse {
+    User User = 1;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string names = 2;
+    string lastnames = 3;
+    string email = 4;
+    string username = 5;
+    string birthdate = 6;
+    string address = 7;
+    string phonenumber = 8;
+    optional string password = 9;
+}
+message UpdateUserResponse {
+    string message = 1;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
+message DeleteUserResponse {
+    string message = 1;
+}
+
+message SendEmailRequest {
+    string fromemail = 1;
+    string toemail = 2;
+    string subject = 3;
+    string plaintextcontent = 4;
+    string htmlcontent = 5;
+}
+
+message SendEmailResponse {
+    string message = 1;
+}
+
+message VerifyCredentialsRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message VerifyCredentialsResponse {
+    string id = 1;
+    repeated string roles = 2;
+}
+
+service UserService {
+    rpc Create (CreateUserRequest) returns (CreateUserResponse);
+    rpc GetAll (GetAllRequest) returns (GetAllResponse);
+    rpc GetById (GetUserByIdRequest) returns (GetUserByIdResponse);
+    rpc Update (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc Delete (DeleteUserRequest) returns (DeleteUserResponse);
+    rpc SendEmail (SendEmailRequest) returns (SendEmailResponse);
+    rpc VerifyCredentials (VerifyCredentialsRequest) returns (VerifyCredentialsResponse);
+}
+
