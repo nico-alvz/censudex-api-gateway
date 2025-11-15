@@ -101,8 +101,8 @@ services:
 
   gateway:
     build:
-      context: ./gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: gateway/Dockerfile
     container_name: censudx_gateway
     environment:
       - JWT_SECRET_KEY=censudx-gateway-super-secret-key-change-in-production
