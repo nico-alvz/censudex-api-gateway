@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Starting API Gateway services..."
-
-# Start RabbitMQ consumer worker in background
-echo "Starting RabbitMQ event consumer..."
-python worker.py &
-WORKER_PID=$!
-echo "Worker started with PID: $WORKER_PID"
-
-# Start FastAPI application
-echo "Starting FastAPI application..."
+echo "Starting API Gateway with integrated RabbitMQ worker..."
+# Worker now runs as a background thread within FastAPI app
 exec python -m uvicorn gateway.main:app --host 0.0.0.0 --port 8000
