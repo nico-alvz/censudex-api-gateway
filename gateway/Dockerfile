@@ -18,8 +18,10 @@ COPY proto /app/proto
 RUN mkdir -p /app/pb2 && \
     python -m grpc_tools.protoc -I/app/proto --python_out=/app/pb2 --grpc_python_out=/app/pb2 /app/proto/user.proto && \
     python -m grpc_tools.protoc -I/app/proto --python_out=/app/pb2 --grpc_python_out=/app/pb2 /app/proto/order.proto && \
+    python -m grpc_tools.protoc -I/app/proto --python_out=/app/pb2 --grpc_python_out=/app/pb2 /app/proto/inventory.proto && \
     cd /app/pb2 && sed -i 's/^import user_pb2/from . import user_pb2/' user_pb2_grpc.py && \
     sed -i 's/^import order_pb2/from . import order_pb2/' order_pb2_grpc.py && \
+    sed -i 's/^import inventory_pb2/from . import inventory_pb2/' inventory_pb2_grpc.py && \
     touch /app/pb2/__init__.py
 
 # Copy gateway application code

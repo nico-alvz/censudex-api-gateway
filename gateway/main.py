@@ -22,6 +22,8 @@ from .routes.proxy import proxy_router
 from .routes import clients
 from .routes import auth
 from .routes import Orders
+from .routes.inventory import inventory_router
+from .routes.notifications import router as notifications_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -84,14 +86,16 @@ app.add_middleware(RateLimitingMiddleware)
 # Service registry for dynamic routing
 SERVICE_REGISTRY = {
     "inventory": {
-        "url": "http://inventory:8000",
+        "url": "inventory:50051",
+        "grpc": True,
+        "http_url": "http://inventory:8000",
         "health_endpoint": "/health",
         "prefix": "/api/v1/inventory",
         "requires_auth": True,
         "timeout": 30
     },
     "auth": {
-        "url": "auth-service:5001", 
+        "url": "http://auth-service:5001", 
         "health_endpoint": "/",
         "prefix": "/api/v1/auth",
         "requires_auth": False,
@@ -141,10 +145,10 @@ async def check_services_health() -> Dict[str, Any]:
     async with httpx.AsyncClient() as client:
         for service_name, config in SERVICE_REGISTRY.items():
             try:
-                health_url = f"{config['url']}{config['health_endpoint']}"
+                # Check if service is gRPC
+                is_grpc = config.get('grpc', False) or service_name in ['auth', 'users', 'inventory']
                 
-                # Skip gRPC services (auth and users) - just mark as healthy if we can connect
-                if service_name in ['auth', 'users']:
+                if is_grpc:
                     # For gRPC services, try to connect to the port
                     try:
                         import socket
@@ -181,6 +185,7 @@ async def check_services_health() -> Dict[str, Any]:
                         }
                 else:
                     # HTTP services
+                    health_url = f"{config['url']}{config['health_endpoint']}"
                     response = await client.get(health_url, timeout=5.0)
                     
                     services_health[service_name] = {
@@ -230,6 +235,10 @@ ROUTES
 # Include routers
 app.include_router(health_router, prefix="/gateway", tags=["gateway"])
 app.include_router(proxy_router, prefix="/gateway", tags=["proxy"])
+# Inventory gRPC router
+app.include_router(inventory_router, tags=["inventory"])
+# Notifications router
+app.include_router(notifications_router, tags=["notifications"])
 # Clients router
 clients_router = clients.create_clients_router(SERVICE_REGISTRY["users"]["url"])
 app.include_router(clients_router, prefix="/api", tags=["Clients"])
@@ -239,7 +248,6 @@ app.include_router(auth_router, prefix="/api", tags=["Auth"])
 
 Orders_router = Orders.create_orders_router(SERVICE_REGISTRY["orders"]["url"])
 app.include_router(Orders_router, prefix="/api", tags=["Orders"])
-# Auth router
 
 # Exception handlers
 @app.exception_handler(HTTPException)
