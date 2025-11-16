@@ -275,6 +275,61 @@ async def internal_server_error_handler(request: Request, exc: Exception):
         }
     )
 
+
+# Background worker for RabbitMQ
+import threading
+import os
+worker_thread = None
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background worker on app startup"""
+    global worker_thread
+    
+    def run_worker():
+        """Run the RabbitMQ worker in background"""
+        try:
+            from services.messaging import RabbitMQService
+            from services.event_consumer import get_event_consumer
+            
+            logger.info("Starting RabbitMQ worker thread...")
+            rabbitmq_url = os.getenv("RABBITMQ_URL", "amqp://censudx:censudx_password@rabbitmq:5672/censudx_vhost")
+            messaging_service = RabbitMQService(rabbitmq_url)
+            
+            if not messaging_service.connect():
+                logger.error("Failed to connect to RabbitMQ")
+                return
+            
+            consumer = get_event_consumer()
+            
+            # Register consumers
+            messaging_service.register_consumer(
+                "inventory_updates",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "low_stock_alerts",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "stock_validation",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "stock_reserved",
+                lambda msg: consumer.process_message(msg)
+            )
+            
+            logger.info("RabbitMQ worker started - listening for messages...")
+            messaging_service.start_consuming()
+        except Exception as e:
+            logger.error(f"Worker thread error: {e}", exc_info=True)
+    
+    worker_thread = threading.Thread(target=run_worker, daemon=True)
+    worker_thread.start()
+    logger.info("Background worker thread started")
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")

@@ -177,10 +177,19 @@ class RabbitMQService:
         for attempt in range(self.max_retries):
             try:
                 logger.info(f"Connecting to RabbitMQ (attempt {attempt + 1}/{self.max_retries})")
-                credentials = pika.PlainCredentials('guest', 'guest')
+                
+                # Parse RabbitMQ URL to extract connection parameters
+                import urllib.parse
+                parsed = urllib.parse.urlparse(self.rabbitmq_url)
+                
+                credentials = pika.PlainCredentials(
+                    parsed.username or 'guest',
+                    parsed.password or 'guest'
+                )
                 parameters = pika.ConnectionParameters(
-                    host='rabbitmq',
-                    port=5672,
+                    host=parsed.hostname or 'rabbitmq',
+                    port=parsed.port or 5672,
+                    virtual_host=parsed.path[1:] if parsed.path and len(parsed.path) > 1 else '/',
                     credentials=credentials,
                     connection_attempts=3,
                     retry_delay=2,
@@ -360,17 +369,28 @@ class RabbitMQService:
         def message_callback(ch, method, properties, body):
             try:
                 message = json.loads(body)
-                queue_name = method.routing_key.split('.')[1]  # Extract queue from routing key
+                # Get the queue name from the method (not from routing key)
+                queue_name = method.consumer_tag.split('_')[0] if '_' in method.consumer_tag else method.consumer_tag
                 
-                if queue_name in self.consumers:
-                    callback = self.consumers[queue_name]
+                # Try to find consumer by checking all registered consumers
+                # Match against queue config names
+                matched_consumer = None
+                for consumer_name, callback in self.consumers.items():
+                    queue_config = self.QUEUES.get(consumer_name)
+                    if queue_config and method.routing_key == queue_config['routing_key']:
+                        matched_consumer = (consumer_name, callback)
+                        break
+                
+                if matched_consumer:
+                    consumer_name, callback = matched_consumer
+                    logger.debug(f"Processing message from routing key: {method.routing_key} -> consumer: {consumer_name}")
                     callback(message)
                     ch.basic_ack(delivery_tag=method.delivery_tag)
                 else:
-                    logger.warning(f"No consumer registered for queue: {queue_name}")
+                    logger.warning(f"No consumer registered for routing key: {method.routing_key}")
                     ch.basic_nack(delivery_tag=method.delivery_tag)
             except Exception as e:
-                logger.error(f"Error processing message: {e}")
+                logger.error(f"Error processing message: {e}", exc_info=True)
                 ch.basic_nack(delivery_tag=method.delivery_tag)
         
         # Setup consumers
