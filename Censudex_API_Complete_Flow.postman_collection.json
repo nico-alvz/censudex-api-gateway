@@ -403,6 +403,18 @@
 					"name": "Check Stock Availability",
 					"event": [
 						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Use test_product_id if available, otherwise use PROD002 as fallback",
+									"if (!pm.environment.get(\"test_product_id\")) {",
+									"    pm.environment.set(\"test_product_id\", \"PROD002\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
 							"listen": "test",
 							"script": {
 								"exec": [
@@ -416,6 +428,7 @@
 									"    pm.expect(jsonData).to.have.property('current_stock');",
 									"    pm.expect(jsonData).to.have.property('available_stock');",
 									"    pm.expect(jsonData).to.have.property('requested_quantity');",
+									"    pm.expect(jsonData.requested_quantity).to.eql(10);",
 									"});"
 								],
 								"type": "text/javascript"
