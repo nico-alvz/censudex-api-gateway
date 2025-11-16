@@ -70,15 +70,15 @@ El **API Gateway** actúa como punto único de entrada, gestionando autenticaci�
 
 ## 🧱 Servicios Disponibles
 
-| Servicio | Protocolo | BD | Puerto | Estado | Endpoints |
-|----------|-----------|-----|--------|----------|-----------|
-| **Auth Service** | gRPC | N/A | 5001 | ✅ Operativo | gRPC methods |
-| **Clients Service** | gRPC | PostgreSQL | 5002 | ✅ Operativo | `/api/clients` (via gateway) |
-| **Inventory Service** | HTTP | PostgreSQL | 8001 | ✅ Operativo | `/api/v1/inventory` |
-| **Products Service** | HTTP | MongoDB | 8005 | 🔄 Desarrollo | `/api/v1/products` |
-| **Orders Service** | HTTP | MySQL | 5206 | 🔄 Desarrollo | `/api/v1/orders` |
+| Servicio | Responsable | Protocolo | Base de Datos | Puerto | Estado | Endpoints |
+|----------|-------------|-----------|---------------|--------|---------|-----------|
+| **Auth Service** | Alberto Lyons | gRPC | PostgreSQL (JWT) | 5001 | ✅ Operativo | gRPC methods (via gateway) |
+| **Clients Service** | Alberto Lyons | gRPC | PostgreSQL | 5002 | ✅ Operativo | `/api/clients` (via gateway) |
+| **Inventory Service** | Developer C | gRPC + HTTP | PostgreSQL (Supabase) | 8001/50051 | ✅ Operativo | `/api/v1/inventory` |
+| **Orders Service** | Developer D | HTTP | MySQL (Railway) | 5206 | ✅ Operativo | `/api/orders` |
+| **Products Service** | Developer B | HTTP | MongoDB (Atlas) | 8005 | 🔄 Desarrollo | `/api/v1/products` |
 
-> **Nota**: Auth y Clients usan **gRPC** para máximo rendimiento en comunicación interna. Inventory puede migrarse a gRPC en futuras versiones.
+> **Nota**: Auth y Clients usan **gRPC** para máximo rendimiento en comunicación interna. Inventory Service soporta tanto gRPC (puerto 50051) como HTTP REST (puerto 8001). Orders Service se integra vía HTTP a través del gateway y nginx.
 
 ---
 

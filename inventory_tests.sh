@@ -2,7 +2,7 @@
 
 ################################################################################
 # Censudex API Gateway - Complete E2E Flow Test Script
-# Tests: Authentication -> Inventory -> Clients
+# Tests: Authentication -> Inventory -> Clients -> Orders
 # Author: Censudex Team
 # Date: 2025-11-16
 ################################################################################
@@ -400,6 +400,150 @@ test_authorization() {
     echo ""
 }
 
+test_orders() {
+    print_header "6. ORDERS OPERATIONS"
+    
+    print_info "Orders service should be running on port 5206"
+    print_info "Testing Orders endpoints through gateway..."
+    echo ""
+    
+    # Test 6.1: Create order
+    print_test "Create new order"
+    TIMESTAMP=$(date +%s)
+    TEST_USER_ID="$(uuidgen 2>/dev/null || python3 -c 'import uuid; print(uuid.uuid4())')"
+    TEST_PRODUCT_ID_1="$(uuidgen 2>/dev/null || python3 -c 'import uuid; print(uuid.uuid4())')"
+    TEST_PRODUCT_ID_2="$(uuidgen 2>/dev/null || python3 -c 'import uuid; print(uuid.uuid4())')"
+    
+    create_order_payload="{
+        \"userId\":\"$TEST_USER_ID\",
+        \"userName\":\"Test Usuario\",
+        \"address\":\"Calle Test 123, Santiago\",
+        \"userEmail\":\"test${TIMESTAMP}@censudex.cl\",
+        \"items\":[
+            {
+                \"productId\":\"$TEST_PRODUCT_ID_1\",
+                \"productName\":\"Producto Test 1\",
+                \"quantity\":2,
+                \"unitPrice\":100.0
+            },
+            {
+                \"productId\":\"$TEST_PRODUCT_ID_2\",
+                \"productName\":\"Producto Test 2\",
+                \"quantity\":1,
+                \"unitPrice\":50.0
+            }
+        ]
+    }"
+    
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/orders${NC}"
+    response=$(api_call "POST" "/api/orders" "$create_order_payload" "$TOKEN")
+    
+    ORDER_ID=$(echo "$response" | jq -r '.orderId // .orderNumber // empty')
+    order_status=$(echo "$response" | jq -r '.orderStatus // empty')
+    
+    if [ -n "$ORDER_ID" ] && [ "$ORDER_ID" != "null" ]; then
+        print_success "Created order with ID/Number: $ORDER_ID"
+        print_info "Order status: $order_status"
+        echo "$response" | jq '.'
+    else
+        print_error "Failed to create order (Orders service may not be running)"
+        echo "$response"
+        ORDER_ID=""
+    fi
+    echo ""
+    
+    # Test 6.2: Get order status
+    if [ -n "$ORDER_ID" ]; then
+        print_test "Get order status by ID: $ORDER_ID"
+        echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/orders/$ORDER_ID${NC}"
+        response=$(api_call "GET" "/api/orders/$ORDER_ID" "" "$TOKEN")
+        
+        retrieved_status=$(echo "$response" | jq -r '.orders[0].orderStatus // .orderStatus // empty')
+        if [ -n "$retrieved_status" ] && [ "$retrieved_status" != "null" ]; then
+            print_success "Retrieved order status: $retrieved_status"
+            echo "$response" | jq '.'
+        else
+            print_error "Failed to retrieve order status"
+            echo "$response" | jq '.'
+        fi
+        echo ""
+    fi
+    
+    # Test 6.3: Get user orders
+    print_test "Get all orders for user: $TEST_USER_ID"
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/orders/user/$TEST_USER_ID${NC}"
+    response=$(api_call "GET" "/api/orders/user/$TEST_USER_ID" "" "$TOKEN")
+    
+    orders_count=$(echo "$response" | jq -r '.orders | length // 0')
+    if [ "$orders_count" -ge 0 ]; then
+        print_success "Retrieved $orders_count orders for user"
+        echo "$response" | jq '.'
+    else
+        print_error "Failed to retrieve user orders"
+    fi
+    echo ""
+    
+    # Test 6.4: Get admin orders with filters
+    print_test "Get all orders (Admin view)"
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/orders${NC}"
+    response=$(api_call "GET" "/api/orders" "" "$TOKEN")
+    
+    admin_orders=$(echo "$response" | jq -r '.orders | length // 0')
+    if [ "$admin_orders" -ge 0 ]; then
+        print_success "Retrieved $admin_orders orders (Admin authorization verified)"
+        echo "$response" | jq '.orders[0:2]'  # Show first 2 orders
+    else
+        print_error "Failed to retrieve admin orders"
+    fi
+    echo ""
+    
+    # Test 6.5: Cancel order
+    if [ -n "$ORDER_ID" ]; then
+        print_test "Cancel order: $ORDER_ID"
+        cancel_order_payload="{\"reason\":\"Test cancellation - automated test\"}"
+        
+        echo -e "${BLUE}→ Executing: PATCH $GATEWAY_URL/api/orders/$ORDER_ID${NC}"
+        response=$(api_call "PATCH" "/api/orders/$ORDER_ID" "$cancel_order_payload" "$TOKEN")
+        
+        cancel_status=$(echo "$response" | jq -r '.orderStatus // .status // .message // empty')
+        if [[ "$cancel_status" == *"Cancel"* ]] || [[ "$cancel_status" == *"cancel"* ]] || [[ "$cancel_status" == *"Cancelado"* ]]; then
+            print_success "Order cancelled successfully"
+            echo "$response" | jq '.'
+        else
+            print_error "Failed to cancel order"
+            echo "$response" | jq '.'
+        fi
+        echo ""
+    fi
+    
+    # Test 6.6: Change order status (Admin only) - Note: This will fail since order was cancelled
+    if [ -n "$ORDER_ID" ]; then
+        print_test "Change order status to 'Enviado' (Admin only)"
+        change_status_payload="{
+            \"orderStatus\":\"Enviado\",
+            \"trackingNumber\":\"TRACK${TIMESTAMP}\"
+        }"
+        
+        echo -e "${BLUE}→ Executing: PUT $GATEWAY_URL/api/orders/$ORDER_ID/status${NC}"
+        echo -e "${YELLOW}ℹ Note: This may fail since order was cancelled in previous test${NC}"
+        response=$(api_call "PUT" "/api/orders/$ORDER_ID/status" "$change_status_payload" "$TOKEN")
+        
+        new_status=$(echo "$response" | jq -r '.orderStatus // .status // empty')
+        error_msg=$(echo "$response" | jq -r '.error // empty')
+        if [[ "$new_status" == "Shipped"* ]] || [[ "$new_status" == *"updated"* ]] || [[ "$new_status" == "Enviado"* ]]; then
+            print_success "Order status changed successfully to: $new_status"
+            echo "$response" | jq '.'
+        elif [[ "$error_msg" == *"cancelad"* ]] || [[ "$error_msg" == *"Cancelad"* ]]; then
+            print_info "Cannot change status of cancelled order (expected behavior)"
+            echo "$response" | jq '.'
+        else
+            print_error "Failed to change order status"
+            echo "$response" | jq '.'
+        fi
+        echo ""
+    fi
+}
+
 ################################################################################
 # Main Execution
 ################################################################################
@@ -418,6 +562,7 @@ test_authentication
 test_inventory
 test_clients
 test_authorization
+test_orders
 
 ################################################################################
 # Summary

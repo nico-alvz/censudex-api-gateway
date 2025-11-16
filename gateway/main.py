@@ -109,7 +109,7 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "orders": {
-        "url": "http://localhost:5206",
+        "url": "http://host.docker.internal:5207",
         "health_endpoint": "/health",
         "prefix": "/api/v1/orders", 
         "requires_auth": True,

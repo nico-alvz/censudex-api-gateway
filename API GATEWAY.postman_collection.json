@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "b7398071-268b-47a4-a0bd-a2fe827efc96",
+		"_postman_id": "160537e4-b65e-40f1-b0a7-82787262fef8",
 		"name": "API GATEWAY",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "34959437",
-		"_collection_link": "https://www.postman.com/pm5555-1180/workspace/censudex/collection/34959437-b7398071-268b-47a4-a0bd-a2fe827efc96?action=share&source=collection_link&creator=34959437"
+		"_exporter_id": "38011680"
 	},
 	"item": [
 		{
@@ -120,7 +119,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -185,7 +184,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -264,10 +263,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}validate-token",
 									"host": [
@@ -277,7 +272,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -324,10 +319,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}validate-token",
 									"host": [
@@ -337,7 +328,7 @@
 							},
 							"status": "Unauthorized",
 							"code": 401,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -426,7 +417,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -486,7 +477,7 @@
 							},
 							"status": "Unauthorized",
 							"code": 401,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -580,7 +571,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -645,7 +636,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -710,7 +701,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -775,7 +766,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -872,10 +863,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}clients",
 									"host": [
@@ -885,7 +872,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -932,10 +919,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}clients?emailfilter=rodrigo&namefilter=rodrigo&statusfilter=true&usernamefilter=2",
 									"host": [
@@ -963,7 +946,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1045,10 +1028,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
 									"host": [
@@ -1061,7 +1040,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1108,10 +1087,6 @@
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
 									"raw": "{{API_G_URL}}clients/{{CLIENT_ID}}",
 									"host": [
@@ -1124,7 +1099,7 @@
 							},
 							"status": "Not Found",
 							"code": 404,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1219,7 +1194,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1287,7 +1262,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1355,7 +1330,7 @@
 							},
 							"status": "Bad Request",
 							"code": 400,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1450,7 +1425,7 @@
 							},
 							"status": "OK",
 							"code": 200,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1513,7 +1488,7 @@
 							},
 							"status": "Unauthorized",
 							"code": 401,
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Server",
@@ -1554,6 +1529,1035 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"error\": \"Unauthorized\",\n    \"status_code\": 401,\n    \"timestamp\": \"2025-11-14T00:35:35.882316\",\n    \"path\": \"http://localhost/api/clients/97514129-c6cb-4de7-9714-54a1daef861b\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"5c75e740-3780-4c3e-8f32-11c472fef320\",\r\n  \"userName\": \"Juanito Perez\",\r\n  \"address\": \"Av Croacia 345, Antofagasta\",\r\n  \"userEmail\": \"juanito.perez@censudex.cl\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"49a83df3-3345-494e-8684-ffcb686a9580\",\r\n      \"productName\": \"Balon de futbol\",\r\n      \"quantity\": 2,\r\n      \"unitPrice\": 10000\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Order response 200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"userId\": \"5c75e740-3780-4c3e-8f32-11c472fef320\",\r\n  \"userName\": \"Juanito Perez\",\r\n  \"address\": \"Av Croacia 345, Antofagasta\",\r\n  \"userEmail\": \"juanito.perez@censudex.cl\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"49a83df3-3345-494e-8684-ffcb686a9580\",\r\n      \"productName\": \"Balon de futbol\",\r\n      \"quantity\": 2,\r\n      \"unitPrice\": 10000\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 15:54:52 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "448"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "1d6380d8-73df-4546-b23e-ea4d6fc0eac4"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763222095"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"baa01d44-ab55-41d7-be1b-9fa7274a7aac\",\n    \"userName\": \"Juanito Perez\",\n    \"orderNumber\": \"CEN-8257\",\n    \"address\": \"Av Croacia 345, Antofagasta\",\n    \"orderStatus\": \"Pendiente\",\n    \"createAt\": \"2025-11-15\",\n    \"totalPrice\": 20000,\n    \"items\": [\n        {\n            \"id\": \"248b2cac-f9d1-4008-9597-19f3583b0f50\",\n            \"orderId\": \"baa01d44-ab55-41d7-be1b-9fa7274a7aac\",\n            \"productId\": \"49a83df3-3345-494e-8684-ffcb686a9580\",\n            \"productName\": \"Balon de futbol\",\n            \"quantity\": 2,\n            \"unitPrice\": 10000,\n            \"subtotal\": 20000\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Status Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYWZjMzc3Zi00YjU0LTQzMTItYmMzYy0yZTY3YjA2Y2Q3ZTgiLCJuYW1laWQiOiI5YWI2NjUxMC0xODEyLTQ2OTktYjBhYy1mNzBiM2JhZDAwNWQiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NjMyMjI1MzAsImV4cCI6MTc2MzMwODkzMCwiaWF0IjoxNzYzMjIyNTMwLCJpc3MiOiJjZW5zdWRleC1hdXRoLXNlcnZpY2UiLCJhdWQiOiJjZW5zdWRleC1hcGktdXNlcnMifQ.CsNB2aEY9u0KVhcKcUjjPrLIwcDRHDGvwwwP-ckbs_y_pSl9hqce3CIhMfTwf8WsTMdcfhTLSqrmaz1OCUhGSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"orderStatus\": \"Enviado\",\r\n  \"trackingNumber\": \"SH123124124\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders/CEN-8257/status",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"CEN-8257",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OrderNumber 200 OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"orderStatus\": \"Enviado\",\r\n  \"trackingNumber\": \"SH123124124\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/CEN-8257/status",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"CEN-8257",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 16:04:09 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "213"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "f5ae0476-9873-4e35-8274-334715d24177"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763222652"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"baa01d44-ab55-41d7-be1b-9fa7274a7aac\",\n    \"orderNumber\": \"CEN-8257\",\n    \"address\": \"Av Croacia 345, Antofagasta\",\n    \"orderStatus\": \"Enviado\",\n    \"trackingNumber\": \"SH123124124\",\n    \"createAt\": \"2025-11-15\",\n    \"updateAt\": \"2025-11-15\"\n}"
+						},
+						{
+							"name": "Order ID 200 OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"orderStatus\": \"Enviado\",\r\n  \"trackingNumber\": \"SH123925134\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/24b8e145-01c7-4edd-b575-74b986f1cc81/status",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"24b8e145-01c7-4edd-b575-74b986f1cc81",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 16:06:26 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "209"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "ca03d395-c243-4619-8312-9e749c1722de"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "98"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763222790"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"24b8e145-01c7-4edd-b575-74b986f1cc81\",\n    \"orderNumber\": \"CEN-5610\",\n    \"address\": \"Av Croacia, Antofagasta\",\n    \"orderStatus\": \"Enviado\",\n    \"trackingNumber\": \"SH123925134\",\n    \"createAt\": \"2025-11-14\",\n    \"updateAt\": \"2025-11-15\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Order Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders/caa12c81-a847-43c6-ac57-f323e04bafc2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"caa12c81-a847-43c6-ac57-f323e04bafc2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "By Order Number 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/CEN-5610",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"CEN-5610"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:10:11 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "87"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "82056388-3dbb-4636-955f-27346c4b7eea"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763226612"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"orderNumber\": \"CEN-5610\",\n            \"orderStatus\": \"Enviado\",\n            \"updateAt\": \"15/11/2025\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "By UserId 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/caa12c81-a847-43c6-ac57-f323e04bafc2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"caa12c81-a847-43c6-ac57-f323e04bafc2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:11:03 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "140"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "806a54d8-80a9-4bbe-a1a2-39912d4151cb"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763226665"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"orderNumber\": \"CEN-5610\",\n            \"orderStatus\": \"Enviado\",\n            \"updateAt\": \"15/11/2025\"\n        },\n        {\n            \"orderNumber\": \"CEN-6712\",\n            \"orderStatus\": \"Pendiente\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Cancelate Order",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"reason\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders/CEN-6712",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"CEN-6712"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "By Order Number 200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"reason\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/CEN-6712",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"CEN-6712"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:13:54 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "184"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "879925b0-c4fb-453c-b5f5-fc452e5339a3"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763226836"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"28786865-bb0e-40d7-9f5b-1bb41a4d47a8\",\n    \"orderNumber\": \"CEN-6712\",\n    \"address\": \"Av Croacia, Antofagasta 123\",\n    \"orderStatus\": \"Cancelado\",\n    \"createAt\": \"2025-11-15\",\n    \"updateAt\": \"2025-11-15\"\n}"
+						},
+						{
+							"name": "By Order Id 200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"reason\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/837ba74a-5528-4eb4-9bf5-b8ca58446d0c",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"837ba74a-5528-4eb4-9bf5-b8ca58446d0c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:19:00 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "184"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "a2717e8c-a21e-4a2b-8eff-0108a522bdab"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227142"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"837ba74a-5528-4eb4-9bf5-b8ca58446d0c\",\n    \"orderNumber\": \"CEN-7597\",\n    \"address\": \"Av Croacia, Antofagasta 123\",\n    \"orderStatus\": \"Cancelado\",\n    \"createAt\": \"2025-11-15\",\n    \"updateAt\": \"2025-11-15\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders/user/caa12c81-a847-43c6-ac57-f323e04bafc2?initialDate=14%2F11%2F2025&finishDate=14%2F11%2F2025",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"user",
+								"caa12c81-a847-43c6-ac57-f323e04bafc2"
+							],
+							"query": [
+								{
+									"key": "initialDate",
+									"value": "14%2F11%2F2025"
+								},
+								{
+									"key": "finishDate",
+									"value": "14%2F11%2F2025"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "All User Orders 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/user/caa12c81-a847-43c6-ac57-f323e04bafc2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"user",
+										"caa12c81-a847-43c6-ac57-f323e04bafc2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:23:55 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "981"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "c2b4c05c-d695-4c0d-8c7c-18de0fbbc9cc"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227436"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"orderId\": \"24b8e145-01c7-4edd-b575-74b986f1cc81\",\n            \"orderNumber\": \"CEN-5610\",\n            \"address\": \"Av Croacia, Antofagasta\",\n            \"orderStatus\": \"Enviado\",\n            \"trackingNumber\": \"SH123925134\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"totalPrice\": 35000,\n            \"items\": [\n                {\n                    \"productName\": \"Mouse Logitech g 305\",\n                    \"unitPrice\": 35000,\n                    \"quantity\": 1,\n                    \"subtotal\": 35000\n                }\n            ]\n        },\n        {\n            \"orderId\": \"28786865-bb0e-40d7-9f5b-1bb41a4d47a8\",\n            \"orderNumber\": \"CEN-6712\",\n            \"address\": \"Av Croacia, Antofagasta 123\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"15/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"totalPrice\": 45000,\n            \"items\": [\n                {\n                    \"productName\": \"Camiseta AC Milan 2025/2026\",\n                    \"unitPrice\": 45000,\n                    \"quantity\": 1,\n                    \"subtotal\": 45000\n                }\n            ]\n        },\n        {\n            \"orderId\": \"837ba74a-5528-4eb4-9bf5-b8ca58446d0c\",\n            \"orderNumber\": \"CEN-7597\",\n            \"address\": \"Av Croacia, Antofagasta 123\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"15/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"totalPrice\": 10000,\n            \"items\": [\n                {\n                    \"productName\": \"Cuadernos cuadriculado\",\n                    \"unitPrice\": 5000,\n                    \"quantity\": 2,\n                    \"subtotal\": 10000\n                }\n            ]\n        }\n    ]\n}"
+						},
+						{
+							"name": "Date Filter User Orders 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders/user/caa12c81-a847-43c6-ac57-f323e04bafc2?initialDate=14%2F11%2F2025&finishDate=14%2F11%2F2025",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders",
+										"user",
+										"caa12c81-a847-43c6-ac57-f323e04bafc2"
+									],
+									"query": [
+										{
+											"key": "initialDate",
+											"value": "14%2F11%2F2025"
+										},
+										{
+											"key": "finishDate",
+											"value": "14%2F11%2F2025"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:24:21 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "349"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "37247326-3937-494b-8b1b-fd01fa3c8e04"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227463"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"orderId\": \"24b8e145-01c7-4edd-b575-74b986f1cc81\",\n            \"orderNumber\": \"CEN-5610\",\n            \"address\": \"Av Croacia, Antofagasta\",\n            \"orderStatus\": \"Enviado\",\n            \"trackingNumber\": \"SH123925134\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"totalPrice\": 35000,\n            \"items\": [\n                {\n                    \"productName\": \"Mouse Logitech g 305\",\n                    \"unitPrice\": 35000,\n                    \"quantity\": 1,\n                    \"subtotal\": 35000\n                }\n            ]\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Orders (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYWZjMzc3Zi00YjU0LTQzMTItYmMzYy0yZTY3YjA2Y2Q3ZTgiLCJuYW1laWQiOiI5YWI2NjUxMC0xODEyLTQ2OTktYjBhYy1mNzBiM2JhZDAwNWQiLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NjMyMjI1MzAsImV4cCI6MTc2MzMwODkzMCwiaWF0IjoxNzYzMjIyNTMwLCJpc3MiOiJjZW5zdWRleC1hdXRoLXNlcnZpY2UiLCJhdWQiOiJjZW5zdWRleC1hcGktdXNlcnMifQ.CsNB2aEY9u0KVhcKcUjjPrLIwcDRHDGvwwwP-ckbs_y_pSl9hqce3CIhMfTwf8WsTMdcfhTLSqrmaz1OCUhGSQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/orders?userIdentifier=54589f17-bb27-4834-ba6c-2b1be303ae26",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "userIdentifier",
+									"value": "54589f17-bb27-4834-ba6c-2b1be303ae26"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "All Orders 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:28:14 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "3052"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "143dd96a-f49e-4e22-bd8c-3754f959dffb"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "98"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227696"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"id\": \"24b8e145-01c7-4edd-b575-74b986f1cc81\",\n            \"userId\": \"caa12c81-a847-43c6-ac57-f323e04bafc2\",\n            \"userName\": \"Luka Modric\",\n            \"orderNumber\": \"CEN-5610\",\n            \"address\": \"Av Croacia, Antofagasta\",\n            \"trackingNumber\": \"SH123925134\",\n            \"orderStatus\": \"Enviado\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"a9509efd-0101-457c-88a7-f756fbe2014a\",\n                    \"orderId\": \"24b8e145-01c7-4edd-b575-74b986f1cc81\",\n                    \"productId\": \"024c5d2b-a739-4790-9912-025bcda0bfc2\",\n                    \"productName\": \"Mouse Logitech g 305\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 35000,\n                    \"subtotal\": 35000\n                }\n            ]\n        },\n        {\n            \"id\": \"28786865-bb0e-40d7-9f5b-1bb41a4d47a8\",\n            \"userId\": \"caa12c81-a847-43c6-ac57-f323e04bafc2\",\n            \"userName\": \"Luka Modric\",\n            \"orderNumber\": \"CEN-6712\",\n            \"address\": \"Av Croacia, Antofagasta 123\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"15/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"841d6878-cec0-4582-aca1-5c89ecc88c95\",\n                    \"orderId\": \"28786865-bb0e-40d7-9f5b-1bb41a4d47a8\",\n                    \"productId\": \"e85ed35d-0910-4db4-a221-23740cbc464f\",\n                    \"productName\": \"Camiseta AC Milan 2025/2026\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 45000,\n                    \"subtotal\": 45000\n                }\n            ]\n        },\n        {\n            \"id\": \"3e170f9b-26af-4bcd-8acb-5bc002663e4d\",\n            \"userId\": \"698eb226-23b5-44c9-818a-e74d4975418c\",\n            \"userName\": \"Kevin de Bruyne\",\n            \"orderNumber\": \"CEN-2462\",\n            \"address\": \"Avb Napoli 123. talca\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"f981ced2-6d66-4b28-b890-7f6dccbefad1\",\n                    \"orderId\": \"3e170f9b-26af-4bcd-8acb-5bc002663e4d\",\n                    \"productId\": \"ea4f1937-6391-4a01-9478-24f5e6e3cacf\",\n                    \"productName\": \"Mando PS4\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 45000,\n                    \"subtotal\": 45000\n                }\n            ]\n        },\n        {\n            \"id\": \"8309aaea-a31c-4dbf-bc5e-132caf288aa5\",\n            \"userId\": \"54589f17-bb27-4834-ba6c-2b1be303ae26\",\n            \"userName\": \"Endo\",\n            \"orderNumber\": \"CEN-4558\",\n            \"address\": \"raymon 123, chillan\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"14/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"d0ed98c1-584d-4c7f-85b0-45605829ff65\",\n                    \"orderId\": \"8309aaea-a31c-4dbf-bc5e-132caf288aa5\",\n                    \"productId\": \"4dac511c-4cd2-4596-b3e7-5df3c761e89e\",\n                    \"productName\": \"Producto jaja\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 1000,\n                    \"subtotal\": 1000\n                }\n            ]\n        },\n        {\n            \"id\": \"837ba74a-5528-4eb4-9bf5-b8ca58446d0c\",\n            \"userId\": \"caa12c81-a847-43c6-ac57-f323e04bafc2\",\n            \"userName\": \"Luka Modric\",\n            \"orderNumber\": \"CEN-7597\",\n            \"address\": \"Av Croacia, Antofagasta 123\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"15/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"9d3ad6cc-37e3-41ce-867a-a58020b87439\",\n                    \"orderId\": \"837ba74a-5528-4eb4-9bf5-b8ca58446d0c\",\n                    \"productId\": \"e85ed35d-0910-4db4-a221-23740cbc464f\",\n                    \"productName\": \"Cuadernos cuadriculado\",\n                    \"quantity\": 2,\n                    \"unitPrice\": 5000,\n                    \"subtotal\": 10000\n                }\n            ]\n        },\n        {\n            \"id\": \"baa01d44-ab55-41d7-be1b-9fa7274a7aac\",\n            \"userId\": \"5c75e740-3780-4c3e-8f32-11c472fef320\",\n            \"userName\": \"Juanito Perez\",\n            \"orderNumber\": \"CEN-8257\",\n            \"address\": \"Av Croacia 345, Antofagasta\",\n            \"trackingNumber\": \"SH123124124\",\n            \"orderStatus\": \"Enviado\",\n            \"createAt\": \"15/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"248b2cac-f9d1-4008-9597-19f3583b0f50\",\n                    \"orderId\": \"baa01d44-ab55-41d7-be1b-9fa7274a7aac\",\n                    \"productId\": \"49a83df3-3345-494e-8684-ffcb686a9580\",\n                    \"productName\": \"Balon de futbol\",\n                    \"quantity\": 2,\n                    \"unitPrice\": 10000,\n                    \"subtotal\": 20000\n                }\n            ]\n        }\n    ]\n}"
+						},
+						{
+							"name": "Filter User Name 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders?userIdentifier=Kevin%20de%20Bruyne",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "userIdentifier",
+											"value": "Kevin%20de%20Bruyne"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:30:29 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "502"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "f5cd23e3-cdfb-4dc7-b444-69eb4162a05a"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "98"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227831"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"id\": \"3e170f9b-26af-4bcd-8acb-5bc002663e4d\",\n            \"userId\": \"698eb226-23b5-44c9-818a-e74d4975418c\",\n            \"userName\": \"Kevin de Bruyne\",\n            \"orderNumber\": \"CEN-2462\",\n            \"address\": \"Avb Napoli 123. talca\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"15/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"f981ced2-6d66-4b28-b890-7f6dccbefad1\",\n                    \"orderId\": \"3e170f9b-26af-4bcd-8acb-5bc002663e4d\",\n                    \"productId\": \"ea4f1937-6391-4a01-9478-24f5e6e3cacf\",\n                    \"productName\": \"Mando PS4\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 45000,\n                    \"subtotal\": 45000\n                }\n            ]\n        }\n    ]\n}"
+						},
+						{
+							"name": "Filter User Id 200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/orders?userIdentifier=54589f17-bb27-4834-ba6c-2b1be303ae26",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "userIdentifier",
+											"value": "54589f17-bb27-4834-ba6c-2b1be303ae26"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "date",
+									"value": "Sat, 15 Nov 2025 17:31:50 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "491"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								},
+								{
+									"key": "x-request-id",
+									"value": "c5fcf298-2e13-45ac-87bb-56759bbd7d8c"
+								},
+								{
+									"key": "x-ratelimit-limit",
+									"value": "100"
+								},
+								{
+									"key": "x-ratelimit-remaining",
+									"value": "99"
+								},
+								{
+									"key": "x-ratelimit-reset",
+									"value": "1763227912"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"orders\": [\n        {\n            \"id\": \"8309aaea-a31c-4dbf-bc5e-132caf288aa5\",\n            \"userId\": \"54589f17-bb27-4834-ba6c-2b1be303ae26\",\n            \"userName\": \"Endo\",\n            \"orderNumber\": \"CEN-4558\",\n            \"address\": \"raymon 123, chillan\",\n            \"orderStatus\": \"Cancelado\",\n            \"createAt\": \"14/11/2025\",\n            \"updateAt\": \"14/11/2025\",\n            \"items\": [\n                {\n                    \"id\": \"d0ed98c1-584d-4c7f-85b0-45605829ff65\",\n                    \"orderId\": \"8309aaea-a31c-4dbf-bc5e-132caf288aa5\",\n                    \"productId\": \"4dac511c-4cd2-4596-b3e7-5df3c761e89e\",\n                    \"productName\": \"Producto jaja\",\n                    \"quantity\": 1,\n                    \"unitPrice\": 1000,\n                    \"subtotal\": 1000\n                }\n            ]\n        }\n    ]\n}"
 						}
 					]
 				}
