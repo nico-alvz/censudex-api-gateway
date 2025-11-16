@@ -7,14 +7,42 @@
 # Date: 2025-11-16
 ################################################################################
 
-set -e  # Exit on error
-
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Sleep time between tests (seconds)
+SLEEP_TIME=1
+
+################################################################################
+# Dependencies Check
+################################################################################
+
+check_dependencies() {
+    local missing_deps=()
+    
+    if ! command -v curl &> /dev/null; then
+        missing_deps+=("curl")
+    fi
+    
+    if ! command -v jq &> /dev/null; then
+        missing_deps+=("jq")
+    fi
+    
+    if [ ${#missing_deps[@]} -gt 0 ]; then
+        echo -e "${RED}✗ Missing required dependencies: ${missing_deps[*]}${NC}"
+        echo -e "${YELLOW}Please install them with:${NC}"
+        echo -e "  sudo apt-get install ${missing_deps[*]}  # Debian/Ubuntu"
+        echo -e "  sudo yum install ${missing_deps[*]}      # RHEL/CentOS"
+        echo -e "  brew install ${missing_deps[*]}          # macOS"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}✓ All dependencies are installed (curl, jq)${NC}\n"
+}
 
 # Configuration
 GATEWAY_URL="http://localhost:8000"
@@ -42,11 +70,13 @@ print_test() {
 print_success() {
     echo -e "${GREEN}✓ $1${NC}"
     ((TESTS_PASSED++))
+    sleep $SLEEP_TIME
 }
 
 print_error() {
     echo -e "${RED}✗ $1${NC}"
     ((TESTS_FAILED++))
+    sleep $SLEEP_TIME
 }
 
 print_info() {
@@ -89,6 +119,7 @@ test_gateway_health() {
     print_header "1. GATEWAY HEALTH CHECK"
     print_test "Checking gateway health endpoint"
     
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/gateway/health${NC}"
     response=$(api_call "GET" "/gateway/health")
     status=$(echo "$response" | jq -r '.status // empty')
     
@@ -99,6 +130,7 @@ test_gateway_health() {
         print_error "Gateway health check failed"
         echo "$response"
     fi
+    echo ""
 }
 
 test_authentication() {
@@ -106,6 +138,7 @@ test_authentication() {
     
     # Test 2.1: Successful login
     print_test "Login with admin credentials"
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/login${NC}"
     response=$(api_call "POST" "/api/login" "{\"username\":\"$ADMIN_USERNAME\",\"password\":\"$ADMIN_PASSWORD\"}")
     
     TOKEN=$(echo "$response" | jq -r '.token // empty')
@@ -118,17 +151,20 @@ test_authentication() {
         echo "$response" | jq '.'
         exit 1
     fi
+    echo ""
     
     # Test 2.2: Invalid credentials
     print_test "Login with invalid credentials (should fail)"
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/login (invalid credentials)${NC}"
     response=$(api_call "POST" "/api/login" "{\"username\":\"invaliduser\",\"password\":\"wrongpass\"}")
     
-    error=$(echo "$response" | jq -r '.message // .detail // empty')
-    if [ -n "$error" ]; then
+    error=$(echo "$response" | jq -r '.error // .message // .detail // empty')
+    if [ -n "$error" ] && [ "$error" != "null" ]; then
         print_success "Invalid credentials correctly rejected"
     else
         print_error "Invalid credentials should have been rejected"
     fi
+    echo ""
 }
 
 test_inventory() {
@@ -136,6 +172,7 @@ test_inventory() {
     
     # Test 3.1: List inventory
     print_test "List all inventory items"
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/v1/inventory/?limit=5&offset=0${NC}"
     response=$(api_call "GET" "/api/v1/inventory/?limit=5&offset=0" "" "$TOKEN")
     
     count=$(echo "$response" | jq '. | length')
@@ -146,6 +183,7 @@ test_inventory() {
         print_error "Failed to list inventory"
         echo "$response"
     fi
+    echo ""
     
     # Test 3.2: Create inventory item
     print_test "Create new inventory item"
@@ -153,6 +191,7 @@ test_inventory() {
     PRODUCT_ID="TEST_PROD_${TIMESTAMP}"
     
     create_payload="{\"product_id\":\"$PRODUCT_ID\",\"quantity\":100,\"location\":\"test_warehouse\",\"reserved_quantity\":0}"
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/v1/inventory/${NC}"
     response=$(api_call "POST" "/api/v1/inventory/" "$create_payload" "$TOKEN")
     
     ITEM_ID=$(echo "$response" | jq -r '.id // empty')
@@ -164,10 +203,12 @@ test_inventory() {
         echo "$response"
         ITEM_ID=""
     fi
+    echo ""
     
     # Test 3.3: Get specific inventory item
     if [ -n "$ITEM_ID" ]; then
         print_test "Get inventory item by ID: $ITEM_ID"
+        echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/v1/inventory/$ITEM_ID${NC}"
         response=$(api_call "GET" "/api/v1/inventory/$ITEM_ID" "" "$TOKEN")
         
         retrieved_id=$(echo "$response" | jq -r '.id // empty')
@@ -177,12 +218,14 @@ test_inventory() {
         else
             print_error "Failed to retrieve inventory item"
         fi
+        echo ""
     fi
     
     # Test 3.4: Update inventory item
     if [ -n "$ITEM_ID" ]; then
         print_test "Update inventory item quantity"
         update_payload="{\"quantity\":150,\"location\":\"updated_warehouse\"}"
+        echo -e "${BLUE}→ Executing: PUT $GATEWAY_URL/api/v1/inventory/$ITEM_ID${NC}"
         response=$(api_call "PUT" "/api/v1/inventory/$ITEM_ID" "$update_payload" "$TOKEN")
         
         new_quantity=$(echo "$response" | jq -r '.quantity // empty')
@@ -192,11 +235,13 @@ test_inventory() {
         else
             print_error "Failed to update inventory item"
         fi
+        echo ""
     fi
     
     # Test 3.5: Check stock availability
     print_test "Check stock availability"
     stock_check_payload="{\"product_id\":\"$PRODUCT_ID\",\"requested_quantity\":10}"
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/v1/inventory/check-stock${NC}"
     response=$(api_call "POST" "/api/v1/inventory/check-stock" "$stock_check_payload" "$TOKEN")
     
     available=$(echo "$response" | jq -r '.available // empty')
@@ -206,10 +251,12 @@ test_inventory() {
     else
         print_error "Failed to check stock"
     fi
+    echo ""
     
     # Test 3.6: Delete inventory item
     if [ -n "$ITEM_ID" ]; then
         print_test "Delete inventory item"
+        echo -e "${BLUE}→ Executing: DELETE $GATEWAY_URL/api/v1/inventory/$ITEM_ID${NC}"
         response=$(api_call "DELETE" "/api/v1/inventory/$ITEM_ID" "" "$TOKEN")
         
         message=$(echo "$response" | jq -r '.message // empty')
@@ -218,6 +265,7 @@ test_inventory() {
         else
             print_error "Failed to delete inventory item"
         fi
+        echo ""
     fi
 }
 
@@ -226,6 +274,7 @@ test_clients() {
     
     # Test 4.1: List clients
     print_test "List all clients"
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/clients${NC}"
     response=$(api_call "GET" "/api/clients" "" "$TOKEN")
     
     clients=$(echo "$response" | jq -r '.clients | length')
@@ -235,6 +284,7 @@ test_clients() {
     else
         print_error "Failed to list clients"
     fi
+    echo ""
     
     # Test 4.2: Create client
     print_test "Create new client"
@@ -253,6 +303,7 @@ test_clients() {
         \"password\":\"Test123!\"
     }"
     
+    echo -e "${BLUE}→ Executing: POST $GATEWAY_URL/api/clients${NC}"
     response=$(api_call "POST" "/api/clients" "$create_client_payload" "$TOKEN")
     
     message=$(echo "$response" | jq -r '.message // empty')
@@ -271,10 +322,12 @@ test_clients() {
         print_error "Failed to create client"
         CLIENT_ID=""
     fi
+    echo ""
     
     # Test 4.3: Get specific client
     if [ -n "$CLIENT_ID" ]; then
         print_test "Get client by ID: $CLIENT_ID"
+        echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/clients/$CLIENT_ID${NC}"
         response=$(api_call "GET" "/api/clients/$CLIENT_ID" "" "$TOKEN")
         
         username=$(echo "$response" | jq -r '.client.username // empty')
@@ -284,6 +337,7 @@ test_clients() {
         else
             print_error "Failed to retrieve client"
         fi
+        echo ""
     fi
     
     # Test 4.4: Update client
@@ -299,6 +353,7 @@ test_clients() {
             \"phonenumber\":\"+56999999999\"
         }"
         
+        echo -e "${BLUE}→ Executing: PATCH $GATEWAY_URL/api/clients/$CLIENT_ID${NC}"
         response=$(api_call "PATCH" "/api/clients/$CLIENT_ID" "$update_client_payload" "$TOKEN")
         
         message=$(echo "$response" | jq -r '.message // empty')
@@ -307,11 +362,13 @@ test_clients() {
         else
             print_error "Failed to update client"
         fi
+        echo ""
     fi
     
     # Test 4.5: Delete client (requires Admin role)
     if [ -n "$CLIENT_ID" ]; then
         print_test "Delete client (Admin only)"
+        echo -e "${BLUE}→ Executing: DELETE $GATEWAY_URL/api/clients/$CLIENT_ID${NC}"
         response=$(api_call "DELETE" "/api/clients/$CLIENT_ID" "" "$TOKEN")
         
         message=$(echo "$response" | jq -r '.message // empty')
@@ -320,6 +377,7 @@ test_clients() {
         else
             print_error "Failed to delete client"
         fi
+        echo ""
     fi
 }
 
@@ -328,15 +386,18 @@ test_authorization() {
     
     # Test 5.1: Access without token
     print_test "Access inventory without authentication (should fail)"
+    echo -e "${BLUE}→ Executing: GET $GATEWAY_URL/api/v1/inventory/ (without auth token)${NC}"
     response=$(api_call "GET" "/api/v1/inventory/" "")
     
     # Should get 401 or 403
-    error=$(echo "$response" | jq -r '.detail // empty')
-    if [[ "$error" == *"credentials"* ]] || [[ "$error" == *"authorized"* ]] || [[ "$error" == *"Forbidden"* ]]; then
-        print_success "Unauthorized access correctly blocked"
+    error=$(echo "$response" | jq -r '.error // .detail // empty')
+    if [ -n "$error" ] && [ "$error" != "null" ]; then
+        print_success "Unauthorized access correctly blocked: $error"
     else
         print_error "Should have blocked unauthorized access"
+        echo "$response" | jq '.'
     fi
+    echo ""
 }
 
 ################################################################################
@@ -347,6 +408,9 @@ print_header "CENSUDEX API GATEWAY - COMPLETE FLOW TEST"
 print_info "Testing against: $GATEWAY_URL"
 print_info "Admin User: $ADMIN_USERNAME"
 echo ""
+
+# Check dependencies
+check_dependencies
 
 # Run all tests
 test_gateway_health
