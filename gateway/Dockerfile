@@ -33,6 +33,13 @@ COPY models /app/models
 # Copy services (including RabbitMQ and other stubs)
 COPY services /app/services
 
+# Copy worker.py for RabbitMQ event consumption
+COPY worker.py /app/worker.py
+
+# Copy startup script
+COPY start-services.sh /app/start-services.sh
+RUN chmod +x /app/start-services.sh
+
 # Expose port
 EXPOSE 8000
 
@@ -41,4 +48,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/gateway/health || exit 1
 
 # Run the application from parent context (gateway module is available)
-CMD ["python", "-m", "uvicorn", "gateway.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/app/start-services.sh"]

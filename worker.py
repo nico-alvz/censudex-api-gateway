@@ -59,8 +59,10 @@ def main():
     logger.info("Starting Inventory Event Worker...")
     
     try:
-        # Initialize RabbitMQ service
-        rabbitmq_url = "amqp://guest:guest@rabbitmq:5672/"
+        # Initialize RabbitMQ service with correct credentials
+        import os
+        rabbitmq_url = os.getenv("RABBITMQ_URL", "amqp://censudx:censudex_password@rabbitmq:5672/censudx_vhost")
+        logger.info(f"Connecting to RabbitMQ at: {rabbitmq_url}")
         messaging_service = RabbitMQService(rabbitmq_url)
         
         # Attempt connection
