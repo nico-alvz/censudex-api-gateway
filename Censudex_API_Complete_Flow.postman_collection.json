@@ -1,0 +1,1045 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Censudex API - Complete Flow",
+		"description": "Complete E2E flow testing for Censudex API Gateway\nFlow: Authentication → Inventory → Clients\n\nSetup:\n1. Ensure all services are running (docker-compose up)\n2. Run requests in order (Authentication first)\n3. Token is automatically saved for subsequent requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Gateway Health",
+			"item": [
+				{
+					"name": "Check Gateway Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Gateway is healthy\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"healthy\");",
+									"});",
+									"",
+									"pm.test(\"Response has services info\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('services');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/gateway/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"gateway",
+								"health"
+							]
+						},
+						"description": "Check the health status of the API Gateway and all connected services"
+					},
+					"response": []
+				}
+			],
+			"description": "Gateway health and status endpoints"
+		},
+		{
+			"name": "2. Authentication",
+			"item": [
+				{
+					"name": "Login - Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has token\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('token');",
+									"    ",
+									"    // Save token to environment",
+									"    pm.environment.set(\"auth_token\", jsonData.token);",
+									"});",
+									"",
+									"pm.test(\"Token is a valid JWT\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var tokenParts = jsonData.token.split('.');",
+									"    pm.expect(tokenParts.length).to.eql(3);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{admin_username}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Authenticate with admin credentials and obtain JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Invalid Credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400 or 401\", function () {",
+									"    pm.expect([400, 401, 500]).to.include(pm.response.code);",
+									"});",
+									"",
+									"pm.test(\"Response has error message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"invaliduser\",\n    \"password\": \"wrongpassword\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Test authentication with invalid credentials (should fail)"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication and authorization endpoints"
+		},
+		{
+			"name": "3. Inventory",
+			"item": [
+				{
+					"name": "List Inventory Items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Items have required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.length > 0) {",
+									"        pm.expect(jsonData[0]).to.have.property('id');",
+									"        pm.expect(jsonData[0]).to.have.property('product_id');",
+									"        pm.expect(jsonData[0]).to.have.property('quantity');",
+									"        pm.expect(jsonData[0]).to.have.property('location');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/?limit=10&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						},
+						"description": "List all inventory items with pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Inventory Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Item created successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData.product_id).to.include('TEST_PROD_');",
+									"    ",
+									"    // Save item ID for later use",
+									"    pm.environment.set(\"test_item_id\", jsonData.id);",
+									"    pm.environment.set(\"test_product_id\", jsonData.product_id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate unique product ID",
+									"const timestamp = Date.now();",
+									"pm.environment.set(\"test_product_id\", `TEST_PROD_${timestamp}`);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": \"{{test_product_id}}\",\n    \"quantity\": 100,\n    \"location\": \"test_warehouse\",\n    \"reserved_quantity\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								""
+							]
+						},
+						"description": "Create a new inventory item"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Inventory Item by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct item retrieved\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get(\"test_item_id\")));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/{{test_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								"{{test_item_id}}"
+							]
+						},
+						"description": "Get a specific inventory item by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Inventory Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Item updated successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.quantity).to.eql(150);",
+									"    pm.expect(jsonData.location).to.eql(\"updated_warehouse\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 150,\n    \"location\": \"updated_warehouse\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/{{test_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								"{{test_item_id}}"
+							]
+						},
+						"description": "Update an existing inventory item"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Stock Availability",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Stock check response is valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('available');",
+									"    pm.expect(jsonData).to.have.property('current_stock');",
+									"    pm.expect(jsonData).to.have.property('available_stock');",
+									"    pm.expect(jsonData).to.have.property('requested_quantity');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": \"{{test_product_id}}\",\n    \"requested_quantity\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/check-stock",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								"check-stock"
+							]
+						},
+						"description": "Check if sufficient stock is available for a product"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Inventory Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Item deleted successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('deleted');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/{{test_item_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								"{{test_item_id}}"
+							]
+						},
+						"description": "Delete an inventory item"
+					},
+					"response": []
+				}
+			],
+			"description": "Inventory management endpoints (CRUD + stock operations)"
+		},
+		{
+			"name": "4. Clients",
+			"item": [
+				{
+					"name": "List Clients",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has clients array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('clients');",
+									"    pm.expect(jsonData.clients).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Admin user exists\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var adminExists = jsonData.clients.some(c => c.username === pm.environment.get('admin_username'));",
+									"    pm.expect(adminExists).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						},
+						"description": "List all clients in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Client created successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('creado');",
+									"});",
+									"",
+									"// Wait a bit then get the client ID",
+									"setTimeout(function() {}, 500);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate unique username and email",
+									"const timestamp = Date.now();",
+									"pm.environment.set(\"test_username\", `testuser${timestamp}`);",
+									"pm.environment.set(\"test_email\", `test${timestamp}@censudex.cl`);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"names\": \"Test\",\n    \"lastnames\": \"Usuario\",\n    \"email\": \"{{test_email}}\",\n    \"username\": \"{{test_username}}\",\n    \"birthdate\": \"1990-01-01\",\n    \"address\": \"Test Address 123\",\n    \"phonenumber\": \"+56912345678\",\n    \"password\": \"Test123!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							]
+						},
+						"description": "Create a new client"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Client by Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Client found\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.clients.length).to.be.above(0);",
+									"    ",
+									"    // Save client ID for later use",
+									"    if (jsonData.clients.length > 0) {",
+									"        pm.environment.set(\"test_client_id\", jsonData.clients[0].id);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/clients?usernamefilter={{test_username}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients"
+							],
+							"query": [
+								{
+									"key": "usernamefilter",
+									"value": "{{test_username}}"
+								}
+							]
+						},
+						"description": "Search for client by username"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Client by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct client retrieved\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('client');",
+									"    pm.expect(jsonData.client.id).to.eql(pm.environment.get(\"test_client_id\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/clients/{{test_client_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{test_client_id}}"
+							]
+						},
+						"description": "Get a specific client by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Client updated successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('actualizado');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"names\": \"Test Updated\",\n    \"lastnames\": \"Usuario Modificado\",\n    \"email\": \"{{test_email}}\",\n    \"username\": \"{{test_username}}\",\n    \"birthdate\": \"1990-01-01\",\n    \"address\": \"Updated Address 456\",\n    \"phonenumber\": \"+56999999999\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/clients/{{test_client_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{test_client_id}}"
+							]
+						},
+						"description": "Update an existing client"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Client (Admin Only)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Client deleted successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.message).to.include('eliminado');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/clients/{{test_client_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"clients",
+								"{{test_client_id}}"
+							]
+						},
+						"description": "Delete a client (requires Admin role)"
+					},
+					"response": []
+				}
+			],
+			"description": "Client management endpoints (CRUD operations)"
+		},
+		{
+			"name": "5. Notifications",
+			"item": [
+				{
+					"name": "List All Notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/?limit=10&offset=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						},
+						"description": "List all inventory notifications"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Low Stock Alerts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/low-stock?limit=50",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"low-stock"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						},
+						"description": "Get all low stock alerts"
+					},
+					"response": []
+				},
+				{
+					"name": "Notifications Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"summary"
+							]
+						},
+						"description": "Get notifications summary statistics"
+					},
+					"response": []
+				},
+				{
+					"name": "Notifications Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"health"
+							]
+						},
+						"description": "Check notifications service health"
+					},
+					"response": []
+				}
+			],
+			"description": "Inventory notification endpoints"
+		},
+		{
+			"name": "6. Authorization Tests",
+			"item": [
+				{
+					"name": "Access Without Token (Should Fail)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401 or 403\", function () {",
+									"    pm.expect([401, 403]).to.include(pm.response.code);",
+									"});",
+									"",
+									"pm.test(\"Error message present\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('detail');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/inventory/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"inventory",
+								""
+							]
+						},
+						"description": "Try to access protected endpoint without authentication token (should fail)"
+					},
+					"response": []
+				}
+			],
+			"description": "Authorization and security tests"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "admin_username",
+			"value": "adminCensudex",
+			"type": "string"
+		},
+		{
+			"key": "admin_password",
+			"value": "Admin1234!",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_item_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_product_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_client_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_email",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
