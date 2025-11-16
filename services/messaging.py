@@ -177,10 +177,19 @@ class RabbitMQService:
         for attempt in range(self.max_retries):
             try:
                 logger.info(f"Connecting to RabbitMQ (attempt {attempt + 1}/{self.max_retries})")
-                credentials = pika.PlainCredentials('guest', 'guest')
+                
+                # Parse RabbitMQ URL to extract connection parameters
+                import urllib.parse
+                parsed = urllib.parse.urlparse(self.rabbitmq_url)
+                
+                credentials = pika.PlainCredentials(
+                    parsed.username or 'guest',
+                    parsed.password or 'guest'
+                )
                 parameters = pika.ConnectionParameters(
-                    host='rabbitmq',
-                    port=5672,
+                    host=parsed.hostname or 'rabbitmq',
+                    port=parsed.port or 5672,
+                    virtual_host=parsed.path[1:] if parsed.path and len(parsed.path) > 1 else '/',
                     credentials=credentials,
                     connection_attempts=3,
                     retry_delay=2,
