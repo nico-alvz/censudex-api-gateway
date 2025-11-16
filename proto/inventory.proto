@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package inventory;
+
+// Messages for inventory operations
+message InventoryItem {
+  int32 id = 1;
+  string product_id = 2;
+  int32 quantity = 3;
+  string location = 4;
+  int32 reserved_quantity = 5;
+}
+
+message GetInventoryRequest {
+  string product_id = 1;
+}
+
+message ListInventoryRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message ListInventoryResponse {
+  repeated InventoryItem items = 1;
+  int32 total = 2;
+}
+
+message CreateInventoryRequest {
+  string product_id = 1;
+  int32 quantity = 2;
+  string location = 3;
+  int32 reserved_quantity = 4;
+}
+
+message UpdateInventoryRequest {
+  int32 id = 1;
+  int32 quantity = 2;
+  string location = 3;
+  int32 reserved_quantity = 4;
+}
+
+message DeleteInventoryRequest {
+  int32 id = 1;
+}
+
+message StockCheckRequest {
+  string product_id = 1;
+  int32 requested_quantity = 2;
+}
+
+message StockCheckResponse {
+  bool available = 1;
+  int32 current_stock = 2;
+  int32 available_stock = 3;
+  int32 requested_quantity = 4;
+}
+
+message StockReserveRequest {
+  string product_id = 1;
+  int32 quantity = 2;
+  string reference_id = 3;
+}
+
+message StockReserveResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Empty {}
+
+// InventoryService - gRPC service definition
+service InventoryService {
+  // Get single inventory item
+  rpc GetInventory (GetInventoryRequest) returns (InventoryItem);
+  
+  // List all inventory items
+  rpc ListInventory (ListInventoryRequest) returns (ListInventoryResponse);
+  
+  // Create new inventory item
+  rpc CreateInventory (CreateInventoryRequest) returns (InventoryItem);
+  
+  // Update inventory item
+  rpc UpdateInventory (UpdateInventoryRequest) returns (InventoryItem);
+  
+  // Delete inventory item
+  rpc DeleteInventory (DeleteInventoryRequest) returns (Empty);
+  
+  // Check stock availability
+  rpc CheckStock (StockCheckRequest) returns (StockCheckResponse);
+  
+  // Reserve stock for order
+  rpc ReserveStock (StockReserveRequest) returns (StockReserveResponse);
+  
+  // Release reserved stock
+  rpc ReleaseStock (StockReserveRequest) returns (StockReserveResponse);
+}
