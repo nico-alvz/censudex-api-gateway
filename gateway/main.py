@@ -22,6 +22,8 @@ from .routes.proxy import proxy_router
 from .routes import clients
 from .routes import auth
 from .routes import Orders
+
+from gateway.routes.products import router as products_router
 from .routes.inventory import inventory_router
 from .routes.notifications import router as notifications_router
 
@@ -116,9 +118,9 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "products": {
-        "url": "http://product-stub:8000",
+        "url": "http://localhost:50051",
         "health_endpoint": "/health",
-        "prefix": "/api/v1/products",
+        "prefix": "/products",
         "requires_auth": False,  # Public catalog
         "timeout": 30
     }
@@ -248,6 +250,8 @@ app.include_router(auth_router, prefix="/api", tags=["Auth"])
 
 Orders_router = Orders.create_orders_router(SERVICE_REGISTRY["orders"]["url"])
 app.include_router(Orders_router, prefix="/api", tags=["Orders"])
+
+app.include_router(products_router)
 
 # Exception handlers
 @app.exception_handler(HTTPException)
