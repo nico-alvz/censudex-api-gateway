@@ -185,7 +185,7 @@ services:
   # User Service (STUB) - Port 8003
   user-stub:
     build:
-      context: ./services/user-stub
+      context: ./services/user_stub
       dockerfile: Dockerfile
     container_name: censudx_user_stub
     environment:
