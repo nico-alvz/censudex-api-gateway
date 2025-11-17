@@ -95,15 +95,15 @@ SERVICE_REGISTRY = {
         "timeout": 30
     },
     "auth": {
-        "url": "http://auth-service:5001", 
-        "health_endpoint": "/",
+        "url": "http://localhost:5001", 
+        "health_endpoint": "/health",
         "prefix": "/api/v1/auth",
         "requires_auth": False,
         "timeout": 10
     },
     "users": {
-        "url": "clients-service:5002",
-        "health_endpoint": "/", 
+        "url": "localhost:5000",
+        "health_endpoint": "/health", 
         "prefix": "/api/v1/users",
         "requires_auth": True,
         "timeout": 30
