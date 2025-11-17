@@ -24,6 +24,8 @@ from .routes import auth
 from .routes import Orders
 
 from gateway.routes.products import router as products_router
+from .routes.inventory import inventory_router
+from .routes.notifications import router as notifications_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -86,28 +88,30 @@ app.add_middleware(RateLimitingMiddleware)
 # Service registry for dynamic routing
 SERVICE_REGISTRY = {
     "inventory": {
-        "url": "http://inventory:8000",
+        "url": "inventory:50051",
+        "grpc": True,
+        "http_url": "http://inventory:8000",
         "health_endpoint": "/health",
         "prefix": "/api/v1/inventory",
         "requires_auth": True,
         "timeout": 30
     },
     "auth": {
-        "url": "http://localhost:5001", 
-        "health_endpoint": "/health",
+        "url": "http://auth-service:5001", 
+        "health_endpoint": "/",
         "prefix": "/api/v1/auth",
         "requires_auth": False,
         "timeout": 10
     },
     "users": {
-        "url": "localhost:5000",
-        "health_endpoint": "/health", 
+        "url": "clients-service:5002",
+        "health_endpoint": "/", 
         "prefix": "/api/v1/users",
         "requires_auth": True,
         "timeout": 30
     },
     "orders": {
-        "url": "http://localhost:5206",
+        "url": "http://host.docker.internal:5207",
         "health_endpoint": "/health",
         "prefix": "/api/v1/orders", 
         "requires_auth": True,
@@ -143,15 +147,56 @@ async def check_services_health() -> Dict[str, Any]:
     async with httpx.AsyncClient() as client:
         for service_name, config in SERVICE_REGISTRY.items():
             try:
-                health_url = f"{config['url']}{config['health_endpoint']}"
-                response = await client.get(health_url, timeout=5.0)
+                # Check if service is gRPC
+                is_grpc = config.get('grpc', False) or service_name in ['auth', 'users', 'inventory']
                 
-                services_health[service_name] = {
-                    "status": "healthy" if response.status_code == 200 else "unhealthy",
-                    "url": config['url'],
-                    "response_time": response.elapsed.total_seconds(),
-                    "last_check": datetime.utcnow().isoformat()
-                }
+                if is_grpc:
+                    # For gRPC services, try to connect to the port
+                    try:
+                        import socket
+                        url_parts = config['url'].replace('http://', '').split(':')
+                        hostname = url_parts[0]
+                        port = int(url_parts[1]) if len(url_parts) > 1 else 5000
+                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        sock.settimeout(2)
+                        result = sock.connect_ex((hostname, port))
+                        sock.close()
+                        
+                        if result == 0:
+                            services_health[service_name] = {
+                                "status": "healthy",
+                                "url": config['url'],
+                                "type": "gRPC",
+                                "last_check": datetime.utcnow().isoformat()
+                            }
+                        else:
+                            services_health[service_name] = {
+                                "status": "unhealthy",
+                                "url": config['url'],
+                                "error": "Port unreachable",
+                                "type": "gRPC",
+                                "last_check": datetime.utcnow().isoformat()
+                            }
+                    except Exception as e:
+                        services_health[service_name] = {
+                            "status": "unhealthy",
+                            "url": config['url'],
+                            "error": str(e),
+                            "type": "gRPC",
+                            "last_check": datetime.utcnow().isoformat()
+                        }
+                else:
+                    # HTTP services
+                    health_url = f"{config['url']}{config['health_endpoint']}"
+                    response = await client.get(health_url, timeout=5.0)
+                    
+                    services_health[service_name] = {
+                        "status": "healthy" if response.status_code == 200 else "unhealthy",
+                        "url": config['url'],
+                        "response_time": response.elapsed.total_seconds(),
+                        "type": "HTTP",
+                        "last_check": datetime.utcnow().isoformat()
+                    }
             except Exception as e:
                 services_health[service_name] = {
                     "status": "unhealthy",
@@ -192,6 +237,10 @@ ROUTES
 # Include routers
 app.include_router(health_router, prefix="/gateway", tags=["gateway"])
 app.include_router(proxy_router, prefix="/gateway", tags=["proxy"])
+# Inventory gRPC router
+app.include_router(inventory_router, tags=["inventory"])
+# Notifications router
+app.include_router(notifications_router, tags=["notifications"])
 # Clients router
 clients_router = clients.create_clients_router(SERVICE_REGISTRY["users"]["url"])
 app.include_router(clients_router, prefix="/api", tags=["Clients"])
@@ -229,6 +278,61 @@ async def internal_server_error_handler(request: Request, exc: Exception):
             "path": str(request.url)
         }
     )
+
+
+# Background worker for RabbitMQ
+import threading
+import os
+worker_thread = None
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background worker on app startup"""
+    global worker_thread
+    
+    def run_worker():
+        """Run the RabbitMQ worker in background"""
+        try:
+            from services.messaging import RabbitMQService
+            from services.event_consumer import get_event_consumer
+            
+            logger.info("Starting RabbitMQ worker thread...")
+            rabbitmq_url = os.getenv("RABBITMQ_URL", "amqp://censudx:censudx_password@rabbitmq:5672/censudx_vhost")
+            messaging_service = RabbitMQService(rabbitmq_url)
+            
+            if not messaging_service.connect():
+                logger.error("Failed to connect to RabbitMQ")
+                return
+            
+            consumer = get_event_consumer()
+            
+            # Register consumers
+            messaging_service.register_consumer(
+                "inventory_updates",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "low_stock_alerts",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "stock_validation",
+                lambda msg: consumer.process_message(msg)
+            )
+            messaging_service.register_consumer(
+                "stock_reserved",
+                lambda msg: consumer.process_message(msg)
+            )
+            
+            logger.info("RabbitMQ worker started - listening for messages...")
+            messaging_service.start_consuming()
+        except Exception as e:
+            logger.error(f"Worker thread error: {e}", exc_info=True)
+    
+    worker_thread = threading.Thread(target=run_worker, daemon=True)
+    worker_thread.start()
+    logger.info("Background worker thread started")
+
 
 if __name__ == "__main__":
     import uvicorn

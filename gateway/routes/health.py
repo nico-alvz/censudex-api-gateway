@@ -17,7 +17,6 @@ async def detailed_health():
         "timestamp": datetime.utcnow().isoformat(),
         "components": {
             "database": "healthy",
-            "redis": "healthy", 
             "messaging": "healthy"
         }
     }

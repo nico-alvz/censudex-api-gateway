@@ -274,17 +274,19 @@ def create_clients_router(service_url: str) -> APIRouter:
         # Try to validate credentials and handle gRPC errors
         try:
             response = validate_credentials(user)
+            # Returns id and roles if credentials are valid
+            return {
+                "message": "Credenciales válidas",
+                "user": {
+                "id": response.id,
+                "roles": list(response.roles)
+                }
+            }
         # Handle gRPC exceptions
         except grpc.RpcError as e:
             if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
                 raise HTTPException(status_code=400, detail={"message": "Credenciales inválidas"})
-        # Returns id and roles if credentials are valid
-        return {
-            "message": "Credenciales válidas",
-            "user": {
-            "id": response.id,
-            "roles": list(response.roles)
-            }
-        }
+            else:
+                raise HTTPException(status_code=500, detail={"message": "Error interno del servidor", "details": e.details()})
     # Returns the router
     return router

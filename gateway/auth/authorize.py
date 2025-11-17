@@ -11,12 +11,13 @@ security = HTTPBearer()
 Get user roles from the authentication service using the provided token
 """
 async def get_user_roles(token: str) -> list[str]:
-    async with httpx.AsyncClient() as client:             
+    async with httpx.AsyncClient() as client:
         # Validate the token with the auth service
+        # Use the auth service hostname within the Docker network
         headers = {"Authorization": f"Bearer {token}"}
         try:
-            # Make a request to the auth service to validate the token and get user roles
-            token_response = await client.get(f"http://localhost:8000/api/validate-token", headers=headers)
+            # Call the auth service validate-token endpoint
+            token_response = await client.get(f"http://auth-service:5001/api/auth", headers=headers)
             # Raise an exception if the request failed
             token_response.raise_for_status()
         except httpx.HTTPError as e:
