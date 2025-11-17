@@ -227,9 +227,12 @@ services:
       dockerfile: Dockerfile
     container_name: censudx_product_stub
     environment:
-      - LOG_LEVEL=INFO
+      - ASPNETCORE_URLS=http://+:8080;http://+:50051
+      - ConnectionStrings__MongoDb=mongodb+srv://arqui_db_user:arqui_db_user@clusterarqui1.qwkas1r.mongodb.net/?appName=ClusterArqui1
+      - MongoDbSettings__ProductServiceDb=censudex_products_service
     ports:
-      - "8005:8000"
+      - "8005:8000" # Puerto REST
+      - "50051:50051" # Puerto gRPC
     networks:
       - censudx-network
     restart: unless-stopped

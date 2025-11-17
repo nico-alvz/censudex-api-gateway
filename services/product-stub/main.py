@@ -1,53 +1,88 @@
-"""
-Product Service Stub for Censudx API Gateway
-"""
+# gateway/services/products_client.py
+import time
+import grpc
+from typing import Optional
+from pb2 import products_pb2, products_pb2_grpc
 
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List, Optional
-from datetime import datetime
+DEFAULT_MAX_MSG = 20 * 1024 * 1024  # 20 MB
 
-app = FastAPI(
-    title="Censudx Product Service (Stub)",
-    description="🛍️ Product catalog service stub",
-    version="1.0.0-stub"
-)
+class ProductsClient:
+    
+    def __init__(self, host: str = "products-service", port: int = 50051, max_message_length: int = DEFAULT_MAX_MSG, retry_seconds: int = 5, retry_attempts: int = 5):
+        self.target = f"{host}:{port}"
+        self.options = [
+            ('grpc.max_receive_message_length', max_message_length),
+            ('grpc.max_send_message_length', max_message_length),
+        ]
+        self.channel = grpc.insecure_channel(self.target, options=self.options)
+        self.stub = products_pb2_grpc.ProductsServiceStub(self.channel)
 
-class Product(BaseModel):
-    product_id: str
-    name: str
-    description: str
-    price: float
-    category: str
-    in_stock: bool
+        # Espera simple hasta que el canal esté listo (retry)
+        attempt = 0
+        while attempt < retry_attempts:
+            try:
+                grpc.channel_ready_future(self.channel).result(timeout=5)
+                break
+            except Exception:
+                attempt += 1
+                time.sleep(retry_seconds)
+        # no raise aquí; la llamada fallará con RpcError si no está listo
 
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "product-service-stub", "version": "1.0.0-stub"}
+    def list_products(self):
+        req = products_pb2.ListProductsRequest()
+        return self.stub.ListProducts(req)
 
-@app.get("/api/v1/products/{product_id}", response_model=Product)
-async def get_product(product_id: str):
-    """Get product by ID"""
-    return Product(
-        product_id=product_id,
-        name=f"Product {product_id}",
-        description=f"Description for product {product_id}",
-        price=29.99,
-        category="electronics",
-        in_stock=True
-    )
+    def get_product(self, id_: str):
+        req = products_pb2.GetProductRequest(id=id_)
+        return self.stub.GetProduct(req)
 
-@app.get("/api/v1/products/", response_model=List[Product])
-async def list_products():
-    """List all products"""
-    return [
-        Product(
-            product_id=f"prod-{i:03d}",
-            name=f"Product {i}",
-            description=f"High-quality product {i}",
-            price=float(i * 9.99),
-            category="electronics" if i % 2 == 0 else "accessories",
-            in_stock=i % 3 != 0
+    def create_product(self, name: str, description: Optional[str], price: float, category: str,
+                       image_bytes: Optional[bytes] = None, image_file_name: Optional[str] = None,
+                       image_content_type: Optional[str] = None):
+        # Construye el request sólo con los campos que tenemos
+        kwargs = dict(
+            name=name,
+            price=price,
+            category=category,
         )
-        for i in range(1, 21)
-    ]
+        if description is not None:
+            kwargs["description"] = description
+        if image_bytes is not None:
+            kwargs["image"] = image_bytes
+        if image_file_name is not None:
+            kwargs["imageFileName"] = image_file_name
+        if image_content_type is not None:
+            kwargs["imageContentType"] = image_content_type
+
+        req = products_pb2.CreateProductRequest(**kwargs)
+        return self.stub.CreateProduct(req)
+
+    def update_product(self, id_: str, name: Optional[str] = None, description: Optional[str] = None,
+                       price: Optional[float] = None, category: Optional[str] = None,
+                       image_bytes: Optional[bytes] = None, image_file_name: Optional[str] = None,
+                       image_content_type: Optional[str] = None):
+        kwargs = {"id": id_}
+        if name is not None:
+            kwargs["name"] = name
+        if description is not None:
+            kwargs["description"] = description
+        if price is not None:
+            kwargs["price"] = price
+        if category is not None:
+            kwargs["category"] = category
+        if image_bytes is not None:
+            kwargs["image"] = image_bytes
+        if image_file_name is not None:
+            kwargs["imageFileName"] = image_file_name
+        if image_content_type is not None:
+            kwargs["imageContentType"] = image_content_type
+
+        req = products_pb2.UpdateProductRequest(**kwargs)
+        return self.stub.UpdateProduct(req)
+
+    def delete_product(self, id_: str):
+        req = products_pb2.DeleteProductRequest(id=id_)
+        return self.stub.DeleteProduct(req)
+
+    def close(self):
+        self.channel.close()

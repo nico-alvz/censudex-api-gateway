@@ -1,90 +1,62 @@
 syntax = "proto3";
 
+option csharp_namespace = "products";
 package products;
-option csharp_namespace = "Censudex.Products.Grpc";
 
-// Importamos Timestamp y Wrappers para campos opcionales y fechas
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
 
-// ==================== PETICIONES ====================
-
-/// <summary>
-/// Representa la respuesta del producto.
-/// </summary>
 message ProductResponse {
-    string id = 1;
-    string name = 2;
-    string category = 3;
-    float price = 4;
-    string imageUrl = 5;
-    bool isActive = 6;
-    google.protobuf.Timestamp createAt = 7;
-    google.protobuf.Timestamp updateAt = 8;
-    string description = 9;
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  string category = 5;
+  string imageUrl = 6;
+  bool isActive = 7;
+  google.protobuf.Timestamp createAt = 8;
+  google.protobuf.Timestamp updateAt = 9;
 }
 
-/// <summary>
-/// Representa una lista de productos
-/// </summary>
 message ListProductsResponse {
-    repeated ProductResponse products = 1;
+  repeated ProductResponse products = 1;
 }
 
-/// <summary>
-/// Solicitud para obtener un producto mediante su ID
-/// </summary>
+message ListProductsRequest {}
+
 message GetProductRequest {
-    string id = 1;
+  string id = 1;
 }
 
-/// <summary>
-/// Solicitud para crear un nuevo producto.
-/// </summary>
 message CreateProductRequest {
-    string name = 1;
-    string description = 2;
-    float price = 3;
-    string category = 4;
-
-    // Imagen: filename y content (bytes). content_type opcional.
-    string imageFileName = 10;
-    string imageContentType = 11;
-    bytes imageContent = 12;
+  string name = 1;
+  string description = 2;
+  float price = 3;
+  string category = 4;
+  bytes image = 5;
+  string imageFileName = 6;
+  string imageContentType = 7;
 }
 
-/// <summary>
-/// Solicitud para actualizar la informacion de un producto
-/// </summary>
 message UpdateProductRequest {
-    string id = 1;
-
-    google.protobuf.StringValue name = 2;
-    google.protobuf.StringValue description = 3;
-    google.protobuf.FloatValue price = 4;
-    google.protobuf.StringValue category = 5;
-
-    // Si se desea actualizar imagen (opcional)
-    google.protobuf.StringValue imageFileName = 10;
-    bytes imageContent = 11;
-    google.protobuf.StringValue imageContentType = 12;
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  string category = 5;
+  bytes image = 6;
+  string imageFileName = 7;
+  string imageContentType = 8;
 }
 
-/// <summary>
-/// Solicitud para eliminar un producto.
-/// </summary>
 message DeleteProductRequest {
-    string id = 1;
+  string id = 1;
 }
 
-/// <summary>
-/// Servicio gRPC encargado de gestionar las operaciones relacionadas con los productos.
-/// Permite la creación, consulta, actualización de datos y eliminación de producto.
-/// </summary>
 service ProductsService {
-    rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
-    rpc ListProducts (ListProductsRequest) returns (ListProductsResponse);
-    rpc GetProduct (GetProductRequest) returns (ProductResponse);
-    rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
-    rpc DeleteProduct (DeleteProductRequest) returns (Empty);
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse);
+  rpc GetProduct (GetProductRequest) returns (ProductResponse);
+  rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+  rpc DeleteProduct (DeleteProductRequest) returns (google.protobuf.Empty);
 }
